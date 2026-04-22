@@ -8,15 +8,15 @@ importers:
 
   .:
     devDependencies:
-      '@biomejs/biome':
-        specifier: 2.4.11
-        version: 2.4.11
       '@rsbuild/plugin-react':
         specifier: ^2.0.0
         version: 2.0.0(@rsbuild/core@2.0.0-rc.1(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0))(@rspack/core@2.0.0(@swc/helpers@0.5.21))
       '@rslib/core':
         specifier: ^0.21.3
         version: 0.21.3(typescript@6.0.3)
+      '@rslint/core':
+        specifier: ^0.5.0
+        version: 0.5.0
       '@rspress/core':
         specifier: ^2.0.9
         version: 2.0.9(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/mdast@4.0.4)(@types/react@19.2.14)(micromark-util-types@2.0.2)(micromark@4.0.2)
@@ -47,6 +47,12 @@ importers:
       happy-dom:
         specifier: ^20.9.0
         version: 20.9.0
+      nano-staged:
+        specifier: ^1.0.2
+        version: 1.0.2
+      prettier:
+        specifier: ^3.8.3
+        version: 3.8.3
       react:
         specifier: ^19.2.5
         version: 19.2.5
@@ -56,6 +62,9 @@ importers:
       rsbuild-plugin-workspace-dev:
         specifier: ^0.1.4
         version: 0.1.4(@rsbuild/core@2.0.0-rc.1(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0))
+      simple-git-hooks:
+        specifier: ^2.13.1
+        version: 2.13.1
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -274,59 +283,6 @@ packages:
     resolution: {integrity: sha512-LwdZHpScM4Qz8Xw2iKSzS+cfglZzJGvofQICy7W7v4caru4EaAmyUuO6BGrbyQ2mYV11W0U8j5mBhd14dd3B0A==}
     engines: {node: '>=6.9.0'}
 
-  '@biomejs/biome@2.4.11':
-    resolution: {integrity: sha512-nWxHX8tf3Opb/qRgZpBbsTOqOodkbrkJ7S+JxJAruxOReaDPPmPuLBAGQ8vigyUgo0QBB+oQltNEAvalLcjggA==}
-    engines: {node: '>=14.21.3'}
-    hasBin: true
-
-  '@biomejs/cli-darwin-arm64@2.4.11':
-    resolution: {integrity: sha512-wOt+ed+L2dgZanWyL6i29qlXMc088N11optzpo10peayObBaAshbTcxKUchzEMp9QSY8rh5h6VfAFE3WTS1rqg==}
-    engines: {node: '>=14.21.3'}
-    cpu: [arm64]
-    os: [darwin]
-
-  '@biomejs/cli-darwin-x64@2.4.11':
-    resolution: {integrity: sha512-gZ6zR8XmZlExfi/Pz/PffmdpWOQ8Qhy7oBztgkR8/ylSRyLwfRPSadmiVCV8WQ8PoJ2MWUy2fgID9zmtgUUJmw==}
-    engines: {node: '>=14.21.3'}
-    cpu: [x64]
-    os: [darwin]
-
-  '@biomejs/cli-linux-arm64-musl@2.4.11':
-    resolution: {integrity: sha512-+Sbo1OAmlegtdwqFE8iOxFIWLh1B3OEgsuZfBpyyN/kWuqZ8dx9ZEes6zVnDMo+zRHF2wLynRVhoQmV7ohxl2Q==}
-    engines: {node: '>=14.21.3'}
-    cpu: [arm64]
-    os: [linux]
-
-  '@biomejs/cli-linux-arm64@2.4.11':
-    resolution: {integrity: sha512-avdJaEElXrKceK0va9FkJ4P5ci3N01TGkc6ni3P8l3BElqbOz42Wg2IyX3gbh0ZLEd4HVKEIrmuVu/AMuSeFFA==}
-    engines: {node: '>=14.21.3'}
-    cpu: [arm64]
-    os: [linux]
-
-  '@biomejs/cli-linux-x64-musl@2.4.11':
-    resolution: {integrity: sha512-bexd2IklK7ZgPhrz6jXzpIL6dEAH9MlJU1xGTrypx+FICxrXUp4CqtwfiuoDKse+UlgAlWtzML3jrMqeEAHEhA==}
-    engines: {node: '>=14.21.3'}
-    cpu: [x64]
-    os: [linux]
-
-  '@biomejs/cli-linux-x64@2.4.11':
-    resolution: {integrity: sha512-TagWV0iomp5LnEnxWFg4nQO+e52Fow349vaX0Q/PIcX6Zhk4GGBgp3qqZ8PVkpC+cuehRctMf3+6+FgQ8jCEFQ==}
-    engines: {node: '>=14.21.3'}
-    cpu: [x64]
-    os: [linux]
-
-  '@biomejs/cli-win32-arm64@2.4.11':
-    resolution: {integrity: sha512-RJhaTnY8byzxDt4bDVb7AFPHkPcjOPK3xBip4ZRTrN3TEfyhjLRm3r3mqknqydgVTB74XG8l4jMLwEACEeihVg==}
-    engines: {node: '>=14.21.3'}
-    cpu: [arm64]
-    os: [win32]
-
-  '@biomejs/cli-win32-x64@2.4.11':
-    resolution: {integrity: sha512-A8D3JM/00C2KQgUV3oj8Ba15EHEYwebAGCy5Sf9GAjr5Y3+kJIYOiESoqRDeuRZueuMdCsbLZIUqmPhpYXJE9A==}
-    engines: {node: '>=14.21.3'}
-    cpu: [x64]
-    os: [win32]
-
   '@emnapi/core@1.10.0':
     resolution: {integrity: sha512-yq6OkJ4p82CAfPl0u9mQebQHKPJkY7WrIuk205cTYnYe+k2Z8YBh11FrbRG/H6ihirqcacOgl2BIO8oyMQLeXw==}
 
@@ -441,6 +397,45 @@ packages:
         optional: true
       typescript:
         optional: true
+
+  '@rslint/core@0.5.0':
+    resolution: {integrity: sha512-RkP/xqWx+Nvj7awvALIpbGnc5ECv8/AjPXqQDixhms4bu4dW5UbNNZ9XbrvJ4JoToUC/Ac5CrwW+nOj7JItSFQ==}
+    hasBin: true
+    peerDependencies:
+      jiti: ^2.0.0
+    peerDependenciesMeta:
+      jiti:
+        optional: true
+
+  '@rslint/darwin-arm64@0.5.0':
+    resolution: {integrity: sha512-AgsyJBnmXBuTnXAB5YUr6fhgfxvCl+iNRFlCjNN4WiClKEQyRLkU8KAmqVoZWOMyNszDUl9k/KT5P5KrBEJCJQ==}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@rslint/darwin-x64@0.5.0':
+    resolution: {integrity: sha512-4vxDu0DFzJVsGGxmmGmtSqKOPPfVcJvqxZP7XXDf9isFPg3L9jF+2DW3QL3KL7LO3Q+3zVG9eL+MQslMUf9NSw==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@rslint/linux-arm64@0.5.0':
+    resolution: {integrity: sha512-sNdDT7Omf6GttaJOql1915t/6txHlo0mEulLNhuDK4KVD9EnSltQ1uIDeqhNVvsKSnqIuTp3qCWmo1qYv5xKTA==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@rslint/linux-x64@0.5.0':
+    resolution: {integrity: sha512-Er/feorEUqOjee1ueE02fHIaPB1haxoGdh3uNqNrm3CUyrBp+Amjb8HL3MRzIYQuYoZWBAw9fU67YG8FxcWUsA==}
+    cpu: [x64]
+    os: [linux]
+
+  '@rslint/win32-arm64@0.5.0':
+    resolution: {integrity: sha512-Y895KBuDVfoprZqr1BKX4YwP4kA2cqUuQr1B50+W8yjSRznyotNa09pRqUi+FrgJ5z6x07JjmW3Ggv8t5z9wwg==}
+    cpu: [arm64]
+    os: [win32]
+
+  '@rslint/win32-x64@0.5.0':
+    resolution: {integrity: sha512-pTvCNr99DQg+22XQ5QkHySOLD4ap3wJ6yuwoW2r/4dW4MbmyDF9FfQGfhH1ZsQA3h20H8/3ANGdKuCbZnjkSrg==}
+    cpu: [x64]
+    os: [win32]
 
   '@rspack/binding-darwin-arm64@2.0.0':
     resolution: {integrity: sha512-ICBHDKYyndFqljLhjxvKfWWZu39RJSH2jkSmbceXl0kmptLSE0cLWpvk+eGSzLqtxKN0jVchwCw+5P5mWCzwAw==}
@@ -1712,6 +1707,11 @@ packages:
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
+  nano-staged@1.0.2:
+    resolution: {integrity: sha512-Fytar3zHLY99nlMfqPPbraxZodqQAHPpdPRyYaplL+lB9DCR6pUrafxbG+Btz4+7fO5Rm/+DO4ZeDO/nLSUMhw==}
+    engines: {node: ^22 || >= 24}
+    hasBin: true
+
   nanoid@3.3.11:
     resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -1804,6 +1804,11 @@ packages:
   postcss@8.5.10:
     resolution: {integrity: sha512-pMMHxBOZKFU6HgAZ4eyGnwXF/EvPGGqUr0MnZ5+99485wwW41kW91A4LOGxSHhgugZmSChL5AlElNdwlNgcnLQ==}
     engines: {node: ^10 || ^12 || >=14}
+
+  prettier@3.8.3:
+    resolution: {integrity: sha512-7igPTM53cGHMW8xWuVTydi2KO233VFiTNyF5hLJqpilHfmn8C8gPf+PS7dUT64YcXFbiMGZxS9pCSxL/Dxm/Jw==}
+    engines: {node: '>=14'}
+    hasBin: true
 
   pretty-format@27.5.1:
     resolution: {integrity: sha512-Qb1gy5OrP5+zDf2Bvnzdl3jsTf1qXVMazbvCoKhtKqVs4/YK4ozX4gKQJJVyNe+cajNPn0KoC0MC3FUmaHWEmQ==}
@@ -2046,6 +2051,10 @@ packages:
   shiki@4.0.2:
     resolution: {integrity: sha512-eAVKTMedR5ckPo4xne/PjYQYrU3qx78gtJZ+sHlXEg5IHhhoQhMfZVzetTYuaJS0L2Ef3AcCRzCHV8T0WI6nIQ==}
     engines: {node: '>=20'}
+
+  simple-git-hooks@2.13.1:
+    resolution: {integrity: sha512-WszCLXwT4h2k1ufIXAgsbiTOazqqevFCIncOuUBZJ91DdvWcC5+OFkluWRQPrcuSYd8fjq+o2y1QfWqYMoAToQ==}
+    hasBin: true
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -2556,41 +2565,6 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
-  '@biomejs/biome@2.4.11':
-    optionalDependencies:
-      '@biomejs/cli-darwin-arm64': 2.4.11
-      '@biomejs/cli-darwin-x64': 2.4.11
-      '@biomejs/cli-linux-arm64': 2.4.11
-      '@biomejs/cli-linux-arm64-musl': 2.4.11
-      '@biomejs/cli-linux-x64': 2.4.11
-      '@biomejs/cli-linux-x64-musl': 2.4.11
-      '@biomejs/cli-win32-arm64': 2.4.11
-      '@biomejs/cli-win32-x64': 2.4.11
-
-  '@biomejs/cli-darwin-arm64@2.4.11':
-    optional: true
-
-  '@biomejs/cli-darwin-x64@2.4.11':
-    optional: true
-
-  '@biomejs/cli-linux-arm64-musl@2.4.11':
-    optional: true
-
-  '@biomejs/cli-linux-arm64@2.4.11':
-    optional: true
-
-  '@biomejs/cli-linux-x64-musl@2.4.11':
-    optional: true
-
-  '@biomejs/cli-linux-x64@2.4.11':
-    optional: true
-
-  '@biomejs/cli-win32-arm64@2.4.11':
-    optional: true
-
-  '@biomejs/cli-win32-x64@2.4.11':
-    optional: true
-
   '@emnapi/core@1.10.0':
     dependencies:
       '@emnapi/wasi-threads': 1.2.1
@@ -2748,6 +2722,35 @@ snapshots:
       - '@module-federation/runtime-tools'
       - '@typescript/native-preview'
       - core-js
+
+  '@rslint/core@0.5.0':
+    dependencies:
+      picomatch: 4.0.4
+    optionalDependencies:
+      '@rslint/darwin-arm64': 0.5.0
+      '@rslint/darwin-x64': 0.5.0
+      '@rslint/linux-arm64': 0.5.0
+      '@rslint/linux-x64': 0.5.0
+      '@rslint/win32-arm64': 0.5.0
+      '@rslint/win32-x64': 0.5.0
+
+  '@rslint/darwin-arm64@0.5.0':
+    optional: true
+
+  '@rslint/darwin-x64@0.5.0':
+    optional: true
+
+  '@rslint/linux-arm64@0.5.0':
+    optional: true
+
+  '@rslint/linux-x64@0.5.0':
+    optional: true
+
+  '@rslint/win32-arm64@0.5.0':
+    optional: true
+
+  '@rslint/win32-x64@0.5.0':
+    optional: true
 
   '@rspack/binding-darwin-arm64@2.0.0':
     optional: true
@@ -4658,6 +4661,8 @@ snapshots:
 
   ms@2.1.3: {}
 
+  nano-staged@1.0.2: {}
+
   nanoid@3.3.11:
     optional: true
 
@@ -4755,6 +4760,8 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
     optional: true
+
+  prettier@3.8.3: {}
 
   pretty-format@27.5.1:
     dependencies:
@@ -5081,6 +5088,8 @@ snapshots:
       '@shikijs/types': 4.0.2
       '@shikijs/vscode-textmate': 10.0.2
       '@types/hast': 3.0.4
+
+  simple-git-hooks@2.13.1: {}
 
   source-map-js@1.2.1:
     optional: true
