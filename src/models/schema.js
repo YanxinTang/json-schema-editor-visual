@@ -1,5 +1,5 @@
 const _ = require('underscore');
-import utils from '../utils';
+import * as utils from '../utils';
 let fieldNum = 1;
 import handleSchema from '../schema.js';
 

@@ -34,7 +34,7 @@ import PropTypes from 'prop-types';
 import { SCHEMA_TYPE, debounce } from './utils.js';
 import { handleSchema } from './schema';
 const GenerateSchema = require('generate-schema/src/schemas/json.js');
-const utils = require('./utils');
+import * as utils from './utils';
 import CustomItem from './components/SchemaComponents/SchemaOther.js';
 import LocalProvider from './components/LocalProvider/index.js';
 import MockSelect from './components/MockSelect/index.js';

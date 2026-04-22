@@ -2,13 +2,15 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import App from './App.js';
-import utils from './utils';
+import * as utils from './utils';
 import PropTypes from 'prop-types';
 import store from './store';
 import { schemaSlice } from './store/schemaSlice.js';
 
 export default function schemaEditor(config = {}) {
-  if (config.lang) utils.lang = config.lang;
+  if (config.lang) {
+    utils.setLang(config.lang);
+  }
 
   const Model = {
     schema: {

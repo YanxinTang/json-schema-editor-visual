@@ -33,7 +33,7 @@ import PropTypes from 'prop-types';
 import { JSONPATH_JOIN_CHAR, SCHEMA_TYPE } from '../../utils.js';
 const InputGroup = Input.Group;
 import LocaleProvider from '../LocalProvider/index.js';
-import utils from '../../utils';
+import * as utils from '../../utils';
 import MockSelect from '../MockSelect/index.js';
 import { useContext } from 'react';
 import { SchemaEditorContext } from '../../SchemaEditorContext';

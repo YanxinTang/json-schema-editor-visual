@@ -1,20 +1,14 @@
 import { createSlice, original } from '@reduxjs/toolkit';
 import _ from 'underscore';
 import { handleSchema } from '../schema';
-import utils from '../utils';
+import * as utils from '../utils';
+import type { JSONSchema } from '../types';
 
 let fieldNum = 1;
 
-type Schema = {
-  title: string;
-  type: string;
-  properties: Record<string, Schema>;
-  required: string[];
-};
-
 interface SchemaState {
   message: string | null;
-  data: Schema;
+  data: JSONSchema;
   open: {
     properties: boolean;
   };

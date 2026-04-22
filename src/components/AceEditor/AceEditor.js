@@ -1,5 +1,5 @@
 import React from 'react';
-import mockEditor from './mockEditor';
+import { run as mockEditor } from './mockEditor';
 import PropTypes from 'prop-types';
 import _ from 'underscore';
 

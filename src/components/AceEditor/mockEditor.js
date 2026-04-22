@@ -1,7 +1,7 @@
-var ace = require('brace');
-require('brace/mode/json');
+import ace from 'brace';
+import 'brace/mode/json';
 
-function run(options) {
+export function run(options) {
   var editor, mockEditor, rhymeCompleter;
   function handleJson(json) {
     var curData = mockEditor.curData;
@@ -78,5 +78,3 @@ function run(options) {
 
   return mockEditor;
 }
-
-module.exports = run;
