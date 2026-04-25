@@ -22,7 +22,8 @@
     "format": "prettier --write .",
     "lint": "rslint",
     "test": "rstest",
-    "test:watch": "rstest --watch"
+    "test:watch": "rstest --watch",
+    "test:browser": "rstest --config=rstest.browser.config.ts"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm exec nano-staged"
@@ -54,6 +55,7 @@
     "@rstest/core": "^0.9.8",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^24.12.2",
     "@types/react": "^19.2.14",
     "antd": "5",
@@ -64,7 +66,11 @@
     "react-dom": "^19.2.5",
     "rsbuild-plugin-workspace-dev": "^0.1.4",
     "simple-git-hooks": "^2.13.1",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "@rstest/browser": "^0.9.9",
+    "@testing-library/dom": "^10.0.0",
+    "playwright": "^1.49.1",
+    "@rstest/browser-react": "^0.9.9"
   },
   "peerDependencies": {
     "@ant-design/icons": "5",
