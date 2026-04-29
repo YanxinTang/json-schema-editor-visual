@@ -1,4 +1,4 @@
-import { JSONSchema } from './types';
+import { Format, JSONSchema } from './types';
 
 export const JSONPATH_JOIN_CHAR = '.';
 
@@ -8,7 +8,7 @@ export function setLang(language: 'zh_CN' | 'en_US'): void {
   lang = language;
 }
 
-export const format = [
+export const format: Format = [
   { name: 'date-time' },
   { name: 'date' },
   { name: 'email' },
@@ -16,7 +16,7 @@ export const format = [
   { name: 'ipv4' },
   { name: 'ipv6' },
   { name: 'uri' },
-] as const;
+];
 
 export const SCHEMA_TYPE = [
   'string',

@@ -30,18 +30,53 @@ import AceEditor from './components/AceEditor/AceEditor.js';
 import _ from 'underscore';
 import { connect } from 'react-redux';
 import SchemaJson from './components/SchemaComponents/SchemaJson.js';
-import PropTypes from 'prop-types';
-import { SCHEMA_TYPE, debounce } from './utils.js';
+import { SCHEMA_TYPE, debounce } from './utils';
 import { handleSchema } from './schema';
-const GenerateSchema = require('generate-schema/src/schemas/json.js');
+import GenerateSchema from 'generate-schema/src/schemas/json.js';
 import * as utils from './utils';
 import CustomItem from './components/SchemaComponents/SchemaOther.js';
 import LocalProvider from './components/LocalProvider/index.js';
 import MockSelect from './components/MockSelect/index.js';
 import { SchemaEditorContext } from './SchemaEditorContext';
+import { JSONSchema, ModelType } from './types';
+import { RootState, store } from './store';
+import { SchemaCliceActions, schemaSlice } from './store/schemaSlice';
 
-class jsonSchema extends React.Component {
-  constructor(props) {
+export interface JsonSchemaEditorOwnedProps {
+  isMock?: boolean;
+  data?: string;
+  onChange?: (schema: string) => void;
+}
+
+export interface JsonSchemaProps
+  extends SchemaCliceActions, JsonSchemaEditorOwnedProps {
+  Model: ModelType;
+  schema: JSONSchema;
+  open: {
+    properties: boolean;
+  };
+}
+
+interface JsonSchemaState {
+  visible: boolean;
+  show: boolean;
+  editVisible: boolean;
+  description: string;
+  descriptionKey: string | null;
+  advVisible: boolean;
+  itemKey: string[];
+  curItemCustomValue: JSONSchema | null;
+  checked: boolean;
+  editorModalName: string;
+  mock: string;
+}
+
+class jsonSchema extends React.Component<JsonSchemaProps, JsonSchemaState> {
+  private jsonSchemaData: string | null;
+  private jsonData: object | null;
+  private importJsonType: string | null = null;
+
+  constructor(props: JsonSchemaProps) {
     super(props);
     this.alterMsg = debounce(this.alterMsg, 2000);
     this.state = {
@@ -57,7 +92,6 @@ class jsonSchema extends React.Component {
       editorModalName: '', // 弹窗名称desctiption | mock
       mock: '',
     };
-    this.Model = this.props.Model.schema;
     this.jsonSchemaData = null;
     this.jsonData = null;
   }
@@ -75,12 +109,12 @@ class jsonSchema extends React.Component {
       }
 
       let jsonData = GenerateSchema(this.jsonData);
-      this.Model.changeEditorSchemaAction({ value: jsonData });
+      this.props.changeEditorSchemaAction({ value: jsonData });
     } else {
       if (!this.jsonSchemaData) {
         return message.error('json 数据格式有误');
       }
-      this.Model.changeEditorSchemaAction({ value: this.jsonSchemaData });
+      this.props.changeEditorSchemaAction({ value: this.jsonSchemaData });
     }
     this.setState({ visible: false });
   };
@@ -98,13 +132,13 @@ class jsonSchema extends React.Component {
       if (oldData !== newData) return this.props.onChange(newData);
     }
     if (this.props.data && this.props.data !== nextProps.data) {
-      this.Model.changeEditorSchemaAction({
+      this.props.changeEditorSchemaAction({
         value: JSON.parse(nextProps.data),
       });
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let data = this.props.data;
     if (!data) {
       data = `{
@@ -113,7 +147,7 @@ class jsonSchema extends React.Component {
         "properties":{}
       }`;
     }
-    this.Model.changeEditorSchemaAction({ value: JSON.parse(data) });
+    this.props.changeEditorSchemaAction({ value: JSON.parse(data) });
   }
 
   _getChildContext() {
@@ -139,14 +173,14 @@ class jsonSchema extends React.Component {
       return this.alterMsg();
     }
     handleSchema(e.jsonData);
-    this.Model.changeEditorSchemaAction({
+    this.props.changeEditorSchemaAction({
       value: e.jsonData,
     });
   };
 
   // 修改数据类型
   changeType = (key, value) => {
-    this.Model.changeTypeAction({ key: [key], value });
+    this.props.changeTypeAction({ key: [key], value });
   };
 
   handleImportJson = (e) => {
@@ -164,7 +198,7 @@ class jsonSchema extends React.Component {
   };
   // 增加子节点
   addChildField = (key) => {
-    this.Model.addChildFieldAction({ key: [key] });
+    this.props.addChildFieldAction({ key: [key] });
     this.setState({ show: true });
   };
 
@@ -177,7 +211,7 @@ class jsonSchema extends React.Component {
     if (key[0] === 'mock') {
       value = value ? { mock: value } : '';
     }
-    this.Model.changeValueAction({ key, value });
+    this.props.changeValueAction({ key, value });
   };
 
   // 备注/mock弹窗 点击ok 时
@@ -189,7 +223,7 @@ class jsonSchema extends React.Component {
     if (name === 'mock') {
       value = value ? { mock: value } : '';
     }
-    this.Model.changeValueAction({ key: this.state.descriptionKey, value });
+    this.props.changeValueAction({ key: this.state.descriptionKey, value });
   };
 
   handleEditCancel = () => {
@@ -229,11 +263,11 @@ class jsonSchema extends React.Component {
   // 高级设置
   handleAdvOk = () => {
     if (this.state.itemKey.length === 0) {
-      this.Model.changeEditorSchemaAction({
+      this.props.changeEditorSchemaAction({
         value: this.state.curItemCustomValue,
       });
     } else {
-      this.Model.changeValueAction({
+      this.props.changeValueAction({
         key: this.state.itemKey,
         value: this.state.curItemCustomValue,
       });
@@ -264,7 +298,7 @@ class jsonSchema extends React.Component {
 
   changeCheckBox = (e) => {
     this.setState({ checked: e });
-    this.Model.requireAllAction({ required: e, value: this.props.schema });
+    this.props.requireAllAction({ required: e, value: this.props.schema });
   };
 
   render() {
@@ -379,6 +413,7 @@ class jsonSchema extends React.Component {
               width={780}
               cancelText={LocalProvider('cancel')}
               className="json-schema-react-editor-adv-modal"
+              data-testid={TEST ? 'JSONSchemaEditorAdvModal' : null}
             >
               <CustomItem
                 data={JSON.stringify(this.state.curItemCustomValue, null, 2)}
@@ -549,22 +584,10 @@ class jsonSchema extends React.Component {
   }
 }
 
-jsonSchema.childContextTypes = {
-  getOpenValue: PropTypes.func,
-  changeCustomValue: PropTypes.func,
-  Model: PropTypes.object,
-  isMock: PropTypes.bool,
-};
-
-jsonSchema.propTypes = {
-  data: PropTypes.string,
-  onChange: PropTypes.func,
-  showEditor: PropTypes.bool,
-  isMock: PropTypes.bool,
-  Model: PropTypes.object,
-};
-
-export default connect((state) => ({
-  schema: state.schema.data,
-  open: state.schema.open,
-}))(jsonSchema);
+export default connect(
+  (state: RootState) => ({
+    schema: state.schema.data,
+    open: state.schema.open,
+  }),
+  schemaSlice.actions,
+)(jsonSchema);

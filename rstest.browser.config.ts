@@ -8,4 +8,9 @@ export default defineConfig({
     enabled: true,
     provider: 'playwright',
   },
+  source: {
+    define: {
+      'TEST': JSON.stringify(true)
+    }
+  }
 });

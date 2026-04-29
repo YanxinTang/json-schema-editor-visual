@@ -4,9 +4,8 @@ import { handleSchema } from '../schema';
 import * as utils from '../utils';
 import type { JSONSchema } from '../types';
 
-let fieldNum = 1;
-
 interface SchemaState {
+  fieldNum: number;
   message: string | null;
   data: JSONSchema;
   open: {
@@ -15,6 +14,7 @@ interface SchemaState {
 }
 
 const initialState: SchemaState = {
+  fieldNum: 1,
   message: null,
   data: {
     title: '',
@@ -179,14 +179,14 @@ export const schemaSlice = createSlice({
 
       if (!name) {
         newPropertiesData = Object.assign({}, propertiesData);
-        let ranName = 'field_' + fieldNum++;
+        let ranName = 'field_' + state.fieldNum++;
         newPropertiesData[ranName] = utils.defaultSchema.string;
         requiredData.push(ranName);
       } else {
         for (let i in propertiesData) {
           newPropertiesData[i] = propertiesData[i];
           if (i === name) {
-            let ranName = 'field_' + fieldNum++;
+            let ranName = 'field_' + state.fieldNum++;
             newPropertiesData[ranName] = utils.defaultSchema.string;
             requiredData.push(ranName);
           }
@@ -205,7 +205,7 @@ export const schemaSlice = createSlice({
       let newPropertiesData = {};
 
       newPropertiesData = Object.assign({}, propertiesData);
-      let ranName = 'field_' + fieldNum++;
+      let ranName = 'field_' + state.fieldNum++;
       newPropertiesData[ranName] = utils.defaultSchema.string;
       utils.setData(state.data, keys, newPropertiesData);
 
@@ -232,3 +232,17 @@ export const schemaSlice = createSlice({
     },
   },
 });
+
+export type SchemaCliceActions = typeof schemaSlice.actions;
+export const {
+  changeEditorSchemaAction,
+  changeNameAction,
+  changeValueAction,
+  changeTypeAction,
+  enableRequireAction,
+  requireAllAction,
+  deleteItemAction,
+  addFieldAction,
+  addChildFieldAction,
+  setOpenValueAction,
+} = schemaSlice.actions;

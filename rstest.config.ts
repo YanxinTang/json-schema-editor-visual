@@ -10,4 +10,9 @@ export default defineConfig({
   ],
   extends: withRslibConfig(),
   setupFiles: ['./rstest.setup.ts'],
+  source: {
+    define: {
+      'TEST': JSON.stringify(true)
+    }
+  }
 });

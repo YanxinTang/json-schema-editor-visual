@@ -13,6 +13,24 @@ export default () => {
 };
 ```
 
+```jsx preview
+import React from 'react';
+import schemaEditor from 'json-schema-editor-visual';
+
+const SchemaEditor = schemaEditor()
+
+const data = `{"type":"object","title":"title","properties":{"field_1":{"type":"string","title":"field_1_title","description":"field_1_description"}},"required":["field_1"]}`;
+const onChange = (value) => {
+  console.log('value: ', value)
+}
+
+export default () => {
+  return <SchemaEditor data={data} onChange={onChange} />;
+};
+```
+
+
+
 ## API
 
 <API moduleName="Button" en />

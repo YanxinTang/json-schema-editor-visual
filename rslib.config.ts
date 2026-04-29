@@ -6,6 +6,9 @@ export default defineConfig({
     entry: {
       index: ['./src/**'],
     },
+    define: {
+      TEST: JSON.stringify(true)
+    }
   },
   lib: [
     {

@@ -1,4 +1,4 @@
-import React, { Component, PureComponent } from 'react';
+import React, { useContext, Component, PureComponent } from 'react';
 import {
   Dropdown,
   Menu,
@@ -33,10 +33,10 @@ import PropTypes from 'prop-types';
 import { JSONPATH_JOIN_CHAR, SCHEMA_TYPE } from '../../utils.js';
 const InputGroup = Input.Group;
 import LocaleProvider from '../LocalProvider/index.js';
-import * as utils from '../../utils';
 import MockSelect from '../MockSelect/index.js';
-import { useContext } from 'react';
 import { SchemaEditorContext } from '../../SchemaEditorContext';
+import { useAppDispatch } from '../../store';
+import { addChildFieldAction, addFieldAction, setOpenValueAction } from '../../store/schemaSlice';
 
 const mapping = (name, data, showEdit, showAdv) => {
   switch (data.type) {
@@ -279,12 +279,6 @@ class SchemaArray extends PureComponent {
   }
 }
 
-SchemaArray.contextTypes = {
-  getOpenValue: PropTypes.func,
-  Model: PropTypes.object,
-  isMock: PropTypes.bool,
-};
-
 class SchemaItem extends PureComponent {
   static contextType = SchemaEditorContext;
 
@@ -412,7 +406,7 @@ class SchemaItem extends PureComponent {
     let show = this.context.getOpenValue([prefixStr]);
     let showIcon = this.context.getOpenValue([prefixArrayStr]);
     return show ? (
-      <div>
+      <div data-testid={TEST ? 'SchemaItem' : null}>
         <Row type="flex" justify="space-around" align="middle">
           <Col
             span={8}
@@ -453,6 +447,7 @@ class SchemaItem extends PureComponent {
                   }
                   onChange={this.handleChangeName}
                   value={name}
+                  data-testid={TEST ? 'SchemaItem_propNameInput' : null}
                 />
               </Col>
             </Row>
@@ -507,6 +502,7 @@ class SchemaItem extends PureComponent {
               placeholder={LocaleProvider('title')}
               value={value.title}
               onChange={this.handleChangeTitle}
+              data-testid={TEST ? 'SchemaItem_titleInput' : null}
             />
           </Col>
 
@@ -524,6 +520,7 @@ class SchemaItem extends PureComponent {
               placeholder={LocaleProvider('description')}
               value={value.description}
               onChange={this.handleChangeDesc}
+              data-testid={TEST ? 'SchemaItem_descInput' : null}
             />
           </Col>
 
@@ -531,7 +528,11 @@ class SchemaItem extends PureComponent {
             span={this.context.isMock ? 2 : 3}
             className="col-item col-item-setting"
           >
-            <span className="adv-set" onClick={this.handleShowAdv}>
+            <span
+              className="adv-set"
+              onClick={this.handleShowAdv}
+              data-testid={TEST ? 'SchemaItem_FieldInput_advSet' : null}
+            >
               <Tooltip placement="top" title={LocaleProvider('adv_setting')}>
                 <SettingOutlined type="setting" />
               </Tooltip>
@@ -560,12 +561,6 @@ class SchemaItem extends PureComponent {
     ) : null;
   }
 }
-
-SchemaItem.contextTypes = {
-  getOpenValue: PropTypes.func,
-  Model: PropTypes.object,
-  isMock: PropTypes.bool,
-};
 
 class SchemaObjectComponent extends Component {
   shouldComponentUpdate(nextProps) {
@@ -603,26 +598,30 @@ const SchemaObject = connect((state) => ({
 }))(SchemaObjectComponent);
 
 const DropPlus = (props) => {
-  const context = useContext(SchemaEditorContext);
-  const { prefix, name, add } = props;
-  const Model = context.Model.schema;
+  const { prefix, name } = props;
+  const dispatch = useAppDispatch();
+
   const menu = (
     <Menu>
       <Menu.Item>
-        <span onClick={() => Model.addFieldAction({ prefix, name })}>
+        <span onClick={() => dispatch(addFieldAction({ prefix, name }))}>
           {LocaleProvider('sibling_node')}
         </span>
       </Menu.Item>
       <Menu.Item>
         <span
           onClick={() => {
-            Model.setOpenValueAction({
-              key: [].concat(prefix, name, 'properties'),
-              value: true,
-            });
-            Model.addChildFieldAction({
-              key: [].concat(prefix, name, 'properties'),
-            });
+            dispatch(
+              setOpenValueAction({
+                key: [].concat(prefix, name, 'properties'),
+                value: true,
+              }),
+            );
+            dispatch(
+              addChildFieldAction({
+                key: [].concat(prefix, name, 'properties'),
+              }),
+            );
           }}
         >
           {LocaleProvider('child_node')}
