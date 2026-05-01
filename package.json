@@ -22,8 +22,7 @@
     "format": "prettier --write .",
     "lint": "rslint",
     "test": "rstest",
-    "test:watch": "rstest --watch",
-    "test:browser": "rstest --config=rstest.browser.config.ts"
+    "test:watch": "rstest --watch"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm exec nano-staged"

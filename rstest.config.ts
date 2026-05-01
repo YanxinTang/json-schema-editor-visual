@@ -2,17 +2,26 @@ import { withRslibConfig } from '@rstest/adapter-rslib';
 import { defineConfig } from '@rstest/core';
 
 export default defineConfig({
-  exclude: [
-    '**/node_modules/**',
-    '**/dist/**',
-    '**/.{idea,git,cache,output,temp}/**',
-    '**/*.browser.{test,spec}.?(c|m)[jt]s?(x)',
+  projects: [
+    {
+      name: 'node',
+      extends: withRslibConfig(),
+      exclude: ['**/*.browser.{test,spec}.?(c|m)[jt]s?(x)'],
+      setupFiles: ['./rstest.setup.ts'],
+    },
+    {
+      name: 'browser',
+      extends: withRslibConfig(),
+      include: ['**/*.browser.{test,spec}.?(c|m)[jt]s?(x)'],
+      browser: {
+        enabled: true,
+        provider: 'playwright',
+      },
+    },
   ],
-  extends: withRslibConfig(),
-  setupFiles: ['./rstest.setup.ts'],
   source: {
     define: {
-      'TEST': JSON.stringify(true)
-    }
-  }
+      TEST: JSON.stringify(true),
+    },
+  },
 });
