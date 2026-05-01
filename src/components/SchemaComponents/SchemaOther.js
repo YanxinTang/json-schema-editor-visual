@@ -317,7 +317,7 @@ class SchemaNumber extends PureComponent {
                   this.context.changeCustomValue,
                 )
               }
-              data-testid={ TEST ? 'advSettingModal_default' : null }
+              data-testid={TEST ? 'advSettingModal_default' : null}
             />
           </Col>
         </Row>
@@ -348,7 +348,7 @@ class SchemaNumber extends PureComponent {
                       this.context.changeCustomValue,
                     )
                   }
-                  data-testid={ TEST ? 'advSettingModal_exclusiveMinimum' : null }
+                  data-testid={TEST ? 'advSettingModal_exclusiveMinimum' : null}
                 />
               </Col>
             </Row>
@@ -379,7 +379,7 @@ class SchemaNumber extends PureComponent {
                       this.context.changeCustomValue,
                     )
                   }
-                  data-testid={ TEST ? 'advSettingModal_exclusiveMaximum' : null }
+                  data-testid={TEST ? 'advSettingModal_exclusiveMaximum' : null}
                 />
               </Col>
             </Row>
@@ -403,7 +403,7 @@ class SchemaNumber extends PureComponent {
                       this.context.changeCustomValue,
                     )
                   }
-                  data-testid={ TEST ? 'advSettingModal_minimum' : null }
+                  data-testid={TEST ? 'advSettingModal_minimum' : null}
                 />
               </Col>
             </Row>
@@ -425,7 +425,7 @@ class SchemaNumber extends PureComponent {
                       this.context.changeCustomValue,
                     )
                   }
-                  data-testid={ TEST ? 'advSettingModal_maximum' : null }
+                  data-testid={TEST ? 'advSettingModal_maximum' : null}
                 />
               </Col>
             </Row>
@@ -438,7 +438,7 @@ class SchemaNumber extends PureComponent {
               <Checkbox
                 checked={this.state.checked}
                 onChange={(e) => this.onChangeCheckBox(e.target.checked, data)}
-                data-testid={ TEST ? 'advSettingModal_enumCheckbox' : null }
+                data-testid={TEST ? 'advSettingModal_enumCheckbox' : null}
               />{' '}
               :
             </span>
@@ -453,7 +453,7 @@ class SchemaNumber extends PureComponent {
               onChange={(e) => {
                 this.changeEnumOtherValue(e.target.value, data);
               }}
-              data-testid={ TEST ? 'advSettingModal_enumTextarea' : null }
+              data-testid={TEST ? 'advSettingModal_enumTextarea' : null}
             />
           </Col>
         </Row>
@@ -471,7 +471,7 @@ class SchemaNumber extends PureComponent {
                 onChange={(e) => {
                   this.changeEnumDescOtherValue(e.target.value, data);
                 }}
-                data-testid={ TEST ? 'advSettingModal_enumDesc' : null }
+                data-testid={TEST ? 'advSettingModal_enumDesc' : null}
               />
             </Col>
           </Row>
@@ -512,6 +512,7 @@ const SchemaBoolean = (props) => {
               )
             }
             style={{ width: 200 }}
+            data-testid={TEST ? 'advSettingModal_defaultSelect' : null}
           >
             <Option value="true">true</Option>
             <Option value="false">false</Option>
@@ -558,7 +559,7 @@ const SchemaArray = (props) => {
                 context.changeCustomValue,
               )
             }
-            data-testid={ TEST ? 'advSettingModal_uniqueItemsSwitch' : null }
+            data-testid={TEST ? 'advSettingModal_uniqueItemsSwitch' : null}
           />
         </Col>
       </Row>
@@ -580,7 +581,7 @@ const SchemaArray = (props) => {
                     context.changeCustomValue,
                   )
                 }
-                data-testid={ TEST ? 'advSettingModal_minItemsInput' : null }
+                data-testid={TEST ? 'advSettingModal_minItemsInput' : null}
               />
             </Col>
           </Row>
@@ -602,7 +603,7 @@ const SchemaArray = (props) => {
                     context.changeCustomValue,
                   )
                 }
-                data-testid={ TEST ? 'advSettingModal_maxItemsInput' : null }
+                data-testid={TEST ? 'advSettingModal_maxItemsInput' : null}
               />
             </Col>
           </Row>

@@ -381,6 +381,119 @@ describe('JsonSchemaReactEditor', () => {
     );
   });
 
+  test('编辑 boolean 类型子节点', async () => {
+    const onChange = rs.fn((event) => console.log(event));
+    const SchemaEditor = schemaEditor();
+    await render(<SchemaEditor onChange={onChange} />);
+
+    const addedRow = await addTypedNode(page, 'boolean');
+    expect(onChange).lastCalledWith(
+      `{"type":"object","title":"title","properties":{"field_1":{"type":"boolean"}},"required":["field_1"]}`,
+    );
+
+    await addedRow
+      .getByTestId('SchemaItem_propNameInput')
+      .fill('field1_boolean');
+    await addedRow.getByTestId('SchemaItem_propNameInput').blur();
+    expect(onChange).lastCalledWith(
+      `{"type":"object","title":"title","properties":{"field1_boolean":{"type":"boolean"}},"required":["field1_boolean"]}`,
+    );
+
+    await addedRow.getByTestId('SchemaItem_titleInput').fill('field1_title');
+    await addedRow.getByTestId('SchemaItem_titleInput').blur();
+    expect(onChange).lastCalledWith(
+      `{"type":"object","title":"title","properties":{"field1_boolean":{"type":"boolean","title":"field1_title"}},"required":["field1_boolean"]}`,
+    );
+
+    await addedRow.getByTestId('SchemaItem_descInput').fill('field1_desc');
+    await addedRow.getByTestId('SchemaItem_descInput').blur();
+    expect(onChange).lastCalledWith(
+      `{"type":"object","title":"title","properties":{"field1_boolean":{"type":"boolean","title":"field1_title","description":"field1_desc"}},"required":["field1_boolean"]}`,
+    );
+  });
+
+  test('boolean 节点高级设置', async () => {
+    const onChange = rs.fn((event) => console.log(event));
+    const SchemaEditor = schemaEditor();
+    await render(<SchemaEditor onChange={onChange} />);
+
+    const addedRow = await addTypedNode(page, 'boolean');
+
+    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+
+    const advModal = page.getByTestId('JSONSchemaEditorAdvModal');
+    expect.element(advModal).toBeVisible();
+
+    await advModal.getByTestId('advSettingModal_defaultSelect').click();
+    await page
+      .locator('div.ant-select-dropdown div.ant-select-item')
+      .filter({ hasText: 'true' })
+      .click();
+
+    await advModal.getByRole('button', { name: 'OK' }).click();
+    expect(onChange).lastCalledWith(
+      `{"type":"object","title":"title","properties":{"field_1":{"type":"boolean","default":true}},"required":["field_1"]}`,
+    );
+  });
+
+  test('编辑 integer 类型子节点', async () => {
+    const onChange = rs.fn((event) => console.log(event));
+    const SchemaEditor = schemaEditor();
+    await render(<SchemaEditor onChange={onChange} />);
+
+    const addedRow = await addTypedNode(page, 'integer');
+    expect(onChange).lastCalledWith(
+      `{"type":"object","title":"title","properties":{"field_1":{"type":"integer"}},"required":["field_1"]}`,
+    );
+
+    await addedRow
+      .getByTestId('SchemaItem_propNameInput')
+      .fill('field1_integer');
+    await addedRow.getByTestId('SchemaItem_propNameInput').blur();
+    expect(onChange).lastCalledWith(
+      `{"type":"object","title":"title","properties":{"field1_integer":{"type":"integer"}},"required":["field1_integer"]}`,
+    );
+
+    await addedRow.getByTestId('SchemaItem_titleInput').fill('field1_title');
+    await addedRow.getByTestId('SchemaItem_titleInput').blur();
+    expect(onChange).lastCalledWith(
+      `{"type":"object","title":"title","properties":{"field1_integer":{"type":"integer","title":"field1_title"}},"required":["field1_integer"]}`,
+    );
+
+    await addedRow.getByTestId('SchemaItem_descInput').fill('field1_desc');
+    await addedRow.getByTestId('SchemaItem_descInput').blur();
+    expect(onChange).lastCalledWith(
+      `{"type":"object","title":"title","properties":{"field1_integer":{"type":"integer","title":"field1_title","description":"field1_desc"}},"required":["field1_integer"]}`,
+    );
+  });
+
+  test('integer 节点高级设置', async () => {
+    const onChange = rs.fn((event) => console.log(event));
+    const SchemaEditor = schemaEditor();
+    await render(<SchemaEditor onChange={onChange} />);
+
+    const addedRow = await addTypedNode(page, 'integer');
+
+    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+
+    const advModal = page.getByTestId('JSONSchemaEditorAdvModal');
+    expect.element(advModal).toBeVisible();
+    await advModal
+      .getByTestId('advSettingModal_default')
+      .fill('integer_default');
+    await advModal.getByTestId('advSettingModal_exclusiveMinimum').click();
+    await advModal.getByTestId('advSettingModal_exclusiveMaximum').click();
+    await advModal.getByTestId('advSettingModal_minimum').fill('1');
+    await advModal.getByTestId('advSettingModal_maximum').fill('100');
+    await advModal.getByTestId('advSettingModal_enumCheckbox').click();
+    await advModal.getByTestId('advSettingModal_enumTextarea').fill('1\n2\n3');
+    await advModal.getByTestId('advSettingModal_enumDesc').fill('integer_desc');
+    await advModal.getByRole('button', { name: 'OK' }).click();
+    expect(onChange).lastCalledWith(
+      `{"type":"object","title":"title","properties":{"field_1":{"type":"integer","default":"integer_default","exclusiveMinimum":true,"exclusiveMaximum":true,"minimum":1,"maximum":100,"enum":[1,2,3],"enumDesc":"integer_desc"}},"required":["field_1"]}`,
+    );
+  });
+
   test('object 节点增加子节点和相邻节点', async () => {
     const onChange = rs.fn((event) => console.log(event));
     const SchemaEditor = schemaEditor();
@@ -414,7 +527,7 @@ describe('JsonSchemaReactEditor', () => {
  */
 async function addTypedNode(
   page: BrowserPage,
-  type: 'string' | 'number' | 'array' | 'object',
+  type: 'string' | 'number' | 'array' | 'object' | 'boolean' | 'integer',
 ) {
   await page.getByRole('img', { name: 'plus' }).click();
   const addedRow = page.getByTestId('SchemaItem').last();
