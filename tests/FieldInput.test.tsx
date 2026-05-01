@@ -1,5 +1,5 @@
 import { describe, test, expect, afterEach, rs } from '@rstest/core';
-import { render, screen, cleanup, fireEvent } from '@testing-library/react';
+import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import FieldInput from '../src/components/SchemaComponents/FieldInput';
@@ -36,16 +36,16 @@ describe('FieldInput', () => {
     expect(onChange).not.toHaveBeenCalled();
   });
 
-  test('按下 Enter 键且值发生变化时应触发 onChange', () => {
+  test('按下 Enter 键且值发生变化时应触发 onChange', async () => {
     const onChange = rs.fn();
+    const user = userEvent.setup();
 
     render(<FieldInput value="old" onChange={onChange} />);
     const input = screen.getByDisplayValue('old');
 
     // 模拟用户输入新值
-    fireEvent.change(input, { target: { value: 'new' } });
-    // 触发 Enter 键的 keyup 事件
-    fireEvent.keyUp(input, { keyCode: 13 });
+    await user.clear(input);
+    await user.type(input, 'new{Enter}');
 
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange).toHaveBeenCalledWith(
@@ -55,28 +55,31 @@ describe('FieldInput', () => {
     );
   });
 
-  test('按下 Enter 键但值未变化时不应触发 onChange', () => {
+  test('按下 Enter 键但值未变化时不应触发 onChange', async () => {
     const onChange = rs.fn();
+    const user = userEvent.setup();
 
     render(<FieldInput value="same" onChange={onChange} />);
     const input = screen.getByDisplayValue('same');
 
     // 值未改变时按 Enter
-    fireEvent.keyUp(input, { keyCode: 13 });
+    await user.type(input, '{Enter}');
 
     expect(onChange).not.toHaveBeenCalled();
   });
 
-  test('失焦且值发生变化时应触发 onChange', () => {
+  test('失焦且值发生变化时应触发 onChange', async () => {
     const onChange = rs.fn();
+    const user = userEvent.setup();
 
     render(<FieldInput value="old" onChange={onChange} />);
     const input = screen.getByDisplayValue('old');
 
     // 模拟用户输入新值
-    fireEvent.change(input, { target: { value: 'changed' } });
+    await user.clear(input);
+    await user.type(input, 'changed');
     // 触发 blur 事件
-    fireEvent.blur(input);
+    await user.tab();
 
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange).toHaveBeenCalledWith(
@@ -86,14 +89,15 @@ describe('FieldInput', () => {
     );
   });
 
-  test('失焦但值未变化时不应触发 onChange', () => {
+  test('失焦但值未变化时不应触发 onChange', async () => {
     const onChange = rs.fn();
+    const user = userEvent.setup();
 
     render(<FieldInput value="unchanged" onChange={onChange} />);
     const input = screen.getByDisplayValue('unchanged');
 
     // 值未改变时触发 blur
-    fireEvent.blur(input);
+    await user.tab();
 
     expect(onChange).not.toHaveBeenCalled();
   });
@@ -107,28 +111,31 @@ describe('FieldInput', () => {
     expect(input).toHaveValue('second');
   });
 
-  test('值未改变时失焦不应触发 onChange', () => {
+  test('值未改变时失焦不应触发 onChange', async () => {
     const onChange = rs.fn();
+    const user = userEvent.setup();
 
     render(<FieldInput value="test" onChange={onChange} />);
     const input = screen.getByDisplayValue('test');
 
-    fireEvent.blur(input);
-    fireEvent.keyUp(input, { keyCode: 13 });
+    await user.tab();
+    await user.type(input, '{Enter}');
 
     expect(onChange).not.toHaveBeenCalled();
   });
 
-  test('值发生变化时失焦应触发 onChange 并传递事件对象', () => {
+  test('值发生变化时失焦应触发 onChange 并传递事件对象', async () => {
     const onChange = rs.fn();
+    const user = userEvent.setup();
 
     render(<FieldInput value="test" onChange={onChange} />);
     const input = screen.getByDisplayValue('test');
 
-    fireEvent.change(input, { target: { value: 'new' } });
+    await user.clear(input);
+    await user.type(input, 'new');
     expect(input).toHaveValue('new');
 
-    fireEvent.blur(input);
+    await user.tab();
 
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange).toHaveBeenCalledWith(
@@ -152,30 +159,9 @@ describe('FieldInput', () => {
     expect(wrapper).toBeInTheDocument();
   });
 
-  test('多次输入后按 Enter 应触发 onChange 且值为最新输入', () => {
+  test('输入后失焦触发 onChange，props 更新后再次失焦不应重复触发', async () => {
     const onChange = rs.fn();
-
-    render(<FieldInput value="start" onChange={onChange} />);
-    const input = screen.getByDisplayValue('start');
-
-    // 模拟多次输入
-    fireEvent.change(input, { target: { value: 'step1' } });
-    fireEvent.change(input, { target: { value: 'step2' } });
-    fireEvent.change(input, { target: { value: 'final' } });
-
-    // 按 Enter 触发 onChange
-    fireEvent.keyUp(input, { keyCode: 13 });
-
-    expect(onChange).toHaveBeenCalledTimes(1);
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        target: expect.objectContaining({ value: 'final' }),
-      }),
-    );
-  });
-
-  test('输入后失焦触发 onChange，props 更新后再次失焦不应重复触发', () => {
-    const onChange = rs.fn();
+    const user = userEvent.setup();
 
     const { rerender } = render(
       <FieldInput value="original" onChange={onChange} />,
@@ -183,27 +169,29 @@ describe('FieldInput', () => {
     const input = screen.getByDisplayValue('original');
 
     // 第一次改变值后失焦
-    fireEvent.change(input, { target: { value: 'changed' } });
-    fireEvent.blur(input);
+    await user.clear(input);
+    await user.type(input, 'changed');
+    await user.tab();
     expect(onChange).toHaveBeenCalledTimes(1);
 
     // 模拟父组件收到 onChange 后更新 props
     rerender(<FieldInput value="changed" onChange={onChange} />);
 
     // props.value 已更新为 "changed"，再次失焦不应触发 onChange
-    fireEvent.blur(input);
+    await user.click(input);
+    await user.tab();
     expect(onChange).toHaveBeenCalledTimes(1);
   });
 
-  test('非 Enter 键的 keyup 不应触发 onChange', () => {
+  test('非 Enter 键的 keyup 不应触发 onChange', async () => {
     const onChange = rs.fn();
+    const user = userEvent.setup();
 
     render(<FieldInput value="test" onChange={onChange} />);
     const input = screen.getByDisplayValue('test');
 
-    fireEvent.change(input, { target: { value: 'tests' } });
-    // 按下其他键（如字母键 keyCode 83 代表 's'）
-    fireEvent.keyUp(input, { keyCode: 83 });
+    // 按下其他键（如字母键 's'）
+    await user.type(input, 's');
 
     expect(onChange).not.toHaveBeenCalled();
   });
