@@ -11,6 +11,7 @@ export type Format = { name: string }[];
 export interface JSONSchema {
   title: string,
   type: string;
+  description: string;
   items?: JSONSchema;
   properties?: Record<string, JSONSchema>;
   required?: string[];
