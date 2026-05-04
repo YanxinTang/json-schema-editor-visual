@@ -1,8 +1,9 @@
 import React from 'react';
+import type { JSONSchema } from './types';
 
 interface SchemaEditorContextValue {
   getOpenValue: (keys: string[]) => unknown;
-  changeCustomValue: (keys: string[], value: unknown) => void;
+  changeCustomValue: (newValue: JSONSchema) => void;
   Model: unknown;
   isMock: boolean;
 }

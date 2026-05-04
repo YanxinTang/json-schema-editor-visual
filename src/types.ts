@@ -1,7 +1,7 @@
-import { schemaSlice } from "./store/schemaSlice";
+import { SchemaSliceActions } from "./store/schemaSlice";
 
 export interface ModelType {
-  schema: Record<keyof typeof schemaSlice.actions, unknown>;
+  schema: Record<keyof SchemaSliceActions, unknown>;
   __jsonSchemaFormat: Format;
   __jsonSchemaMock: unknown;
 }
@@ -9,9 +9,9 @@ export interface ModelType {
 export type Format = { name: string }[];
 
 export interface JSONSchema {
-  title: string,
+  title?: string;
   type: string;
-  description: string;
+  description?: string;
   items?: JSONSchema;
   properties?: Record<string, JSONSchema>;
   required?: string[];

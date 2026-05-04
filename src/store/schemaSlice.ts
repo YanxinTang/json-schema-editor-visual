@@ -4,7 +4,7 @@ import { handleSchema } from '../schema';
 import * as utils from '../utils';
 import type { JSONSchema } from '../types';
 
-interface SchemaState {
+export interface SchemaState {
   fieldNum: number;
   message: string | null;
   data: JSONSchema;
@@ -26,7 +26,7 @@ const initialState: SchemaState = {
   },
 };
 
-export const schemaSlice = createSlice({
+const schemaSlice = createSlice({
   name: 'schema',
   initialState,
   reducers: {
@@ -235,7 +235,8 @@ export const schemaSlice = createSlice({
   },
 });
 
-export type SchemaCliceActions = typeof schemaSlice.actions;
+export const { actions, reducer } = schemaSlice;
+export type SchemaSliceActions = typeof actions;
 export const {
   changeEditorSchemaAction,
   changeNameAction,
@@ -247,4 +248,4 @@ export const {
   addFieldAction,
   addChildFieldAction,
   setOpenValueAction,
-} = schemaSlice.actions;
+} = actions;
