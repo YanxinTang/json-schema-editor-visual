@@ -154,6 +154,20 @@ function handleObject(
   }
 }
 
+/**
+ * 检查值是否为 null 或 undefined
+ * @param value - 要检查的值
+ * @returns 当值为 null 或 undefined 时返回 true，否则返回 false
+ * @example
+ * isNil(null)      // true
+ * isNil(undefined) // true
+ * isNil(0)         // false
+ * isNil('')        // false
+ */
+export function isNil(value: unknown): value is null | undefined {
+  return value == null;
+}
+
 export function cloneObject<T>(obj: T): T {
   if (typeof obj === 'object' && obj !== null) {
     if (Array.isArray(obj)) {

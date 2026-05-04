@@ -8,6 +8,7 @@ import {
   handleSchemaRequired,
   cloneObject,
   debounce,
+  isNil,
 } from '../src/utils';
 import { JSONSchema } from '../src/types';
 
@@ -187,6 +188,44 @@ describe('utils', () => {
       rs.advanceTimersByTime(500);
 
       expect(mockFn).toHaveBeenCalledWith(42, 'test');
+    });
+  });
+
+  describe('isNil', () => {
+    test('当值为 null 时应该返回 true', () => {
+      expect(isNil(null)).toBe(true);
+    });
+
+    test('当值为 undefined 时应该返回 true', () => {
+      expect(isNil(undefined)).toBe(true);
+    });
+
+    test('当值为 0 时应该返回 false', () => {
+      expect(isNil(0)).toBe(false);
+    });
+
+    test('当值为空字符串时应该返回 false', () => {
+      expect(isNil('')).toBe(false);
+    });
+
+    test('当值为 false 时应该返回 false', () => {
+      expect(isNil(false)).toBe(false);
+    });
+
+    test('当值为 NaN 时应该返回 false', () => {
+      expect(isNil(NaN)).toBe(false);
+    });
+
+    test('当值为 {} 时应该返回 false', () => {
+      expect(isNil({})).toBe(false);
+    });
+
+    test('当值为 [] 时应该返回 false', () => {
+      expect(isNil([])).toBe(false);
+    });
+
+    test('当值为函数时应该返回 false', () => {
+      expect(isNil(() => {})).toBe(false);
     });
   });
 });
