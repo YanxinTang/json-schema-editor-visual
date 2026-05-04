@@ -27,7 +27,13 @@ You are an expert in JavaScript, Rspack, Rsbuild, Rslib, and library development
 - Run `pnpm run doc` to start the Rspress documentation dev server, which will also start Rslib in watch mode
 - Run `pnpm run doc:build` to build the documentation
 
-### Biome
 
-- Run `pnpm run lint` to lint your code
-- Run `pnpm run format` to format your code
+## Notes
+
+### Testing
+
+- Run the changed test file first (`pnpm exec rstest 'tests/xxx.test.ts'`), then run the full test suite (`pnpm run test`) after it passes
+
+### Code Style
+
+- Utility function comments must use JSDoc format (`/** ... */`)
