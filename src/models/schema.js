@@ -1,4 +1,4 @@
-const _ = require('underscore');
+
 import * as utils from '../utils';
 let fieldNum = 1;
 import handleSchema from '../schema.js';
@@ -201,7 +201,7 @@ export default {
     const keys = action.key.join(utils.JSONPATH_JOIN_CHAR);
 
     let status;
-    if (_.isUndefined(action.value)) {
+    if (utils.isNil(action.value)) {
       status = utils.getData(oldState.open, [keys]) ? false : true;
     } else {
       status = action.value;

@@ -22,7 +22,7 @@ import {
   CloseOutlined,
 } from '@ant-design/icons';
 import _ from 'underscore';
-import { JSONPATH_JOIN_CHAR, SCHEMA_TYPE, getData } from '../../utils.js';
+import { JSONPATH_JOIN_CHAR, SCHEMA_TYPE, getData, isNil } from '../../utils.js';
 import FieldInput from './FieldInput.js';
 import LocaleProvider from '../LocalProvider/index.js';
 import MockSelect from '../MockSelect/index.js';
@@ -161,7 +161,7 @@ const SchemaArray: React.FC<CommonProps> = React.memo(
       showAdv(getPrefix(), data.items!);
     };
 
-    if (_.isUndefined(data.items)) return null;
+    if (isNil(data.items)) return null;
 
     const items = data.items;
     const prefixArray = getPrefix();
@@ -404,7 +404,7 @@ const SchemaItem: React.FC<SchemaItemProps> = React.memo(
                       <Checkbox
                         onChange={handleEnableRequire}
                         checked={
-                          _.isUndefined(data.required)
+                          isNil(data.required)
                             ? false
                             : data.required.includes(name)
                         }

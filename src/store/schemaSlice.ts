@@ -1,5 +1,5 @@
 import { createSlice, original } from '@reduxjs/toolkit';
-import _ from 'underscore';
+
 import { handleSchema } from '../schema';
 import * as utils from '../utils';
 import type { JSONSchema } from '../types';
@@ -8,9 +8,7 @@ interface SchemaState {
   fieldNum: number;
   message: string | null;
   data: JSONSchema;
-  open: {
-    properties: boolean;
-  };
+  open: Record<string, boolean>;
 }
 
 const initialState: SchemaState = {
@@ -19,6 +17,7 @@ const initialState: SchemaState = {
   data: {
     title: '',
     type: 'object',
+    description: '',
     properties: {},
     required: [],
   },
@@ -38,22 +37,21 @@ export const schemaSlice = createSlice({
 
     changeNameAction: function (state, { payload }) {
       const oldState = original(state);
-      const keys = payload.prefix;
-      const name = payload.name;
-      const value = payload.value;
-      let oldData = oldState.data;
-      let parentKeys = utils.getParentKeys(keys);
-      let parentData = utils.getData(oldData, parentKeys);
-      let requiredData = [].concat(parentData.required || []);
-      let propertiesData = utils.getData(oldData, keys);
-      let newPropertiesData = {};
+      if (!oldState) return;
+      const keys: string[] = payload.prefix;
+      const name: string = payload.name;
+      const value: string = payload.value;
+      const oldData = oldState.data;
+      const parentKeys = utils.getParentKeys(keys);
+      const parentData = utils.getData(oldData, parentKeys);
+      let requiredData: string[] = [].concat(parentData.required || []);
+      const propertiesData = utils.getData(oldData, keys);
+      const newPropertiesData: Record<string, any> = {};
 
-      let curData = propertiesData[name];
-      let openKeys = []
-        .concat(keys, value, 'properties')
+      const curData = propertiesData[name];
+      const openKeys = [...keys, value, 'properties']
         .join(utils.JSONPATH_JOIN_CHAR);
-      let oldOpenKeys = []
-        .concat(keys, name, 'properties')
+      const oldOpenKeys = [...keys, name, 'properties']
         .join(utils.JSONPATH_JOIN_CHAR);
       if (curData.properties) {
         delete state.open[oldOpenKeys];
@@ -72,7 +70,7 @@ export const schemaSlice = createSlice({
       parentKeys.push('required');
       utils.setData(state.data, parentKeys, requiredData);
 
-      for (let i in propertiesData) {
+      for (const i in propertiesData) {
         if (i === name) {
           newPropertiesData[value] = propertiesData[i];
         } else newPropertiesData[i] = propertiesData[i];
@@ -92,36 +90,36 @@ export const schemaSlice = createSlice({
 
     changeTypeAction: function (state, { payload }) {
       const oldState = original(state);
-      const keys = payload.key;
-      const value = payload.value;
+      if (!oldState) return;
+      const keys: string[] = payload.key;
+      const value: string = payload.value;
 
-      let parentKeys = utils.getParentKeys(keys);
-      let oldData = oldState.data;
-      let parentData = utils.getData(oldData, parentKeys);
+      const parentKeys = utils.getParentKeys(keys);
+      const oldData = oldState.data;
+      const parentData = utils.getData(oldData, parentKeys);
       if (parentData.type === value) {
         return;
       }
-      // let newParentData = utils.defaultSchema[value];
-      let newParentDataItem = utils.defaultSchema[value];
+      const newParentDataItem = utils.defaultSchema[value];
 
-      // 将备注过滤出来
-      let parentDataItem = parentData.description
+      const parentDataItem = parentData.description
         ? { description: parentData.description }
         : {};
-      let newParentData = Object.assign({}, newParentDataItem, parentDataItem);
+      const newParentData = Object.assign({}, newParentDataItem, parentDataItem);
 
-      let newKeys = [].concat('data', parentKeys);
+      const newKeys: string[] = ['data', ...parentKeys];
       utils.setData(state, newKeys, newParentData);
     },
 
     enableRequireAction: function (state, { payload }) {
       const oldState = original(state);
-      const keys = payload.prefix;
-      let parentKeys = utils.getParentKeys(keys);
-      let oldData = oldState.data;
-      let parentData = utils.getData(oldData, parentKeys);
-      let requiredData = [].concat(parentData.required || []);
-      let index = requiredData.indexOf(payload.name);
+      if (!oldState) return;
+      const keys: string[] = payload.prefix;
+      const parentKeys = utils.getParentKeys(keys);
+      const oldData = oldState.data;
+      const parentData = utils.getData(oldData, parentKeys);
+      const requiredData: string[] = [].concat(parentData.required || []);
+      const index = requiredData.indexOf(payload.name);
 
       if (!payload.required && index >= 0) {
         requiredData.splice(index, 1);
@@ -140,8 +138,8 @@ export const schemaSlice = createSlice({
 
     requireAllAction: function (state, { payload }) {
       const oldState = original(state);
-      // let oldData = oldState.data;
-      let data = utils.cloneObject(payload.value);
+      if (!oldState) return;
+      const data = utils.cloneObject(payload.value);
       utils.handleSchemaRequired(data, payload.required);
 
       state.data = data;
@@ -149,14 +147,15 @@ export const schemaSlice = createSlice({
 
     deleteItemAction: function (state, { payload }) {
       const oldState = original(state);
-      const keys = payload.key;
+      if (!oldState) return;
+      const keys: string[] = payload.key;
 
-      let name = keys[keys.length - 1];
-      let oldData = oldState.data;
-      let parentKeys = utils.getParentKeys(keys);
-      let parentData = utils.getData(oldData, parentKeys);
-      let newParentData = {};
-      for (let i in parentData) {
+      const name = keys[keys.length - 1];
+      const oldData = oldState.data;
+      const parentKeys = utils.getParentKeys(keys);
+      const parentData = utils.getData(oldData, parentKeys);
+      const newParentData: Record<string, any> = {};
+      for (const i in parentData) {
         if (i !== name) {
           newParentData[i] = parentData[i];
         }
@@ -167,26 +166,27 @@ export const schemaSlice = createSlice({
 
     addFieldAction: function (state, { payload }) {
       const oldState = original(state);
-      const keys = payload.prefix;
-      let oldData = oldState.data;
-      let name = payload.name;
-      let propertiesData = utils.getData(oldData, keys);
-      let newPropertiesData = {};
+      if (!oldState) return;
+      const keys: string[] = payload.prefix;
+      const oldData = oldState.data;
+      const name: string = payload.name;
+      const propertiesData = utils.getData(oldData, keys);
+      let newPropertiesData: Record<string, any> = {};
 
-      let parentKeys = utils.getParentKeys(keys);
-      let parentData = utils.getData(oldData, parentKeys);
-      let requiredData = [].concat(parentData.required || []);
+      const parentKeys = utils.getParentKeys(keys);
+      const parentData = utils.getData(oldData, parentKeys);
+      const requiredData: string[] = [].concat(parentData.required || []);
 
       if (!name) {
         newPropertiesData = Object.assign({}, propertiesData);
-        let ranName = 'field_' + state.fieldNum++;
+        const ranName = 'field_' + state.fieldNum++;
         newPropertiesData[ranName] = utils.defaultSchema.string;
         requiredData.push(ranName);
       } else {
-        for (let i in propertiesData) {
+        for (const i in propertiesData) {
           newPropertiesData[i] = propertiesData[i];
           if (i === name) {
-            let ranName = 'field_' + state.fieldNum++;
+            const ranName = 'field_' + state.fieldNum++;
             newPropertiesData[ranName] = utils.defaultSchema.string;
             requiredData.push(ranName);
           }
@@ -199,20 +199,21 @@ export const schemaSlice = createSlice({
     },
     addChildFieldAction: function (state, { payload }) {
       const oldState = original(state);
-      const keys = payload.key;
-      let oldData = oldState.data;
-      let propertiesData = utils.getData(oldData, keys);
-      let newPropertiesData = {};
+      if (!oldState) return;
+      const keys: string[] = payload.key;
+      const oldData = oldState.data;
+      const propertiesData = utils.getData(oldData, keys);
+      let newPropertiesData: Record<string, any> = {};
 
       newPropertiesData = Object.assign({}, propertiesData);
-      let ranName = 'field_' + state.fieldNum++;
+      const ranName = 'field_' + state.fieldNum++;
       newPropertiesData[ranName] = utils.defaultSchema.string;
       utils.setData(state.data, keys, newPropertiesData);
 
       // add required
-      let parentKeys = utils.getParentKeys(keys);
-      let parentData = utils.getData(oldData, parentKeys);
-      let requiredData = [].concat(parentData.required || []);
+      const parentKeys = utils.getParentKeys(keys);
+      const parentData = utils.getData(oldData, parentKeys);
+      const requiredData: string[] = [].concat(parentData.required || []);
       requiredData.push(ranName);
       parentKeys.push('required');
       utils.setData(state.data, parentKeys, requiredData);
@@ -220,10 +221,11 @@ export const schemaSlice = createSlice({
 
     setOpenValueAction: function (state, { payload }) {
       const oldState = original(state);
+      if (!oldState) return;
       const keys = payload.key.join(utils.JSONPATH_JOIN_CHAR);
 
       let status;
-      if (_.isUndefined(payload.value)) {
+      if (utils.isNil(payload.value)) {
         status = utils.getData(oldState.open, [keys]) ? false : true;
       } else {
         status = payload.value;

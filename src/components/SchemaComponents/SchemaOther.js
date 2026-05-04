@@ -18,10 +18,9 @@ import {
 import { QuestionCircleOutlined } from '@ant-design/icons';
 const { TextArea } = Input;
 import './schemaJson.css';
-import _ from 'underscore';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { JSONPATH_JOIN_CHAR, SCHEMA_TYPE } from '../../utils.js';
+import { JSONPATH_JOIN_CHAR, SCHEMA_TYPE, isNil } from '../../utils.js';
 const Option = Select.Option;
 import AceEditor from '../AceEditor/AceEditor.js';
 import LocalProvider from '../LocalProvider/index.js';
@@ -39,7 +38,7 @@ class SchemaString extends PureComponent {
   constructor(props, context) {
     super(props);
     this.state = {
-      checked: _.isUndefined(props.data.enum) ? false : true,
+      checked: isNil(props.data.enum) ? false : true,
     };
     this.format = context.Model.__jsonSchemaFormat;
   }
@@ -47,7 +46,7 @@ class SchemaString extends PureComponent {
   componentWillReceiveProps(nextprops) {
     if (this.props.data.enum !== nextprops.data.enum) {
       this.setState({
-        checked: _.isUndefined(nextprops.data.enum) ? false : true,
+        checked: isNil(nextprops.data.enum) ? false : true,
       });
     }
   }
@@ -244,16 +243,16 @@ class SchemaNumber extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      checked: _.isUndefined(props.data.enum) ? false : true,
-      enum: _.isUndefined(props.data.enum) ? '' : props.data.enum.join('\n'),
+      checked: isNil(props.data.enum) ? false : true,
+      enum: isNil(props.data.enum) ? '' : props.data.enum.join('\n'),
     };
   }
 
   componentWillReceiveProps(nextprops) {
-    const enumStr = _.isUndefined(this.props.data.enum)
+    const enumStr = isNil(this.props.data.enum)
       ? ''
       : this.props.data.enum.join('\n');
-    const nextEnumStr = _.isUndefined(nextprops.data.enum)
+    const nextEnumStr = isNil(nextprops.data.enum)
       ? ''
       : nextprops.data.enum.join('\n');
     if (enumStr !== nextEnumStr) {
@@ -488,7 +487,7 @@ SchemaNumber.contextTypes = {
 const SchemaBoolean = (props) => {
   const context = useContext(SchemaEditorContext);
   const { data } = props;
-  let value = _.isUndefined(data.default)
+  let value = isNil(data.default)
     ? ''
     : data.default
       ? 'true'
