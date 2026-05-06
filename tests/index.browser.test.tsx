@@ -494,6 +494,52 @@ describe('JsonSchemaReactEditor', () => {
     );
   });
 
+  test('string 节点高级设置 - 自定义 format 列表', async () => {
+    const onChange = rs.fn((event) => console.log(event));
+    const customFormats = [
+      { name: 'uuid', title: 'UUID' },
+      { name: 'phone', title: 'Phone Number' },
+    ];
+    const SchemaEditor = schemaEditor({ format: customFormats });
+    await render(<SchemaEditor onChange={onChange} />);
+
+    const addedRow = await addTypedNode(page, 'string');
+
+    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+
+    const advModal = page.getByTestId('JSONSchemaEditorAdvModal');
+    expect.element(advModal).toBeVisible();
+
+    // 打开 format 下拉框，验证自定义 format 选项出现
+    await advModal
+      .locator('.ant-row')
+      .filter({ hasText: 'format' })
+      .getByRole('combobox')
+      .click();
+
+    const dropdownItems = page.locator(
+      'div.ant-select-dropdown div.ant-select-item',
+    );
+    await expect
+      .element(dropdownItems.filter({ hasText: 'uuid' }))
+      .toBeVisible();
+    await expect
+      .element(dropdownItems.filter({ hasText: 'phone' }))
+      .toBeVisible();
+
+    // 默认 format 不应出现
+    await expect
+      .element(dropdownItems.filter({ hasText: 'email' }))
+      .not.toBeVisible();
+
+    // 选择自定义 format 并验证
+    await dropdownItems.filter({ hasText: 'uuid' }).click();
+    await advModal.getByRole('button', { name: 'OK' }).click();
+    expect(onChange).lastCalledWith(
+      `{"type":"object","title":"title","properties":{"field_1":{"type":"string","format":"uuid"}},"required":["field_1"]}`,
+    );
+  });
+
   test('object 节点增加子节点和相邻节点', async () => {
     const onChange = rs.fn((event) => console.log(event));
     const SchemaEditor = schemaEditor();
