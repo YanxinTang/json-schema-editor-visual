@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Input,
   InputNumber,
@@ -16,18 +16,14 @@ import { isNil } from '../../utils';
 const Option = Select.Option;
 import AceEditor from '../AceEditor/AceEditor.js';
 import LocalProvider from '../LocalProvider/index.js';
-import { SchemaEditorContext } from '../../SchemaEditorContext';
 
 const changeOtherValue = (value, name, data, change) => {
   data[name] = value;
   change(data);
 };
 
-const SchemaString = (props) => {
-  const { changeCustomValue, Model } = useContext(SchemaEditorContext);
-  const { data } = props;
+const SchemaString = ({ data, changeCustomValue, format }) => {
   const [checked, setChecked] = useState(isNil(data.enum) ? false : true);
-  const format = Model.__jsonSchemaFormat;
 
   useEffect(() => {
     setChecked(isNil(data.enum) ? false : true);
@@ -205,9 +201,7 @@ const SchemaString = (props) => {
   );
 };
 
-const SchemaNumber = (props) => {
-  const { changeCustomValue } = useContext(SchemaEditorContext);
-  const { data } = props;
+const SchemaNumber = ({ data, changeCustomValue }) => {
   const [checked, setChecked] = useState(isNil(data.enum) ? false : true);
   const [enumValue, setEnumValue] = useState(
     isNil(data.enum) ? '' : data.enum.join('\n'),
@@ -415,9 +409,7 @@ const SchemaNumber = (props) => {
   );
 };
 
-const SchemaBoolean = (props) => {
-  const { changeCustomValue } = useContext(SchemaEditorContext);
-  const { data } = props;
+const SchemaBoolean = ({ data, changeCustomValue }) => {
   let value = isNil(data.default) ? '' : data.default ? 'true' : 'false';
   return (
     <div>
@@ -449,9 +441,7 @@ const SchemaBoolean = (props) => {
   );
 };
 
-const SchemaArray = (props) => {
-  const { changeCustomValue } = useContext(SchemaEditorContext);
-  const { data } = props;
+const SchemaArray = ({ data, changeCustomValue }) => {
   return (
     <div>
       <div className="default-setting">{LocalProvider('base_setting')}</div>
@@ -519,13 +509,13 @@ const SchemaArray = (props) => {
   );
 };
 
-const mapping = (data) => {
+const mapping = (data, changeCustomValue, format) => {
   return {
-    string: <SchemaString data={data} />,
-    number: <SchemaNumber data={data} />,
-    boolean: <SchemaBoolean data={data} />,
-    integer: <SchemaNumber data={data} />,
-    array: <SchemaArray data={data} />,
+    string: <SchemaString data={data} changeCustomValue={changeCustomValue} format={format} />,
+    number: <SchemaNumber data={data} changeCustomValue={changeCustomValue} />,
+    boolean: <SchemaBoolean data={data} changeCustomValue={changeCustomValue} />,
+    integer: <SchemaNumber data={data} changeCustomValue={changeCustomValue} />,
+    array: <SchemaArray data={data} changeCustomValue={changeCustomValue} />,
   }[data.type];
 };
 
@@ -534,10 +524,10 @@ const handleInputEditor = (e, change) => {
   change(e.jsonData);
 };
 
-const CustomItem = (props) => {
-  const { changeCustomValue } = useContext(SchemaEditorContext);
-  const { data } = props;
-  const optionForm = mapping(JSON.parse(data));
+const CustomItem = ({ data, changeCustomValue, Model }) => {
+  const parsed = JSON.parse(data);
+  const format = Model.__jsonSchemaFormat;
+  const optionForm = mapping(parsed, changeCustomValue, format);
 
   return (
     <div>

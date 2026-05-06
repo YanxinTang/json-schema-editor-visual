@@ -421,6 +421,8 @@ class jsonSchema extends React.Component<JsonSchemaProps, JsonSchemaState> {
             >
               <CustomItem
                 data={JSON.stringify(this.state.curItemCustomValue, null, 2)}
+                changeCustomValue={this.changeCustomValue}
+                Model={this.props.Model}
               />
             </Modal>
           )}
