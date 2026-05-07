@@ -42,10 +42,12 @@
   margin: 5px;
 }
 
-.json-schema-react-editor
-  .certain-category-search
-  .ant-select-selection--single {
-  height: 32px;
+.json-schema-react-editor .mock-select {
+  width: 100%;
+}
+
+.json-schema-react-editor .certain-category-search {
+  flex: 1;
 }
 
 .json-schema-react-editor

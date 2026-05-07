@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Input, AutoComplete } from 'antd';
+import { Input, AutoComplete, Space, Button } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import LocaleProvider from '../LocalProvider';
 import { JsonSchema, MockSource } from '../../types';
@@ -11,7 +11,12 @@ interface MockSelectProps {
   mockSource?: MockSource;
 }
 
-const MockSelect: React.FC<MockSelectProps> = ({ schema, showEdit, onChange, mockSource }) => {
+const MockSelect: React.FC<MockSelectProps> = ({
+  schema,
+  showEdit,
+  onChange,
+  mockSource,
+}) => {
   const disabled = schema.type === 'object' || schema.type === 'array';
 
   const options = useMemo(
@@ -19,10 +24,13 @@ const MockSelect: React.FC<MockSelectProps> = ({ schema, showEdit, onChange, moc
     [mockSource],
   );
 
+  console.log('schema: ', schema);
+
   return (
-    <div>
+    <Space.Compact className='mock-select'>
       <AutoComplete
         className="certain-category-search"
+        style={{ flex: 1 }}
         popupMatchSelectWidth={false}
         options={options}
         placeholder={LocaleProvider('mock')}
@@ -30,20 +38,15 @@ const MockSelect: React.FC<MockSelectProps> = ({ schema, showEdit, onChange, moc
         value={schema.mock ? schema.mock.mock : ''}
         onChange={onChange}
         disabled={disabled}
-      >
-        <Input
-          disabled={disabled}
-          suffix={
-            <EditOutlined
-              onClick={(e) => {
-                e.stopPropagation();
-                showEdit();
-              }}
-            />
-          }
-        />
-      </AutoComplete>
-    </div>
+      ></AutoComplete>
+      <Button
+        icon={<EditOutlined />}
+        onClick={(e) => {
+          e.stopPropagation();
+          showEdit();
+        }}
+      ></Button>
+    </Space.Compact>
   );
 };
 
