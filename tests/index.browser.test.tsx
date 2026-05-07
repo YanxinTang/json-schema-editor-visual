@@ -566,6 +566,126 @@ describe('JsonSchemaReactEditor', () => {
       `{"type":"object","title":"title","properties":{"field_1":{"type":"object","properties":{"field_2":{"type":"string"}},"required":["field_2"]},"field_3":{"type":"string"}},"required":["field_1","field_3"]}`,
     );
   });
+
+  test('isMock 为 true 时显示 mock 列', async () => {
+    const mockSource = [
+      { name: '字符串', mock: '@string' },
+      { name: '自然数', mock: '@natural' },
+    ];
+    const SchemaEditor = schemaEditor({ mock: mockSource });
+    await render(<SchemaEditor isMock />);
+
+    // mock AutoComplete 应可见（MockSelect 使用 certain-category-search 类名）
+    await expect
+      .element(page.locator('.certain-category-search').first())
+      .toBeVisible();
+  });
+
+  test('isMock 为 false 时不显示 mock 列', async () => {
+    const mockSource = [
+      { name: '字符串', mock: '@string' },
+      { name: '自然数', mock: '@natural' },
+    ];
+    const SchemaEditor = schemaEditor({ mock: mockSource });
+    await render(<SchemaEditor />);
+
+    // mock AutoComplete 不应存在
+    await expect
+      .element(page.locator('.certain-category-search').first())
+      .not.toBeVisible();
+  });
+
+  test('mock 输入框在 object 类型时禁用', async () => {
+    const mockSource = [
+      { name: '字符串', mock: '@string' },
+      { name: '自然数', mock: '@natural' },
+    ];
+    const SchemaEditor = schemaEditor({ mock: mockSource });
+    await render(<SchemaEditor isMock />);
+
+    // 根节点是 object 类型，mock 输入框应禁用
+    const mockInput = page.locator('.certain-category-search input').first();
+    await expect.element(mockInput).toBeVisible();
+    await expect.element(mockInput).toBeDisabled();
+  });
+
+  test('mock 输入框在 array 类型时禁用', async () => {
+    const mockSource = [
+      { name: '字符串', mock: '@string' },
+      { name: '自然数', mock: '@natural' },
+    ];
+    const SchemaEditor = schemaEditor({ mock: mockSource });
+    await render(<SchemaEditor isMock />);
+
+    // 新增 array 类型节点
+    const addedRow = await addTypedNode(page, 'array');
+    // array 类型会自动展开子节点，取第一个 mock 输入框（即 array 行本身的）
+    const mockInput = addedRow
+      .locator('.certain-category-search input')
+      .first();
+    await expect.element(mockInput).toBeVisible();
+    await expect.element(mockInput).toBeDisabled();
+  });
+
+  test('mock 输入框在 string 类型时可用', async () => {
+    const mockSource = [
+      { name: '字符串', mock: '@string' },
+      { name: '自然数', mock: '@natural' },
+    ];
+    const SchemaEditor = schemaEditor({ mock: mockSource });
+    await render(<SchemaEditor isMock />);
+
+    // 新增 string 类型节点
+    const addedRow = await addTypedNode(page, 'string');
+    const mockInput = addedRow.locator('.certain-category-search input');
+    await expect.element(mockInput).toBeVisible();
+    await expect.element(mockInput).not.toBeDisabled();
+  });
+
+  test('选择 mock 值后更新 schema', async () => {
+    const onChange = rs.fn((event) => console.log(event));
+    const mockSource = [
+      { name: '字符串', mock: '@string' },
+      { name: '自然数', mock: '@natural' },
+    ];
+    const SchemaEditor = schemaEditor({ mock: mockSource });
+    await render(<SchemaEditor isMock onChange={onChange} />);
+
+    // 新增 string 类型节点
+    const addedRow = await addTypedNode(page, 'string');
+
+    // 选择 mock 值
+    const mockInput = addedRow.locator('.certain-category-search input');
+    await mockInput.click();
+    await page
+      .locator('div.ant-select-dropdown div.ant-select-item')
+      .filter({ hasText: '@string' })
+      .click();
+
+    // 验证 onChange 被调用且包含 mock 值
+    expect(onChange).lastCalledWith(
+      `{"type":"object","title":"title","properties":{"field_1":{"type":"string","mock":{"mock":"@string"}}},"required":["field_1"]}`,
+    );
+  });
+
+  test('初始值包含 mock 时正确渲染', async () => {
+    const mockSource = [
+      { name: '字符串', mock: '@string' },
+      { name: '自然数', mock: '@natural' },
+    ];
+    const data = `{"type":"object","title":"title","properties":{"field_1":{"type":"string","mock":{"mock":"@string"}}},"required":["field_1"]}`;
+    const SchemaEditor = schemaEditor({ mock: mockSource });
+    await render(<SchemaEditor isMock data={data} />);
+
+    // 验证 mock 输入框显示正确的值
+    const field1 = page.locator('input[value="field_1"]');
+    const row = page
+      .locator('.schema-content div.ant-row')
+      .filter({ has: field1 });
+    const mockInput = row.locator('.certain-category-search input');
+    await expect.element(mockInput).toBeVisible();
+    await expect.element(mockInput).toHaveValue('@string');
+  });
 });
 
 /**
@@ -577,7 +697,7 @@ async function addTypedNode(
 ) {
   await page.getByRole('img', { name: 'plus' }).click();
   const addedRow = page.getByTestId('SchemaItem').last();
-  await addedRow.locator('div.ant-select').click();
+  await addedRow.locator('div.ant-select.type-select-style').click();
   await page
     .locator('div.ant-select-dropdown div.ant-select-item')
     .filter({ hasText: type })
