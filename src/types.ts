@@ -2,11 +2,11 @@ import { SchemaSliceActions } from './store/schemaSlice';
 
 export interface ModelType {
   schema: Record<keyof SchemaSliceActions, unknown>;
-  __jsonSchemaFormat: Format;
-  __jsonSchemaMock: unknown;
 }
 
 export type Format = { name: string; title?: string }[];
+
+export type MockSource = { name: string; mock: string }[];
 
 // --- Discriminated union JSON Schema types ---
 

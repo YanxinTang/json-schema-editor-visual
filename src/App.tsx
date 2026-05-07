@@ -39,7 +39,7 @@ import CustomItem from './components/SchemaComponents/SchemaOther.js';
 import LocalProvider from './components/LocalProvider/index.js';
 import MockSelect from './components/MockSelect';
 import { SchemaEditorContext } from './SchemaEditorContext';
-import { JSONSchema, ModelType } from './types';
+import { JSONSchema, MockSource, Format, ModelType } from './types';
 import { RootState } from './store';
 import { SchemaSliceActions, actions } from './store/schemaSlice';
 
@@ -53,6 +53,8 @@ export interface JsonSchemaEditorOwnedProps {
 export interface JsonSchemaProps
   extends JsonSchemaEditorOwnedProps {
   Model: ModelType;
+  formatSource: Format;
+  mockSource?: MockSource;
   schema: JSONSchema;
   open: Record<string, boolean>;
   changeEditorSchemaAction: (payload: { value: unknown }) => void;
@@ -161,7 +163,6 @@ class jsonSchema extends React.Component<JsonSchemaProps, JsonSchemaState> {
         return utils.getData(this.props.open, keys);
       },
       changeCustomValue: this.changeCustomValue,
-      Model: this.props.Model,
       isMock: this.props.isMock ?? false,
     };
   }
@@ -422,7 +423,7 @@ class jsonSchema extends React.Component<JsonSchemaProps, JsonSchemaState> {
               <CustomItem
                 data={JSON.stringify(this.state.curItemCustomValue, null, 2)}
                 changeCustomValue={this.changeCustomValue}
-                Model={this.props.Model}
+                formatSource={this.props.formatSource}
               />
             </Modal>
           )}
@@ -504,6 +505,7 @@ class jsonSchema extends React.Component<JsonSchemaProps, JsonSchemaState> {
                         this.showEdit([], 'mock', schema.mock, schema.type)
                       }
                       onChange={(value: string) => this.changeValue(['mock'], value)}
+                      mockSource={this.props.mockSource}
                     />
                   </Col>
                 )}
@@ -580,6 +582,7 @@ class jsonSchema extends React.Component<JsonSchemaProps, JsonSchemaState> {
                   data={this.props.schema}
                   showEdit={this.showEdit}
                   showAdv={this.showAdv}
+                  mockSource={this.props.mockSource}
                 />
               )}
             </Col>

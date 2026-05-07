@@ -1,24 +1,22 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Input, AutoComplete } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import LocaleProvider from '../LocalProvider/index.js';
-import { SchemaEditorContext } from '../../SchemaEditorContext';
-import { JsonSchema } from '../../types';
+import { JsonSchema, MockSource } from '../../types';
 
 interface MockSelectProps {
   schema: JsonSchema;
   showEdit: () => void;
   onChange: (value: string) => void;
+  mockSource?: MockSource;
 }
 
-const MockSelect: React.FC<MockSelectProps> = ({ schema, showEdit, onChange }) => {
-  const { Model } = useContext(SchemaEditorContext);
-  const mock = (Model as any).__jsonSchemaMock || [];
+const MockSelect: React.FC<MockSelectProps> = ({ schema, showEdit, onChange, mockSource }) => {
   const disabled = schema.type === 'object' || schema.type === 'array';
 
   const options = useMemo(
-    () => mock.map((item: { mock: string }) => ({ value: item.mock })),
-    [mock],
+    () => (mockSource || []).map((item) => ({ value: item.mock })),
+    [mockSource],
   );
 
   return (

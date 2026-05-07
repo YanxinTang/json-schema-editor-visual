@@ -40,7 +40,7 @@ import {
 } from '../../store/schemaSlice';
 
 import './schemaJson.css';
-import { JSONSchema } from '../../types.js';
+import { JSONSchema, MockSource } from '../../types.js';
 
 const { Option } = Select;
 
@@ -59,6 +59,7 @@ export interface CommonProps {
   data: JSONSchema;
   showEdit: (prefix: string[], name: string, value: any, type: string) => void;
   showAdv: (prefix: string[], value: any) => void;
+  mockSource?: MockSource;
 }
 
 export interface SchemaItemProps extends CommonProps {
@@ -78,6 +79,7 @@ const mapping = (
   data: JSONSchema,
   showEdit: CommonProps['showEdit'],
   showAdv: CommonProps['showAdv'],
+  mockSource?: MockSource,
 ) => {
   switch (data.type) {
     case 'array':
@@ -87,6 +89,7 @@ const mapping = (
           data={data}
           showEdit={showEdit}
           showAdv={showAdv}
+          mockSource={mockSource}
         />
       );
     case 'object':
@@ -97,6 +100,7 @@ const mapping = (
           data={data}
           showEdit={showEdit}
           showAdv={showAdv}
+          mockSource={mockSource}
         />
       );
     default:
@@ -109,7 +113,7 @@ const mapping = (
  */
 
 const SchemaArray: React.FC<CommonProps> = React.memo(
-  ({ data, prefix, showEdit, showAdv }) => {
+  ({ data, prefix, showEdit, showAdv, mockSource }) => {
     const dispatch = useAppDispatch();
     const open = useAppSelector((state: any) => state.schema.open);
     const { isMock } = useContext(SchemaEditorContext);
@@ -221,6 +225,7 @@ const SchemaArray: React.FC<CommonProps> = React.memo(
                 schema={items}
                 showEdit={() => handleShowEdit('mock', items.type)}
                 onChange={handleChangeMock}
+                mockSource={mockSource}
               />
             </Col>
           )}
@@ -263,7 +268,7 @@ const SchemaArray: React.FC<CommonProps> = React.memo(
           </Col>
         </Row>
         <div className="option-formStyle">
-          {mapping(prefixArray, items, showEdit, showAdv)}
+          {mapping(prefixArray, items, showEdit, showAdv, mockSource)}
         </div>
       </div>
     );
@@ -275,7 +280,7 @@ const SchemaArray: React.FC<CommonProps> = React.memo(
  */
 
 const SchemaItem: React.FC<SchemaItemProps> = React.memo(
-  ({ name, data, prefix, showEdit, showAdv }) => {
+  ({ name, data, prefix, showEdit, showAdv, mockSource }) => {
     const dispatch = useAppDispatch();
     const open = useAppSelector((state: any) => state.schema.open);
     const { isMock } = useContext(SchemaEditorContext);
@@ -436,6 +441,7 @@ const SchemaItem: React.FC<SchemaItemProps> = React.memo(
                 schema={value}
                 showEdit={() => handleShowEdit('mock', value.type)}
                 onChange={handleChangeMock}
+                mockSource={mockSource}
               />
             </Col>
           )}
@@ -504,7 +510,7 @@ const SchemaItem: React.FC<SchemaItemProps> = React.memo(
           </Col>
         </Row>
         <div className="option-formStyle">
-          {mapping(prefixArray, value, showEdit, showAdv)}
+          {mapping(prefixArray, value, showEdit, showAdv, mockSource)}
         </div>
       </div>
     );
@@ -520,6 +526,7 @@ const SchemaObjectComponent: React.FC<CommonProps> = ({
   prefix,
   showEdit,
   showAdv,
+  mockSource,
 }) => {
   // 仅作为依赖注入，触发组件在Redux state open发生变化时重新渲染
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -535,6 +542,7 @@ const SchemaObjectComponent: React.FC<CommonProps> = ({
           prefix={prefix}
           showEdit={showEdit}
           showAdv={showAdv}
+          mockSource={mockSource}
         />
       ))}
     </div>
@@ -612,10 +620,11 @@ export interface SchemaJsonProps {
   data: JSONSchema;
   showEdit: (prefix: string[], name: string, value: any, type: string) => void;
   showAdv: (prefix: string[], value: any) => void;
+  mockSource?: MockSource;
 }
 
-const SchemaJson: React.FC<SchemaJsonProps> = ({ data, showEdit, showAdv }) => {
-  const item = mapping([], data, showEdit, showAdv);
+const SchemaJson: React.FC<SchemaJsonProps> = ({ data, showEdit, showAdv, mockSource }) => {
+  const item = mapping([], data, showEdit, showAdv, mockSource);
   return <div className="schema-content">{item}</div>;
 };
 

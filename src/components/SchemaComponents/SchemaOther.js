@@ -524,9 +524,9 @@ const handleInputEditor = (e, change) => {
   change(e.jsonData);
 };
 
-const CustomItem = ({ data, changeCustomValue, Model }) => {
+const CustomItem = ({ data, changeCustomValue, formatSource }) => {
   const parsed = JSON.parse(data);
-  const format = Model.__jsonSchemaFormat;
+  const format = formatSource;
   const optionForm = mapping(parsed, changeCustomValue, format);
 
   return (

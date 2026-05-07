@@ -1,14 +1,14 @@
 import * as utils from './utils';
 import { createStore, Store } from './store';
 import { actions, SchemaSliceActions } from './store/schemaSlice';
-import { Format, ModelType } from './types';
+import { Format, MockSource, ModelType } from './types';
 import App, { JsonSchemaEditorOwnedProps, JsonSchemaProps } from './App.js';
 import { Provider } from 'react-redux';
 
 export interface SchemaEditorConfiguration {
   lang?: 'zh_CN' | 'en_US';
   format?: Format;
-  mock?: unknown;
+  mock?: MockSource;
 }
 
 export default function schemaEditor(config: SchemaEditorConfiguration = {}) {
@@ -22,14 +22,15 @@ export default function schemaEditor(config: SchemaEditorConfiguration = {}) {
     schema: {
       ...loadActions(store, actions),
     },
-    __jsonSchemaFormat: config.format ?? utils.format,
-    __jsonSchemaMock: config.mock,
   };
+
+  const formatSource = config.format ?? utils.format;
+  const mockSource = config.mock;
 
   const Component = (props: JsonSchemaEditorOwnedProps) => {
     return (
       <Provider store={store}>
-        <App Model={Model} {...props} />
+        <App Model={Model} formatSource={formatSource} mockSource={mockSource} {...props} />
       </Provider>
     );
   };
