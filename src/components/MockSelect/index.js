@@ -4,8 +4,11 @@ import { EditOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 const Option = AutoComplete.Option;
 import LocaleProvider from '../LocalProvider/index.js';
+import { SchemaEditorContext } from '../../SchemaEditorContext';
 
 export default class MockSelect extends React.Component {
+  static contextType = SchemaEditorContext;
+
   constructor(props, context) {
     super(props);
     this.state = {
