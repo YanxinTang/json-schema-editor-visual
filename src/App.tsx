@@ -38,7 +38,6 @@ import * as utils from './utils';
 import CustomItem from './components/SchemaComponents/SchemaOther.js';
 import LocalProvider from './components/LocalProvider';
 import MockSelect from './components/MockSelect';
-import { SchemaEditorContext } from './SchemaEditorContext';
 import { JSONSchema, MockSource, Format, ModelType } from './types';
 import { RootState } from './store';
 import { SchemaSliceActions, actions } from './store/schemaSlice';
@@ -155,16 +154,6 @@ class jsonSchema extends React.Component<JsonSchemaProps, JsonSchemaState> {
       }`;
     }
     this.props.changeEditorSchemaAction({ value: JSON.parse(data) });
-  }
-
-  _getChildContext() {
-    return {
-      getOpenValue: (keys: string[]) => {
-        return utils.getData(this.props.open, keys);
-      },
-      changeCustomValue: this.changeCustomValue,
-      isMock: this.props.isMock ?? false,
-    };
   }
 
   alterMsg = () => {
@@ -324,7 +313,6 @@ class jsonSchema extends React.Component<JsonSchemaProps, JsonSchemaState> {
         : true;
 
     return (
-      <SchemaEditorContext.Provider value={this._getChildContext()}>
         <div className="json-schema-react-editor">
           <Button
             className="import-json-button"
@@ -582,13 +570,13 @@ class jsonSchema extends React.Component<JsonSchemaProps, JsonSchemaState> {
                   data={this.props.schema}
                   showEdit={this.showEdit}
                   showAdv={this.showAdv}
+                  isMock={this.props.isMock ?? false}
                   mockSource={this.props.mockSource}
                 />
               )}
             </Col>
           </Row>
         </div>
-      </SchemaEditorContext.Provider>
     );
   }
 }
