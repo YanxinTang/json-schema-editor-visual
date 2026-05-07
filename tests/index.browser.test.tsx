@@ -688,6 +688,57 @@ describe('JsonSchemaReactEditor', () => {
   });
 });
 
+describe('国际化 (i18n)', () => {
+  test('zh_CN 语言下显示中文导入按钮', async () => {
+    const SchemaEditor = schemaEditor({ lang: 'zh_CN' });
+    await render(<SchemaEditor />);
+    await expect
+      .element(page.getByRole('button', { name: '导入 json' }))
+      .toBeVisible();
+  });
+
+  test('zh_CN 语言下显示中文高级设置', async () => {
+    const SchemaEditor = schemaEditor({ lang: 'zh_CN' });
+    await render(<SchemaEditor />);
+    await page.getByRole('img', { name: 'setting' }).click();
+    await expect
+      .element(page.getByRole('dialog', { name: '高级设置' }))
+      .toBeVisible();
+  });
+
+  test('zh_CN 语言下显示中文标题和描述占位符', async () => {
+    const SchemaEditor = schemaEditor({ lang: 'zh_CN' });
+    await render(<SchemaEditor />);
+    const addedRow = await addTypedNode(page, 'string');
+    await expect.element(addedRow.getByPlaceholder('标题')).toBeVisible();
+    await expect.element(addedRow.getByPlaceholder('备注')).toBeVisible();
+  });
+
+  test('zh_CN 语言下显示中文节点操作提示', async () => {
+    const SchemaEditor = schemaEditor({ lang: 'zh_CN' });
+    await render(<SchemaEditor />);
+    const addedRow = await addTypedNode(page, 'object');
+    await addedRow.getByRole('img', { name: 'plus' }).hover();
+    await expect
+      .element(page.getByRole('menuitem', { name: '兄弟节点' }))
+      .toBeVisible();
+    await expect
+      .element(page.getByRole('menuitem', { name: '子节点' }))
+      .toBeVisible();
+  });
+
+  test('zh_CN 语言下高级设置模态框显示中文', async () => {
+    const SchemaEditor = schemaEditor({ lang: 'zh_CN' });
+    await render(<SchemaEditor />);
+    const addedRow = await addTypedNode(page, 'string');
+    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+    const advModal = page.getByRole('dialog', { name: '高级设置' });
+    await expect.element(advModal).toBeVisible();
+    await expect.element(advModal.getByText('基础设置')).toBeVisible();
+    await expect.element(advModal.getByPlaceholder('默认值')).toBeVisible();
+  });
+});
+
 /**
  * 增加指定类型节点
  */
