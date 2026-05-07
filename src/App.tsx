@@ -30,7 +30,7 @@ import _ from 'underscore';
 import SchemaJson from './components/SchemaComponents/SchemaJson.js';
 import { SCHEMA_TYPE, debounce } from './utils';
 import GenerateSchema from 'generate-schema/src/schemas/json.js';
-import CustomItem from './components/SchemaComponents/SchemaOther.js';
+import CustomItem from './components/SchemaComponents/SchemaOther';
 import LocalProvider from './components/LocalProvider';
 import MockSelect from './components/MockSelect';
 import { JSONSchema, MockSource, Format } from './types';

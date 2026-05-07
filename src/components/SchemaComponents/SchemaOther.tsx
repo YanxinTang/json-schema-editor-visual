@@ -16,27 +16,48 @@ import { isNil } from '../../utils';
 const Option = Select.Option;
 import AceEditor from '../AceEditor/AceEditor.js';
 import LocalProvider from '../LocalProvider';
+import {
+  JsonSchema,
+  JsonSchemaString,
+  JsonSchemaNumber,
+  JsonSchemaBoolean,
+  JsonSchemaArray,
+  Format,
+} from '../../types';
 
-const changeOtherValue = (value, name, data, change) => {
-  data[name] = value;
+declare const TEST: boolean | undefined;
+
+const changeOtherValue = (
+  value: unknown,
+  name: string,
+  data: JsonSchema,
+  change: (d: JsonSchema) => void,
+) => {
+  (data as Record<string, unknown>)[name] = value;
   change(data);
 };
 
-const SchemaString = ({ data, changeCustomValue, format }) => {
+interface SchemaStringProps {
+  data: JsonSchemaString;
+  changeCustomValue: (data: JsonSchemaString) => void;
+  format: Format;
+}
+
+const SchemaString: React.FC<SchemaStringProps> = ({ data, changeCustomValue, format }) => {
   const [checked, setChecked] = useState(isNil(data.enum) ? false : true);
 
   useEffect(() => {
     setChecked(isNil(data.enum) ? false : true);
   }, [data.enum]);
 
-  const handleChangeOtherValue = (value, name) => {
-    data[name] = value;
+  const handleChangeOtherValue = (value: unknown, name: string) => {
+    (data as Record<string, unknown>)[name] = value;
     changeCustomValue(data);
   };
 
-  const changeEnumOtherValue = (value) => {
-    var arr = value.split('\n');
-    if (arr.length === 0 || (arr.length == 1 && !arr[0])) {
+  const changeEnumOtherValue = (value: string) => {
+    const arr = value.split('\n');
+    if (arr.length === 0 || (arr.length === 1 && !arr[0])) {
       delete data.enum;
       changeCustomValue(data);
     } else {
@@ -45,12 +66,12 @@ const SchemaString = ({ data, changeCustomValue, format }) => {
     }
   };
 
-  const changeEnumDescOtherValue = (value) => {
+  const changeEnumDescOtherValue = (value: string) => {
     data.enumDesc = value;
     changeCustomValue(data);
   };
 
-  const onChangeCheckBox = (checked) => {
+  const onChangeCheckBox = (checked: boolean) => {
     setChecked(checked);
     if (!checked) {
       delete data.enum;
@@ -61,7 +82,7 @@ const SchemaString = ({ data, changeCustomValue, format }) => {
   return (
     <div>
       <div className="default-setting">{LocalProvider('base_setting')}</div>
-      <Row className="other-row" type="flex" align="middle">
+      <Row className="other-row" align="middle">
         <Col span={4} className="other-label">
           {LocalProvider('default')}：
         </Col>
@@ -73,9 +94,9 @@ const SchemaString = ({ data, changeCustomValue, format }) => {
           />
         </Col>
       </Row>
-      <Row className="other-row" type="flex" align="middle">
+      <Row className="other-row" align="middle">
         <Col span={12}>
-          <Row type="flex" align="middle">
+          <Row align="middle">
             <Col span={8} className="other-label">
               {LocalProvider('minLength')}：
             </Col>
@@ -89,7 +110,7 @@ const SchemaString = ({ data, changeCustomValue, format }) => {
           </Row>
         </Col>
         <Col span={12}>
-          <Row type="flex" align="middle">
+          <Row align="middle">
             <Col span={8} className="other-label">
               {LocalProvider('maxLength')}：
             </Col>
@@ -103,7 +124,7 @@ const SchemaString = ({ data, changeCustomValue, format }) => {
           </Row>
         </Col>
       </Row>
-      <Row className="other-row" type="flex" align="middle">
+      <Row className="other-row" align="middle">
         <Col span={4} className="other-label">
           <span>
             Pattern&nbsp;
@@ -124,7 +145,7 @@ const SchemaString = ({ data, changeCustomValue, format }) => {
           />
         </Col>
       </Row>
-      <Row className="other-row" type="flex" align="middle">
+      <Row className="other-row" align="middle">
         <Col span={4} className="other-label">
           <span>
             {LocalProvider('enum')}
@@ -140,7 +161,7 @@ const SchemaString = ({ data, changeCustomValue, format }) => {
             value={data.enum && data.enum.length && data.enum.join('\n')}
             disabled={!checked}
             placeholder={LocalProvider('enum_msg')}
-            autosize={{ minRows: 2, maxRows: 6 }}
+            autoSize={{ minRows: 2, maxRows: 6 }}
             onChange={(e) => {
               changeEnumOtherValue(e.target.value);
             }}
@@ -148,7 +169,7 @@ const SchemaString = ({ data, changeCustomValue, format }) => {
         </Col>
       </Row>
       {checked && (
-        <Row className="other-row" type="flex" align="middle">
+        <Row className="other-row" align="middle">
           <Col span={4} className="other-label">
             <span>{LocalProvider('enum_desc')}</span>
           </Col>
@@ -157,7 +178,7 @@ const SchemaString = ({ data, changeCustomValue, format }) => {
               value={data.enumDesc}
               disabled={!checked}
               placeholder={LocalProvider('enum_desc_msg')}
-              autosize={{ minRows: 2, maxRows: 6 }}
+              autoSize={{ minRows: 2, maxRows: 6 }}
               onChange={(e) => {
                 changeEnumDescOtherValue(e.target.value);
               }}
@@ -165,7 +186,7 @@ const SchemaString = ({ data, changeCustomValue, format }) => {
           </Col>
         </Row>
       )}
-      <Row className="other-row" type="flex" align="middle">
+      <Row className="other-row" align="middle">
         <Col span={4} className="other-label">
           <span>format :</span>
         </Col>
@@ -181,8 +202,7 @@ const SchemaString = ({ data, changeCustomValue, format }) => {
             onChange={(e) => handleChangeOtherValue(e, 'format')}
             filterOption={(input, option) => {
               return (
-                option.props.value.toLowerCase().indexOf(input.toLowerCase()) >=
-                0
+                (option?.value as string)?.toLowerCase().indexOf(input.toLowerCase()) >= 0
               );
             }}
           >
@@ -201,7 +221,12 @@ const SchemaString = ({ data, changeCustomValue, format }) => {
   );
 };
 
-const SchemaNumber = ({ data, changeCustomValue }) => {
+interface SchemaNumberProps {
+  data: JsonSchemaNumber;
+  changeCustomValue: (data: JsonSchemaNumber) => void;
+}
+
+const SchemaNumber: React.FC<SchemaNumberProps> = ({ data, changeCustomValue }) => {
   const [checked, setChecked] = useState(isNil(data.enum) ? false : true);
   const [enumValue, setEnumValue] = useState(
     isNil(data.enum) ? '' : data.enum.join('\n'),
@@ -212,7 +237,7 @@ const SchemaNumber = ({ data, changeCustomValue }) => {
     setEnumValue(nextEnumStr);
   }, [data.enum]);
 
-  const onChangeCheckBox = (checked) => {
+  const onChangeCheckBox = (checked: boolean) => {
     setChecked(checked);
     if (!checked) {
       delete data.enum;
@@ -221,10 +246,10 @@ const SchemaNumber = ({ data, changeCustomValue }) => {
     }
   };
 
-  const changeEnumOtherValue = (value) => {
+  const changeEnumOtherValue = (value: string) => {
     setEnumValue(value);
-    var arr = value.split('\n');
-    if (arr.length === 0 || (arr.length == 1 && !arr[0])) {
+    const arr = value.split('\n');
+    if (arr.length === 0 || (arr.length === 1 && !arr[0])) {
       delete data.enum;
       changeCustomValue(data);
     } else {
@@ -233,7 +258,7 @@ const SchemaNumber = ({ data, changeCustomValue }) => {
     }
   };
 
-  const changeEnumDescOtherValue = (value) => {
+  const changeEnumDescOtherValue = (value: string) => {
     data.enumDesc = value;
     changeCustomValue(data);
   };
@@ -241,7 +266,7 @@ const SchemaNumber = ({ data, changeCustomValue }) => {
   return (
     <div>
       <div className="default-setting">{LocalProvider('base_setting')}</div>
-      <Row className="other-row" type="flex" align="middle">
+      <Row className="other-row" align="middle">
         <Col span={4} className="other-label">
           {LocalProvider('default')}：
         </Col>
@@ -257,13 +282,13 @@ const SchemaNumber = ({ data, changeCustomValue }) => {
                 changeCustomValue,
               )
             }
-            data-testid={TEST ? 'advSettingModal_default' : null}
+            data-testid={TEST ? 'advSettingModal_default' : undefined}
           />
         </Col>
       </Row>
-      <Row className="other-row" type="flex" align="middle">
+      <Row className="other-row" align="middle">
         <Col span={12}>
-          <Row type="flex" align="middle">
+          <Row align="middle">
             <Col span={13} className="other-label">
               <span>
                 exclusiveMinimum&nbsp;
@@ -288,13 +313,13 @@ const SchemaNumber = ({ data, changeCustomValue }) => {
                     changeCustomValue,
                   )
                 }
-                data-testid={TEST ? 'advSettingModal_exclusiveMinimum' : null}
+                data-testid={TEST ? 'advSettingModal_exclusiveMinimum' : undefined}
               />
             </Col>
           </Row>
         </Col>
         <Col span={12}>
-          <Row type="flex" align="middle">
+          <Row align="middle">
             <Col span={13} className="other-label">
               <span>
                 exclusiveMaximum&nbsp;
@@ -319,15 +344,15 @@ const SchemaNumber = ({ data, changeCustomValue }) => {
                     changeCustomValue,
                   )
                 }
-                data-testid={TEST ? 'advSettingModal_exclusiveMaximum' : null}
+                data-testid={TEST ? 'advSettingModal_exclusiveMaximum' : undefined}
               />
             </Col>
           </Row>
         </Col>
       </Row>
-      <Row className="other-row" type="flex" align="middle">
+      <Row className="other-row" align="middle">
         <Col span={12}>
-          <Row type="flex" align="middle">
+          <Row align="middle">
             <Col span={8} className="other-label">
               {LocalProvider('minimum')}：
             </Col>
@@ -338,13 +363,13 @@ const SchemaNumber = ({ data, changeCustomValue }) => {
                 onChange={(e) =>
                   changeOtherValue(e, 'minimum', data, changeCustomValue)
                 }
-                data-testid={TEST ? 'advSettingModal_minimum' : null}
+                data-testid={TEST ? 'advSettingModal_minimum' : undefined}
               />
             </Col>
           </Row>
         </Col>
         <Col span={12}>
-          <Row type="flex" align="middle">
+          <Row align="middle">
             <Col span={8} className="other-label">
               {LocalProvider('maximum')}：
             </Col>
@@ -355,20 +380,20 @@ const SchemaNumber = ({ data, changeCustomValue }) => {
                 onChange={(e) =>
                   changeOtherValue(e, 'maximum', data, changeCustomValue)
                 }
-                data-testid={TEST ? 'advSettingModal_maximum' : null}
+                data-testid={TEST ? 'advSettingModal_maximum' : undefined}
               />
             </Col>
           </Row>
         </Col>
       </Row>
-      <Row className="other-row" type="flex" align="middle">
+      <Row className="other-row" align="middle">
         <Col span={4} className="other-label">
           <span>
             {LocalProvider('enum')}
             <Checkbox
               checked={checked}
               onChange={(e) => onChangeCheckBox(e.target.checked)}
-              data-testid={TEST ? 'advSettingModal_enumCheckbox' : null}
+              data-testid={TEST ? 'advSettingModal_enumCheckbox' : undefined}
             />{' '}
             :
           </span>
@@ -378,16 +403,16 @@ const SchemaNumber = ({ data, changeCustomValue }) => {
             value={enumValue}
             disabled={!checked}
             placeholder={LocalProvider('enum_msg')}
-            autosize={{ minRows: 2, maxRows: 6 }}
+            autoSize={{ minRows: 2, maxRows: 6 }}
             onChange={(e) => {
               changeEnumOtherValue(e.target.value);
             }}
-            data-testid={TEST ? 'advSettingModal_enumTextarea' : null}
+            data-testid={TEST ? 'advSettingModal_enumTextarea' : undefined}
           />
         </Col>
       </Row>
       {checked && (
-        <Row className="other-row" type="flex" align="middle">
+        <Row className="other-row" align="middle">
           <Col span={4} className="other-label">
             <span>{LocalProvider('enum_desc')} ：</span>
           </Col>
@@ -396,11 +421,11 @@ const SchemaNumber = ({ data, changeCustomValue }) => {
               value={data.enumDesc}
               disabled={!checked}
               placeholder={LocalProvider('enum_desc_msg')}
-              autosize={{ minRows: 2, maxRows: 6 }}
+              autoSize={{ minRows: 2, maxRows: 6 }}
               onChange={(e) => {
                 changeEnumDescOtherValue(e.target.value);
               }}
-              data-testid={TEST ? 'advSettingModal_enumDesc' : null}
+              data-testid={TEST ? 'advSettingModal_enumDesc' : undefined}
             />
           </Col>
         </Row>
@@ -409,12 +434,17 @@ const SchemaNumber = ({ data, changeCustomValue }) => {
   );
 };
 
-const SchemaBoolean = ({ data, changeCustomValue }) => {
-  let value = isNil(data.default) ? '' : data.default ? 'true' : 'false';
+interface SchemaBooleanProps {
+  data: JsonSchemaBoolean;
+  changeCustomValue: (data: JsonSchemaBoolean) => void;
+}
+
+const SchemaBoolean: React.FC<SchemaBooleanProps> = ({ data, changeCustomValue }) => {
+  const value = isNil(data.default) ? '' : data.default ? 'true' : 'false';
   return (
     <div>
       <div className="default-setting">{LocalProvider('base_setting')}</div>
-      <Row className="other-row" type="flex" align="middle">
+      <Row className="other-row" align="middle">
         <Col span={4} className="other-label">
           {LocalProvider('default')}：
         </Col>
@@ -430,7 +460,7 @@ const SchemaBoolean = ({ data, changeCustomValue }) => {
               )
             }
             style={{ width: 200 }}
-            data-testid={TEST ? 'advSettingModal_defaultSelect' : null}
+            data-testid={TEST ? 'advSettingModal_defaultSelect' : undefined}
           >
             <Option value="true">true</Option>
             <Option value="false">false</Option>
@@ -441,11 +471,16 @@ const SchemaBoolean = ({ data, changeCustomValue }) => {
   );
 };
 
-const SchemaArray = ({ data, changeCustomValue }) => {
+interface SchemaArrayAdvProps {
+  data: JsonSchemaArray;
+  changeCustomValue: (data: JsonSchemaArray) => void;
+}
+
+const SchemaArray: React.FC<SchemaArrayAdvProps> = ({ data, changeCustomValue }) => {
   return (
     <div>
       <div className="default-setting">{LocalProvider('base_setting')}</div>
-      <Row className="other-row" type="flex" align="middle">
+      <Row className="other-row" align="middle">
         <Col span={6} className="other-label">
           <span>
             uniqueItems&nbsp;
@@ -465,13 +500,13 @@ const SchemaArray = ({ data, changeCustomValue }) => {
             onChange={(e) =>
               changeOtherValue(e, 'uniqueItems', data, changeCustomValue)
             }
-            data-testid={TEST ? 'advSettingModal_uniqueItemsSwitch' : null}
+            data-testid={TEST ? 'advSettingModal_uniqueItemsSwitch' : undefined}
           />
         </Col>
       </Row>
-      <Row className="other-row" type="flex" align="middle">
+      <Row className="other-row" align="middle">
         <Col span={12}>
-          <Row type="flex" align="middle">
+          <Row align="middle">
             <Col span={12} className="other-label">
               {LocalProvider('min_items')}：
             </Col>
@@ -482,13 +517,13 @@ const SchemaArray = ({ data, changeCustomValue }) => {
                 onChange={(e) =>
                   changeOtherValue(e, 'minItems', data, changeCustomValue)
                 }
-                data-testid={TEST ? 'advSettingModal_minItemsInput' : null}
+                data-testid={TEST ? 'advSettingModal_minItemsInput' : undefined}
               />
             </Col>
           </Row>
         </Col>
         <Col span={12}>
-          <Row type="flex" align="middle">
+          <Row align="middle">
             <Col span={12} className="other-label">
               {LocalProvider('max_items')}：
             </Col>
@@ -499,7 +534,7 @@ const SchemaArray = ({ data, changeCustomValue }) => {
                 onChange={(e) =>
                   changeOtherValue(e, 'maxItems', data, changeCustomValue)
                 }
-                data-testid={TEST ? 'advSettingModal_maxItemsInput' : null}
+                data-testid={TEST ? 'advSettingModal_maxItemsInput' : undefined}
               />
             </Col>
           </Row>
@@ -509,23 +544,37 @@ const SchemaArray = ({ data, changeCustomValue }) => {
   );
 };
 
-const mapping = (data, changeCustomValue, format) => {
-  return {
-    string: <SchemaString data={data} changeCustomValue={changeCustomValue} format={format} />,
-    number: <SchemaNumber data={data} changeCustomValue={changeCustomValue} />,
-    boolean: <SchemaBoolean data={data} changeCustomValue={changeCustomValue} />,
-    integer: <SchemaNumber data={data} changeCustomValue={changeCustomValue} />,
-    array: <SchemaArray data={data} changeCustomValue={changeCustomValue} />,
-  }[data.type];
+const mapping = (
+  data: JsonSchema,
+  changeCustomValue: (d: JsonSchema) => void,
+  format: Format,
+) => {
+  const map: Record<string, React.ReactNode> = {
+    string: <SchemaString data={data as JsonSchemaString} changeCustomValue={changeCustomValue as (d: JsonSchemaString) => void} format={format} />,
+    number: <SchemaNumber data={data as JsonSchemaNumber} changeCustomValue={changeCustomValue as (d: JsonSchemaNumber) => void} />,
+    boolean: <SchemaBoolean data={data as JsonSchemaBoolean} changeCustomValue={changeCustomValue as (d: JsonSchemaBoolean) => void} />,
+    integer: <SchemaNumber data={data as JsonSchemaNumber} changeCustomValue={changeCustomValue as (d: JsonSchemaNumber) => void} />,
+    array: <SchemaArray data={data as JsonSchemaArray} changeCustomValue={changeCustomValue as (d: JsonSchemaArray) => void} />,
+  };
+  return map[data.type];
 };
 
-const handleInputEditor = (e, change) => {
+const handleInputEditor = (
+  e: { text: string; jsonData: JsonSchema },
+  change: (d: JsonSchema) => void,
+) => {
   if (!e.text) return;
   change(e.jsonData);
 };
 
-const CustomItem = ({ data, changeCustomValue, formatSource }) => {
-  const parsed = JSON.parse(data);
+interface CustomItemProps {
+  data: string;
+  changeCustomValue: (data: JsonSchema) => void;
+  formatSource: Format;
+}
+
+const CustomItem: React.FC<CustomItemProps> = ({ data, changeCustomValue, formatSource }) => {
+  const parsed = JSON.parse(data) as JsonSchema;
   const format = formatSource;
   const optionForm = mapping(parsed, changeCustomValue, format);
 
@@ -536,7 +585,7 @@ const CustomItem = ({ data, changeCustomValue, formatSource }) => {
       <AceEditor
         data={data}
         mode="json"
-        onChange={(e) => handleInputEditor(e, changeCustomValue)}
+        onChange={(e: { text: string; jsonData: JsonSchema }) => handleInputEditor(e, changeCustomValue)}
       />
     </div>
   );
