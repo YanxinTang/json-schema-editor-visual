@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Input, AutoComplete } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
-import LocaleProvider from '../LocalProvider/index.js';
+import LocaleProvider from '../LocalProvider';
 import { JsonSchema, MockSource } from '../../types';
 
 interface MockSelectProps {

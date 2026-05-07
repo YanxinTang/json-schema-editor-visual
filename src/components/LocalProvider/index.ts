@@ -1,5 +1,4 @@
 import * as utils from '../../utils';
-import React from 'react';
 
 const langs = {
   en_US: {
@@ -74,12 +73,10 @@ const langs = {
   },
 };
 
-export default (message) => {
-  return langs[utils.lang][message];
-};
+type LangKey = keyof typeof langs;
 
-// exports.LocalProvider = (props)=>{
-//   console.log(langs[utils.lang][props.message])
-//   return <span>{langs[utils.lang][props.message]}</span>
-//   // return langs[utils.lang][props.message]
-// }
+type MessageKey = keyof typeof langs['en_US'];
+
+export default (message: MessageKey): string => {
+  return langs[utils.lang as LangKey][message];
+};

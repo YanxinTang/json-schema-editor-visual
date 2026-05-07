@@ -15,7 +15,7 @@ import './schemaJson.css';
 import { isNil } from '../../utils';
 const Option = Select.Option;
 import AceEditor from '../AceEditor/AceEditor.js';
-import LocalProvider from '../LocalProvider/index.js';
+import LocalProvider from '../LocalProvider';
 
 const changeOtherValue = (value, name, data, change) => {
   data[name] = value;

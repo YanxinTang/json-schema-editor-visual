@@ -36,7 +36,7 @@ import { handleSchema } from './schema';
 import GenerateSchema from 'generate-schema/src/schemas/json.js';
 import * as utils from './utils';
 import CustomItem from './components/SchemaComponents/SchemaOther.js';
-import LocalProvider from './components/LocalProvider/index.js';
+import LocalProvider from './components/LocalProvider';
 import MockSelect from './components/MockSelect';
 import { SchemaEditorContext } from './SchemaEditorContext';
 import { JSONSchema, MockSource, Format, ModelType } from './types';
