@@ -14,7 +14,7 @@ const { TextArea } = Input;
 import './schemaJson.css';
 import { isNil } from '../../utils';
 const Option = Select.Option;
-import AceEditor from '../AceEditor/AceEditor.js';
+import AceEditor from '../AceEditor/AceEditor';
 import LocalProvider from '../LocalProvider';
 import {
   JsonSchema,

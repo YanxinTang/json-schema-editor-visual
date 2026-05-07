@@ -25,7 +25,7 @@ const TabPane = Tabs.TabPane;
 
 declare const TEST: boolean | undefined;
 import './index.css';
-import AceEditor from './components/AceEditor/AceEditor.js';
+import AceEditor from './components/AceEditor/AceEditor';
 import _ from 'underscore';
 import SchemaJson from './components/SchemaComponents/SchemaJson.js';
 import { SCHEMA_TYPE, debounce } from './utils';
