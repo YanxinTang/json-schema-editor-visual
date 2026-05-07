@@ -25,7 +25,7 @@ import _ from 'underscore';
 import { JSONPATH_JOIN_CHAR, SCHEMA_TYPE, getData, isNil } from '../../utils.js';
 import FieldInput from './FieldInput.js';
 import LocaleProvider from '../LocalProvider/index.js';
-import MockSelect from '../MockSelect/index.js';
+import MockSelect from '../MockSelect';
 import { SchemaEditorContext } from '../../SchemaEditorContext.js';
 import { useAppDispatch, useAppSelector } from '../../store/index.js';
 import {
