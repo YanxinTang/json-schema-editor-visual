@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Input, AutoComplete, Space, Button } from 'antd';
+import { AutoComplete, Space, Button } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import LocaleProvider from '../LocalProvider';
 import { JsonSchema, MockSource } from '../../types';
@@ -27,7 +27,7 @@ const MockSelect: React.FC<MockSelectProps> = ({
   console.log('schema: ', schema);
 
   return (
-    <Space.Compact className='mock-select'>
+    <Space.Compact className="mock-select">
       <AutoComplete
         className="certain-category-search"
         style={{ flex: 1 }}
@@ -35,7 +35,13 @@ const MockSelect: React.FC<MockSelectProps> = ({
         options={options}
         placeholder={LocaleProvider('mock')}
         filterOption={true}
-        value={schema.mock ? schema.mock.mock : ''}
+        value={
+          schema.mock &&
+          typeof schema.mock === 'object' &&
+          'mock' in schema.mock
+            ? (schema.mock as { mock: string }).mock
+            : ''
+        }
         onChange={onChange}
         disabled={disabled}
       ></AutoComplete>

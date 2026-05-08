@@ -15,6 +15,7 @@ import './schemaJson.css';
 import { isNil } from '../../utils';
 const Option = Select.Option;
 import AceEditor from '../AceEditor/AceEditor';
+import type { MockEditorData } from '../AceEditor/AceEditor';
 import LocalProvider from '../LocalProvider';
 import {
   JsonSchema,
@@ -27,13 +28,13 @@ import {
 
 declare const TEST: boolean | undefined;
 
-const changeOtherValue = (
+const changeOtherValue = <T extends JsonSchema>(
   value: unknown,
   name: string,
-  data: JsonSchema,
-  change: (d: JsonSchema) => void,
+  data: T,
+  change: (d: T) => void,
 ) => {
-  (data as Record<string, unknown>)[name] = value;
+  (data as unknown as Record<string, unknown>)[name] = value;
   change(data);
 };
 
@@ -43,7 +44,11 @@ interface SchemaStringProps {
   format: Format;
 }
 
-const SchemaString: React.FC<SchemaStringProps> = ({ data, changeCustomValue, format }) => {
+const SchemaString: React.FC<SchemaStringProps> = ({
+  data,
+  changeCustomValue,
+  format,
+}) => {
   const [checked, setChecked] = useState(isNil(data.enum) ? false : true);
 
   useEffect(() => {
@@ -51,7 +56,7 @@ const SchemaString: React.FC<SchemaStringProps> = ({ data, changeCustomValue, fo
   }, [data.enum]);
 
   const handleChangeOtherValue = (value: unknown, name: string) => {
-    (data as Record<string, unknown>)[name] = value;
+    (data as unknown as Record<string, unknown>)[name] = value;
     changeCustomValue(data);
   };
 
@@ -202,7 +207,9 @@ const SchemaString: React.FC<SchemaStringProps> = ({ data, changeCustomValue, fo
             onChange={(e) => handleChangeOtherValue(e, 'format')}
             filterOption={(input, option) => {
               return (
-                (option?.value as string)?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                (option?.value as string)
+                  ?.toLowerCase()
+                  .indexOf(input.toLowerCase()) >= 0
               );
             }}
           >
@@ -226,7 +233,10 @@ interface SchemaNumberProps {
   changeCustomValue: (data: JsonSchemaNumber) => void;
 }
 
-const SchemaNumber: React.FC<SchemaNumberProps> = ({ data, changeCustomValue }) => {
+const SchemaNumber: React.FC<SchemaNumberProps> = ({
+  data,
+  changeCustomValue,
+}) => {
   const [checked, setChecked] = useState(isNil(data.enum) ? false : true);
   const [enumValue, setEnumValue] = useState(
     isNil(data.enum) ? '' : data.enum.join('\n'),
@@ -304,7 +314,6 @@ const SchemaNumber: React.FC<SchemaNumberProps> = ({ data, changeCustomValue }) 
             <Col span={11}>
               <Switch
                 checked={data.exclusiveMinimum}
-                placeholder="exclusiveMinimum"
                 onChange={(e) =>
                   changeOtherValue(
                     e,
@@ -313,7 +322,9 @@ const SchemaNumber: React.FC<SchemaNumberProps> = ({ data, changeCustomValue }) 
                     changeCustomValue,
                   )
                 }
-                data-testid={TEST ? 'advSettingModal_exclusiveMinimum' : undefined}
+                data-testid={
+                  TEST ? 'advSettingModal_exclusiveMinimum' : undefined
+                }
               />
             </Col>
           </Row>
@@ -335,7 +346,6 @@ const SchemaNumber: React.FC<SchemaNumberProps> = ({ data, changeCustomValue }) 
             <Col span={11}>
               <Switch
                 checked={data.exclusiveMaximum}
-                placeholder="exclusiveMaximum"
                 onChange={(e) =>
                   changeOtherValue(
                     e,
@@ -344,7 +354,9 @@ const SchemaNumber: React.FC<SchemaNumberProps> = ({ data, changeCustomValue }) 
                     changeCustomValue,
                   )
                 }
-                data-testid={TEST ? 'advSettingModal_exclusiveMaximum' : undefined}
+                data-testid={
+                  TEST ? 'advSettingModal_exclusiveMaximum' : undefined
+                }
               />
             </Col>
           </Row>
@@ -439,7 +451,10 @@ interface SchemaBooleanProps {
   changeCustomValue: (data: JsonSchemaBoolean) => void;
 }
 
-const SchemaBoolean: React.FC<SchemaBooleanProps> = ({ data, changeCustomValue }) => {
+const SchemaBoolean: React.FC<SchemaBooleanProps> = ({
+  data,
+  changeCustomValue,
+}) => {
   const value = isNil(data.default) ? '' : data.default ? 'true' : 'false';
   return (
     <div>
@@ -476,7 +491,10 @@ interface SchemaArrayAdvProps {
   changeCustomValue: (data: JsonSchemaArray) => void;
 }
 
-const SchemaArray: React.FC<SchemaArrayAdvProps> = ({ data, changeCustomValue }) => {
+const SchemaArray: React.FC<SchemaArrayAdvProps> = ({
+  data,
+  changeCustomValue,
+}) => {
   return (
     <div>
       <div className="default-setting">{LocalProvider('base_setting')}</div>
@@ -496,7 +514,6 @@ const SchemaArray: React.FC<SchemaArrayAdvProps> = ({ data, changeCustomValue })
         <Col span={18}>
           <Switch
             checked={data.uniqueItems}
-            placeholder="uniqueItems"
             onChange={(e) =>
               changeOtherValue(e, 'uniqueItems', data, changeCustomValue)
             }
@@ -550,21 +567,47 @@ const mapping = (
   format: Format,
 ) => {
   const map: Record<string, React.ReactNode> = {
-    string: <SchemaString data={data as JsonSchemaString} changeCustomValue={changeCustomValue as (d: JsonSchemaString) => void} format={format} />,
-    number: <SchemaNumber data={data as JsonSchemaNumber} changeCustomValue={changeCustomValue as (d: JsonSchemaNumber) => void} />,
-    boolean: <SchemaBoolean data={data as JsonSchemaBoolean} changeCustomValue={changeCustomValue as (d: JsonSchemaBoolean) => void} />,
-    integer: <SchemaNumber data={data as JsonSchemaNumber} changeCustomValue={changeCustomValue as (d: JsonSchemaNumber) => void} />,
-    array: <SchemaArray data={data as JsonSchemaArray} changeCustomValue={changeCustomValue as (d: JsonSchemaArray) => void} />,
+    string: (
+      <SchemaString
+        data={data as JsonSchemaString}
+        changeCustomValue={changeCustomValue as (d: JsonSchemaString) => void}
+        format={format}
+      />
+    ),
+    number: (
+      <SchemaNumber
+        data={data as JsonSchemaNumber}
+        changeCustomValue={changeCustomValue as (d: JsonSchemaNumber) => void}
+      />
+    ),
+    boolean: (
+      <SchemaBoolean
+        data={data as JsonSchemaBoolean}
+        changeCustomValue={changeCustomValue as (d: JsonSchemaBoolean) => void}
+      />
+    ),
+    integer: (
+      <SchemaNumber
+        data={data as JsonSchemaNumber}
+        changeCustomValue={changeCustomValue as (d: JsonSchemaNumber) => void}
+      />
+    ),
+    array: (
+      <SchemaArray
+        data={data as JsonSchemaArray}
+        changeCustomValue={changeCustomValue as (d: JsonSchemaArray) => void}
+      />
+    ),
   };
   return map[data.type];
 };
 
 const handleInputEditor = (
-  e: { text: string; jsonData: JsonSchema },
+  e: MockEditorData,
   change: (d: JsonSchema) => void,
 ) => {
-  if (!e.text) return;
-  change(e.jsonData);
+  if (!e.text || !e.jsonData) return;
+  change(e.jsonData as unknown as JsonSchema);
 };
 
 interface CustomItemProps {
@@ -573,7 +616,11 @@ interface CustomItemProps {
   formatSource: Format;
 }
 
-const CustomItem: React.FC<CustomItemProps> = ({ data, changeCustomValue, formatSource }) => {
+const CustomItem: React.FC<CustomItemProps> = ({
+  data,
+  changeCustomValue,
+  formatSource,
+}) => {
   const parsed = JSON.parse(data) as JsonSchema;
   const format = formatSource;
   const optionForm = mapping(parsed, changeCustomValue, format);
@@ -585,7 +632,7 @@ const CustomItem: React.FC<CustomItemProps> = ({ data, changeCustomValue, format
       <AceEditor
         data={data}
         mode="json"
-        onChange={(e: { text: string; jsonData: JsonSchema }) => handleInputEditor(e, changeCustomValue)}
+        onChange={(e) => handleInputEditor(e, changeCustomValue)}
       />
     </div>
   );

@@ -35,6 +35,8 @@ import LocalProvider from './components/LocalProvider';
 import MockSelect from './components/MockSelect';
 import { JSONSchema, MockSource, Format } from './types';
 import { useAppDispatch, useAppSelector } from './store';
+import type { MessageKey } from './components/LocalProvider';
+import type { MockEditorData } from './components/AceEditor/AceEditor';
 import {
   changeEditorSchemaAction,
   changeTypeAction,
@@ -64,11 +66,11 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
   mockSource,
 }) => {
   const dispatch = useAppDispatch();
-  const schema = useAppSelector((state: any) => state.schema.data);
+  const schema = useAppSelector((state) => state.schema.data);
 
   // Refs
-  const jsonDataRef = useRef<object | null>(null);
-  const jsonSchemaDataRef = useRef<object | null>(null);
+  const jsonDataRef = useRef<Record<string, unknown> | null>(null);
+  const jsonSchemaDataRef = useRef<Record<string, unknown> | null>(null);
   const importJsonTypeRef = useRef<string | null>(null);
   const prevDataRef = useRef(data);
   const alterMsgRef = useRef(debounce(() => {}, 2000));
@@ -80,7 +82,8 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
   const [descriptionKey, setDescriptionKey] = useState<string[] | null>(null);
   const [advVisible, setAdvVisible] = useState(false);
   const [itemKey, setItemKey] = useState<string[]>([]);
-  const [curItemCustomValue, setCurItemCustomValue] = useState<JSONSchema | null>(null);
+  const [curItemCustomValue, setCurItemCustomValue] =
+    useState<JSONSchema | null>(null);
   const [checked, setChecked] = useState(false);
   const [editorModalName, setEditorModalName] = useState('');
   const [editValue, setEditValue] = useState('');
@@ -126,33 +129,27 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
 
   const handleCancel = useCallback(() => setVisible(false), []);
 
-  const handleImportJson = useCallback(
-    (e: { text: string; format: boolean; jsonData: Record<string, unknown> }) => {
-      if (!e.text || e.format !== true) {
-        jsonDataRef.current = null;
-        return;
-      }
-      jsonDataRef.current = e.jsonData;
-    },
-    [],
-  );
+  const handleImportJson = useCallback((e: MockEditorData) => {
+    if (!e.text || e.format !== true) {
+      jsonDataRef.current = null;
+      return;
+    }
+    jsonDataRef.current = e.jsonData;
+  }, []);
 
-  const handleImportJsonSchema = useCallback(
-    (e: { text: string; format: boolean; jsonData: Record<string, unknown> }) => {
-      if (!e.text || e.format !== true) {
-        jsonSchemaDataRef.current = null;
-        return;
-      }
-      jsonSchemaDataRef.current = e.jsonData;
-    },
-    [],
-  );
+  const handleImportJsonSchema = useCallback((e: MockEditorData) => {
+    if (!e.text || e.format !== true) {
+      jsonSchemaDataRef.current = null;
+      return;
+    }
+    jsonSchemaDataRef.current = e.jsonData;
+  }, []);
 
   const handleParams = useCallback(
-    (e: { text: string; format: boolean; jsonData: Record<string, unknown> }) => {
+    (e: MockEditorData) => {
       if (!e.text) return;
       if (e.format !== true) return alterMsgRef.current();
-      dispatch(changeEditorSchemaAction({ value: e.jsonData }));
+      dispatch(changeEditorSchemaAction({ value: e.jsonData! }));
     },
     [dispatch],
   );
@@ -191,6 +188,7 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
       if (name === 'mock') {
         value = value ? { mock: value } : '';
       }
+      if (!descriptionKey) return;
       dispatch(changeValueAction({ key: descriptionKey, value }));
     },
     [editValue, descriptionKey, dispatch],
@@ -203,7 +201,11 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
       if (type === 'object' || type === 'array') return;
       const key = [...prefix, name];
       const val =
-        name === 'mock' ? (value ? (value as Record<string, unknown>).mock : '') : value;
+        name === 'mock'
+          ? value
+            ? (value as Record<string, unknown>).mock
+            : ''
+          : value;
       setEditVisible(true);
       setEditValue(val as string);
       setDescriptionKey(key);
@@ -216,6 +218,7 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
 
   const handleAdvOk = useCallback(() => {
     if (itemKey.length === 0) {
+      if (!curItemCustomValue) return;
       dispatch(changeEditorSchemaAction({ value: curItemCustomValue }));
     } else {
       dispatch(changeValueAction({ key: itemKey, value: curItemCustomValue }));
@@ -244,15 +247,12 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
     [schema, dispatch],
   );
 
-  const disabled = schema.type === 'object' || schema.type === 'array' ? false : true;
+  const disabled =
+    schema.type === 'object' || schema.type === 'array' ? false : true;
 
   return (
     <div className="json-schema-react-editor">
-      <Button
-        className="import-json-button"
-        type="primary"
-        onClick={showModal}
-      >
+      <Button className="import-json-button" type="primary" onClick={showModal}>
         {LocalProvider('import_json')}
       </Button>
       <Modal
@@ -291,7 +291,7 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
       <Modal
         title={
           <div>
-            {LocalProvider(editorModalName as any)}
+            {LocalProvider(editorModalName as MessageKey)}
             &nbsp;
             {editorModalName === 'mock' && (
               <Tooltip title={LocalProvider('mockLink')}>
@@ -315,7 +315,7 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
       >
         <TextArea
           value={editValue}
-          placeholder={LocalProvider(editorModalName as any)}
+          placeholder={LocalProvider(editorModalName as MessageKey)}
           onChange={(e) => changeDesc(e.target.value)}
           autoSize={{ minRows: 6, maxRows: 10 }}
         />
@@ -353,10 +353,7 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
             />
           </Col>
         )}
-        <Col
-          span={showEditor ? 16 : 24}
-          className="wrapper object-style"
-        >
+        <Col span={showEditor ? 16 : 24} className="wrapper object-style">
           <Row align="middle">
             <Col span={8} className="col-item name-item col-item-name">
               <Row justify="space-around" align="middle">
@@ -411,16 +408,15 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
               <Col span={3} className="col-item col-item-mock">
                 <MockSelect
                   schema={schema}
-                  showEdit={() => showEdit([], 'mock', schema.mock, schema.type)}
+                  showEdit={() =>
+                    showEdit([], 'mock', schema.mock, schema.type)
+                  }
                   onChange={(value: string) => changeValue(['mock'], value)}
                   mockSource={mockSource}
                 />
               </Col>
             )}
-            <Col
-              span={isMock ? 4 : 5}
-              className="col-item col-item-mock"
-            >
+            <Col span={isMock ? 4 : 5} className="col-item col-item-mock">
               <Input
                 addonAfter={
                   <EditOutlined
@@ -433,10 +429,7 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
                 onChange={(e) => changeValue(['title'], e.target.value)}
               />
             </Col>
-            <Col
-              span={isMock ? 4 : 5}
-              className="col-item col-item-desc"
-            >
+            <Col span={isMock ? 4 : 5} className="col-item col-item-desc">
               <Input
                 addonAfter={
                   <EditOutlined
@@ -452,14 +445,8 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
               />
             </Col>
             <Col span={2} className="col-item col-item-setting">
-              <span
-                className="adv-set"
-                onClick={() => showAdv([], schema)}
-              >
-                <Tooltip
-                  placement="top"
-                  title={LocalProvider('adv_setting')}
-                >
+              <span className="adv-set" onClick={() => showAdv([], schema)}>
+                <Tooltip placement="top" title={LocalProvider('adv_setting')}>
                   <SettingOutlined type="setting" />
                 </Tooltip>
               </span>

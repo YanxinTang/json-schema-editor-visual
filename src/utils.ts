@@ -54,13 +54,13 @@ export const defaultSchema: Record<string, JSONSchema> = {
 
 // 防抖函数，减少高频触发的函数执行的频率
 // 修复了 args 和 this 指向，确保类型安全
-export const debounce = <T extends (...args: any[]) => any>(
+export const debounce = <T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number,
 ): ((...args: Parameters<T>) => void) => {
   let timeout: ReturnType<typeof setTimeout>;
 
-  return function (this: any, ...args: Parameters<T>) {
+  return function (this: unknown, ...args: Parameters<T>) {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
       func.apply(this, args);
@@ -68,33 +68,45 @@ export const debounce = <T extends (...args: any[]) => any>(
   };
 };
 
-export function getData(state: any, keys: PropertyKey[]): any {
-  let curState = state;
+export function getData(
+  state: Record<string, unknown>,
+  keys: PropertyKey[],
+): unknown {
+  let curState: unknown = state;
   for (let i = 0; i < keys.length; i++) {
     if (curState == null) return undefined;
-    curState = curState[keys[i]];
+    curState = (curState as Record<string, unknown>)[keys[i] as string];
   }
   return curState;
 }
 
-export function setData(state: any, keys: PropertyKey[], value: any): void {
-  let curState = state;
+export function setData(
+  state: Record<string, unknown>,
+  keys: PropertyKey[],
+  value: unknown,
+): void {
+  let curState: Record<string, unknown> = state;
   for (let i = 0; i < keys.length - 1; i++) {
-    if (curState[keys[i]] == null) {
-      curState[keys[i]] = typeof keys[i + 1] === 'number' ? [] : {};
+    const key = keys[i] as string;
+    if (curState[key] == null) {
+      curState[key] = typeof keys[i + 1] === 'number' ? [] : {};
     }
-    curState = curState[keys[i]];
+    curState = curState[key] as Record<string, unknown>;
   }
-  curState[keys[keys.length - 1]] = value;
+  curState[keys[keys.length - 1] as string] = value;
 }
 
-export function deleteData(state: any, keys: PropertyKey[]): void {
-  let curState = state;
+export function deleteData(
+  state: Record<string, unknown>,
+  keys: PropertyKey[],
+): void {
+  let curState: Record<string, unknown> = state;
   for (let i = 0; i < keys.length - 1; i++) {
-    if (curState[keys[i]] == null) return;
-    curState = curState[keys[i]];
+    const key = keys[i] as string;
+    if (curState[key] == null) return;
+    curState = curState[key] as Record<string, unknown>;
   }
-  delete curState[keys[keys.length - 1]];
+  delete curState[keys[keys.length - 1] as string];
 }
 
 export function getParentKeys<T>(keys: T[]): T[] {
@@ -104,7 +116,7 @@ export function getParentKeys<T>(keys: T[]): T[] {
   return arr;
 }
 
-export function clearSomeFields<T extends Record<string, any>>(
+export function clearSomeFields<T extends Record<string, unknown>>(
   keys: string[],
   data: T,
 ): T {
@@ -115,7 +127,7 @@ export function clearSomeFields<T extends Record<string, any>>(
   return newData;
 }
 
-function getFieldstitle(data: Record<string, any>): string[] {
+function getFieldstitle(data: Record<string, unknown>): string[] {
   // 简化了原有 Object.keys().map() 的写法
   return Object.keys(data);
 }
@@ -171,15 +183,15 @@ export function isNil(value: unknown): value is null | undefined {
 export function cloneObject<T>(obj: T): T {
   if (typeof obj === 'object' && obj !== null) {
     if (Array.isArray(obj)) {
-      const newArr = [] as any[];
+      const newArr: unknown[] = [];
       obj.forEach((item, index) => {
         newArr[index] = cloneObject(item);
       });
       return newArr as unknown as T;
     } else {
-      const newObj = {} as Record<string, any>;
+      const newObj = {} as Record<string, unknown>;
       for (const key in obj) {
-        newObj[key] = cloneObject((obj as Record<string, any>)[key]);
+        newObj[key] = cloneObject((obj as Record<string, unknown>)[key]);
       }
       return newObj as T;
     }

@@ -75,7 +75,7 @@ const langs = {
 
 type LangKey = keyof typeof langs;
 
-type MessageKey = keyof typeof langs['en_US'];
+export type MessageKey = keyof (typeof langs)['en_US'];
 
 export default (message: MessageKey): string => {
   return langs[utils.lang as LangKey][message];

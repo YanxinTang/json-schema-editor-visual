@@ -13,6 +13,7 @@ interface JsonSchemaBase {
   items?: JsonSchema;
   properties?: Record<string, JsonSchema>;
   required?: string[];
+  [key: string]: unknown;
 }
 
 export interface JsonSchemaString extends JsonSchemaBase {

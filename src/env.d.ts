@@ -11,11 +11,8 @@ declare module 'underscore' {
 }
 
 declare module 'generate-schema/src/schemas/json.js' {
-  function GenerateSchema(obj: object): object;
+  function GenerateSchema(
+    obj: Record<string, unknown>,
+  ): Record<string, unknown>;
   export default GenerateSchema;
-}
-
-declare module '*.js' {
-  const value: any;
-  export default value;
 }

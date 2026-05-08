@@ -37,7 +37,7 @@ describe('utils', () => {
     });
 
     test('当中间路径不存在时，应该自动创建对象', () => {
-      const state: any = {};
+      const state: Record<string, unknown> = {};
       setData(state, ['a', 'b', 'c'], 'hello');
       expect(state.a.b.c).toBe('hello');
     });
@@ -180,7 +180,10 @@ describe('utils', () => {
       const mockFn = rs.fn();
       const context = { value: 42 };
 
-      const debouncedFn = debounce(function (this: any, arg1: string) {
+      const debouncedFn = debounce(function (
+        this: { value: number },
+        arg1: string,
+      ) {
         mockFn(this.value, arg1);
       }, 500);
 

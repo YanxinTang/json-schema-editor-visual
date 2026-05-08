@@ -4,7 +4,6 @@ import {
   Menu,
   Row,
   Col,
-  Form,
   Select,
   Checkbox,
   Input,
@@ -22,7 +21,12 @@ import {
   CloseOutlined,
 } from '@ant-design/icons';
 import _ from 'underscore';
-import { JSONPATH_JOIN_CHAR, SCHEMA_TYPE, getData, isNil } from '../../utils.js';
+import {
+  JSONPATH_JOIN_CHAR,
+  SCHEMA_TYPE,
+  getData,
+  isNil,
+} from '../../utils.js';
 import FieldInput from './FieldInput.js';
 import LocaleProvider from '../LocalProvider';
 import MockSelect from '../MockSelect';
@@ -56,8 +60,13 @@ declare const TEST: boolean | undefined;
 export interface CommonProps {
   prefix: string[];
   data: JSONSchema;
-  showEdit: (prefix: string[], name: string, value: any, type: string) => void;
-  showAdv: (prefix: string[], value: any) => void;
+  showEdit: (
+    prefix: string[],
+    name: string,
+    value: unknown,
+    type: string,
+  ) => void;
+  showAdv: (prefix: string[], value: unknown) => void;
   isMock: boolean;
   mockSource?: MockSource;
 }
@@ -94,7 +103,7 @@ const mapping = (
           mockSource={mockSource}
         />
       );
-    case 'object':
+    case 'object': {
       const nameArray = [...name, 'properties'];
       return (
         <SchemaObject
@@ -106,6 +115,7 @@ const mapping = (
           mockSource={mockSource}
         />
       );
+    }
     default:
       return null;
   }
@@ -118,7 +128,7 @@ const mapping = (
 const SchemaArray: React.FC<CommonProps> = React.memo(
   ({ data, prefix, showEdit, showAdv, isMock, mockSource }) => {
     const dispatch = useAppDispatch();
-    const open = useAppSelector((state: any) => state.schema.open);
+    const open = useAppSelector((state) => state.schema.open);
 
     const tagPaddingLeftStyle = useMemo(() => {
       const length = prefix.filter((name) => name !== 'properties').length;
@@ -160,7 +170,12 @@ const SchemaArray: React.FC<CommonProps> = React.memo(
     };
 
     const handleShowEdit = (name: string, type?: string) => {
-      showEdit(getPrefix(), name, data.items![name], type!);
+      showEdit(
+        getPrefix(),
+        name,
+        (data.items as unknown as Record<string, unknown> | undefined)?.[name],
+        type!,
+      );
     };
 
     const handleShowAdv = () => {
@@ -178,11 +193,7 @@ const SchemaArray: React.FC<CommonProps> = React.memo(
 
     return (
       <div className="array-type">
-        <Row
-          className="array-item-type"
-          justify="space-around"
-          align="middle"
-        >
+        <Row className="array-item-type" justify="space-around" align="middle">
           <Col
             span={8}
             className="col-item name-item col-item-name"
@@ -238,7 +249,10 @@ const SchemaArray: React.FC<CommonProps> = React.memo(
                 value={items.title}
                 onChange={handleChangeTitle}
               />
-              <Button icon={<EditOutlined />} onClick={() => handleShowEdit('title')} />
+              <Button
+                icon={<EditOutlined />}
+                onClick={() => handleShowEdit('title')}
+              />
             </Space.Compact>
           </Col>
           <Col span={isMock ? 4 : 5} className="col-item col-item-desc">
@@ -248,7 +262,10 @@ const SchemaArray: React.FC<CommonProps> = React.memo(
                 value={items.description}
                 onChange={handleChangeDesc}
               />
-              <Button icon={<EditOutlined />} onClick={() => handleShowEdit('description')} />
+              <Button
+                icon={<EditOutlined />}
+                onClick={() => handleShowEdit('description')}
+              />
             </Space.Compact>
           </Col>
           <Col span={isMock ? 2 : 3} className="col-item col-item-setting">
@@ -284,7 +301,7 @@ const SchemaArray: React.FC<CommonProps> = React.memo(
 const SchemaItem: React.FC<SchemaItemProps> = React.memo(
   ({ name, data, prefix, showEdit, showAdv, isMock, mockSource }) => {
     const dispatch = useAppDispatch();
-    const open = useAppSelector((state: any) => state.schema.open);
+    const open = useAppSelector((state) => state.schema.open);
 
     const tagPaddingLeftStyle = useMemo(() => {
       const length = prefix.filter((n) => n !== 'properties').length;
@@ -335,7 +352,9 @@ const SchemaItem: React.FC<SchemaItemProps> = React.memo(
       showEdit(
         getPrefix(),
         editorName,
-        data.properties![name][editorName],
+        (data.properties![name] as unknown as Record<string, unknown>)[
+          editorName
+        ],
         type!,
       );
     };
@@ -353,7 +372,7 @@ const SchemaItem: React.FC<SchemaItemProps> = React.memo(
       dispatch(setOpenValueAction({ key: keyArr }));
     };
 
-    const handleEnableRequire = (e: any) => {
+    const handleEnableRequire = (e: { target: { checked: boolean } }) => {
       const required = e.target.checked;
       dispatch(enableRequireAction({ prefix, name, required }));
     };
@@ -459,7 +478,10 @@ const SchemaItem: React.FC<SchemaItemProps> = React.memo(
                     : undefined
                 }
               />
-              <Button icon={<EditOutlined />} onClick={() => handleShowEdit('title')} />
+              <Button
+                icon={<EditOutlined />}
+                onClick={() => handleShowEdit('title')}
+              />
             </Space.Compact>
           </Col>
 
@@ -475,7 +497,10 @@ const SchemaItem: React.FC<SchemaItemProps> = React.memo(
                     : undefined
                 }
               />
-              <Button icon={<EditOutlined />} onClick={() => handleShowEdit('description')} />
+              <Button
+                icon={<EditOutlined />}
+                onClick={() => handleShowEdit('description')}
+              />
             </Space.Compact>
           </Col>
 
@@ -531,8 +556,7 @@ const SchemaObjectComponent: React.FC<CommonProps> = ({
   mockSource,
 }) => {
   // 仅作为依赖注入，触发组件在Redux state open发生变化时重新渲染
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const open = useAppSelector((state: any) => state.schema.open);
+  const _open = useAppSelector((state) => state.schema.open);
 
   return (
     <div className="object-style">
@@ -621,13 +645,24 @@ const DropPlus: React.FC<DropPlusProps> = ({ prefix, name }) => {
 
 export interface SchemaJsonProps {
   data: JSONSchema;
-  showEdit: (prefix: string[], name: string, value: any, type: string) => void;
-  showAdv: (prefix: string[], value: any) => void;
+  showEdit: (
+    prefix: string[],
+    name: string,
+    value: unknown,
+    type: string,
+  ) => void;
+  showAdv: (prefix: string[], value: unknown) => void;
   isMock: boolean;
   mockSource?: MockSource;
 }
 
-const SchemaJson: React.FC<SchemaJsonProps> = ({ data, showEdit, showAdv, isMock, mockSource }) => {
+const SchemaJson: React.FC<SchemaJsonProps> = ({
+  data,
+  showEdit,
+  showAdv,
+  isMock,
+  mockSource,
+}) => {
   const item = mapping([], data, showEdit, showAdv, isMock, mockSource);
   return <div className="schema-content">{item}</div>;
 };
