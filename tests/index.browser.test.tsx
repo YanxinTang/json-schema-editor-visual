@@ -79,7 +79,7 @@ describe('JsonSchemaReactEditor', () => {
 
     const titleInput = page.locator('input[value="title"]');
     const wrapper = titleInput.locator(
-      'xpath=ancestor::*[contains(@class, "ant-input-wrapper")]',
+      'xpath=ancestor::*[contains(@class, "ant-space-compact")]',
     );
 
     await wrapper.getByRole('img', { name: /edit/i }).click();
@@ -95,7 +95,7 @@ describe('JsonSchemaReactEditor', () => {
 
     const descInput = page.getByPlaceholder('description');
     const wrapper = descInput.locator(
-      'xpath=ancestor::*[contains(@class, "ant-input-wrapper")]',
+      'xpath=ancestor::*[contains(@class, "ant-space-compact")]',
     );
 
     await wrapper.getByRole('img', { name: /edit/i }).click();

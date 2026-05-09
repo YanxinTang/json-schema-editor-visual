@@ -10,6 +10,7 @@ import {
   Modal,
   message,
   Tabs,
+  Space,
 } from 'antd';
 import {
   QuestionCircleOutlined,
@@ -33,7 +34,7 @@ import GenerateSchema from 'generate-schema/src/schemas/json.js';
 import CustomItem from './components/SchemaComponents/SchemaOther';
 import LocalProvider from './components/LocalProvider';
 import MockSelect from './components/MockSelect';
-import { JSONSchema, MockSource, Format } from './types';
+import { JsonSchema, MockSource, Format } from './types';
 import { useAppDispatch, useAppSelector } from './store';
 import type { MessageKey } from './components/LocalProvider';
 import type { MockEditorData } from './components/AceEditor/AceEditor';
@@ -83,7 +84,7 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
   const [advVisible, setAdvVisible] = useState(false);
   const [itemKey, setItemKey] = useState<string[]>([]);
   const [curItemCustomValue, setCurItemCustomValue] =
-    useState<JSONSchema | null>(null);
+    useState<JsonSchema | null>(null);
   const [checked, setChecked] = useState(false);
   const [editorModalName, setEditorModalName] = useState('');
   const [editValue, setEditValue] = useState('');
@@ -231,11 +232,11 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
   const showAdv = useCallback((key: string[], value: unknown) => {
     setAdvVisible(true);
     setItemKey(key);
-    setCurItemCustomValue(value as JSONSchema);
+    setCurItemCustomValue(value as JsonSchema);
   }, []);
 
   const changeCustomValue = useCallback(
-    (newValue: JSONSchema) => setCurItemCustomValue(newValue),
+    (newValue: JsonSchema) => setCurItemCustomValue(newValue),
     [],
   );
 
@@ -257,7 +258,7 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
       </Button>
       <Modal
         maskClosable={false}
-        visible={visible}
+        open={visible}
         title={LocalProvider('import_json')}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -307,7 +308,7 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
           </div>
         }
         maskClosable={false}
-        visible={editVisible}
+        open={editVisible}
         onOk={() => handleEditOk(editorModalName)}
         onCancel={handleEditCancel}
         okText={LocalProvider('ok')}
@@ -325,7 +326,7 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
         <Modal
           title={LocalProvider('adv_setting')}
           maskClosable={false}
-          visible={advVisible}
+          open={advVisible}
           onOk={handleAdvOk}
           onCancel={handleAdvCancel}
           okText={LocalProvider('ok')}
@@ -375,19 +376,18 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
                   ) : null}
                 </Col>
                 <Col span={22}>
-                  <Input
-                    addonAfter={
-                      <Tooltip placement="top" title={'checked_all'}>
+                  <Space.Compact>
+                    <Input disabled value="root" />
+                    <Tooltip placement="top" title={'checked_all'}>
+                      <Button type="text" disabled>
                         <Checkbox
                           checked={checked}
                           disabled={disabled}
                           onChange={(e) => changeCheckBox(e.target.checked)}
                         />
-                      </Tooltip>
-                    }
-                    disabled
-                    value="root"
-                  />
+                      </Button>
+                    </Tooltip>
+                  </Space.Compact>
                 </Col>
               </Row>
             </Col>
@@ -417,32 +417,32 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
               </Col>
             )}
             <Col span={isMock ? 4 : 5} className="col-item col-item-mock">
-              <Input
-                addonAfter={
-                  <EditOutlined
-                    type="edit"
-                    onClick={() => showEdit([], 'title', schema.title)}
-                  />
-                }
-                placeholder={'Title'}
-                value={schema.title}
-                onChange={(e) => changeValue(['title'], e.target.value)}
-              />
+              <Space.Compact>
+                <Input
+                  placeholder={'Title'}
+                  value={schema.title}
+                  onChange={(e) => changeValue(['title'], e.target.value)}
+                />
+                <Button
+                  icon={<EditOutlined />}
+                  onClick={() => showEdit([], 'title', schema.title)}
+                />
+              </Space.Compact>
             </Col>
             <Col span={isMock ? 4 : 5} className="col-item col-item-desc">
-              <Input
-                addonAfter={
-                  <EditOutlined
-                    type="edit"
-                    onClick={() =>
-                      showEdit([], 'description', schema.description)
-                    }
-                  />
-                }
-                placeholder={'description'}
-                value={schema.description}
-                onChange={(e) => changeValue(['description'], e.target.value)}
-              />
+              <Space.Compact>
+                <Input
+                  placeholder={'description'}
+                  value={schema.description}
+                  onChange={(e) => changeValue(['description'], e.target.value)}
+                />
+                <Button
+                  icon={<EditOutlined />}
+                  onClick={() =>
+                    showEdit([], 'description', schema.description)
+                  }
+                />
+              </Space.Compact>
             </Col>
             <Col span={2} className="col-item col-item-setting">
               <span className="adv-set" onClick={() => showAdv([], schema)}>
