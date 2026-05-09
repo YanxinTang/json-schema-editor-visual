@@ -58,6 +58,3 @@ export type JsonSchema =
   | JsonSchemaBoolean
   | JsonSchemaArray
   | JsonSchemaObject;
-
-/** @deprecated Use JsonSchema instead */
-export type JSONSchema = JsonSchema;

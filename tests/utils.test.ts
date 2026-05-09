@@ -10,7 +10,7 @@ import {
   debounce,
   isNil,
 } from '../src/utils';
-import { JSONSchema } from '../src/types';
+import { JsonSchema } from '../src/types';
 
 describe('utils', () => {
   describe('getData', () => {
@@ -98,7 +98,7 @@ describe('utils', () => {
 
   describe('handleSchemaRequired', () => {
     test('checked 为 true 时，应该将 object 类型的所有属性设为 required', () => {
-      const schema: JSONSchema = {
+      const schema: JsonSchema = {
         type: 'object',
         properties: {
           name: { type: 'string' },
@@ -111,7 +111,7 @@ describe('utils', () => {
     });
 
     test('checked 为 false 时，应该移除 required 字段', () => {
-      const schema: JSONSchema = {
+      const schema: JsonSchema = {
         type: 'object',
         required: ['name'],
         properties: {
@@ -124,7 +124,7 @@ describe('utils', () => {
     });
 
     test('应该递归处理嵌套的 object 和 array', () => {
-      const schema: JSONSchema = {
+      const schema: JsonSchema = {
         type: 'object',
         properties: {
           users: {

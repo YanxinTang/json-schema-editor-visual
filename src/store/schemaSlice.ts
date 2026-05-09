@@ -2,12 +2,12 @@ import { createSlice, original, PayloadAction } from '@reduxjs/toolkit';
 
 import { handleSchema } from '../schema';
 import * as utils from '../utils';
-import type { JSONSchema } from '../types';
+import type { JsonSchema } from '../types';
 
 export interface SchemaState {
   fieldNum: number;
   message: string | null;
-  data: JSONSchema;
+  data: JsonSchema;
   open: Record<string, boolean>;
 }
 
@@ -34,7 +34,7 @@ interface EnableRequirePayload {
 }
 interface RequireAllPayload {
   required: boolean;
-  value: JSONSchema;
+  value: JsonSchema;
 }
 interface DeleteItemPayload {
   key: string[];
@@ -90,7 +90,7 @@ const schemaSlice = createSlice({
       const value = payload.value;
       const oldData = oldState.data;
       const parentKeys = utils.getParentKeys(keys);
-      const parentData = utils.getData(oldData, parentKeys) as JSONSchema;
+      const parentData = utils.getData(oldData, parentKeys) as JsonSchema;
       let requiredData: string[] = [...(parentData.required ?? [])];
       const propertiesData = utils.getData(oldData, keys) as Record<
         string,
@@ -98,7 +98,7 @@ const schemaSlice = createSlice({
       >;
       const newPropertiesData: Record<string, unknown> = {};
 
-      const curData = propertiesData[name] as JSONSchema;
+      const curData = propertiesData[name] as JsonSchema;
       const openKeys = [...keys, value, 'properties'].join(
         utils.JSONPATH_JOIN_CHAR,
       );
@@ -156,7 +156,7 @@ const schemaSlice = createSlice({
 
       const parentKeys = utils.getParentKeys(keys);
       const oldData = oldState.data;
-      const parentData = utils.getData(oldData, parentKeys) as JSONSchema;
+      const parentData = utils.getData(oldData, parentKeys) as JsonSchema;
       if (parentData.type === value) {
         return;
       }
@@ -185,7 +185,7 @@ const schemaSlice = createSlice({
       const keys = payload.prefix;
       const parentKeys = utils.getParentKeys(keys);
       const oldData = oldState.data;
-      const parentData = utils.getData(oldData, parentKeys) as JSONSchema;
+      const parentData = utils.getData(oldData, parentKeys) as JsonSchema;
       const requiredData: string[] = [...(parentData.required ?? [])];
       const index = requiredData.indexOf(payload.name);
 
@@ -257,7 +257,7 @@ const schemaSlice = createSlice({
       let newPropertiesData: Record<string, unknown> = {};
 
       const parentKeys = utils.getParentKeys(keys);
-      const parentData = utils.getData(oldData, parentKeys) as JSONSchema;
+      const parentData = utils.getData(oldData, parentKeys) as JsonSchema;
       const requiredData: string[] = [...(parentData.required ?? [])];
 
       if (!name) {
@@ -302,7 +302,7 @@ const schemaSlice = createSlice({
 
       // add required
       const parentKeys = utils.getParentKeys(keys);
-      const parentData = utils.getData(oldData, parentKeys) as JSONSchema;
+      const parentData = utils.getData(oldData, parentKeys) as JsonSchema;
       const requiredData: string[] = [...(parentData.required ?? [])];
       requiredData.push(ranName);
       parentKeys.push('required');

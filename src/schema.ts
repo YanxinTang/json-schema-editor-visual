@@ -1,4 +1,4 @@
-import type { JSONSchema } from "./types";
+import type { JsonSchema } from './types';
 
 /**
  * Input type for schema handling functions.
@@ -17,37 +17,34 @@ function handleType(schema: SchemaInput): void {
   if (
     !schema.type &&
     schema.properties &&
-    typeof schema.properties === "object"
+    typeof schema.properties === 'object'
   ) {
-    schema.type = "object";
+    schema.type = 'object';
   }
 }
 
-export function handleSchema(schema: SchemaInput): JSONSchema {
+export function handleSchema(schema: SchemaInput): JsonSchema {
   if (schema && !schema.type && !schema.properties) {
-    schema.type = "string";
+    schema.type = 'string';
   }
   handleType(schema);
 
-  if (schema.type === "object") {
+  if (schema.type === 'object') {
     if (!schema.properties) schema.properties = {};
     handleObject(schema.properties);
-    return schema as JSONSchema;
-  } else if (schema.type === "array") {
-    if (!schema.items) schema.items = { type: "string" };
+    return schema as JsonSchema;
+  } else if (schema.type === 'array') {
+    if (!schema.items) schema.items = { type: 'string' };
     return handleSchema(schema.items);
   } else {
-    return schema as JSONSchema;
+    return schema as JsonSchema;
   }
 }
 
 function handleObject(properties: Record<string, SchemaInput>): void {
   for (const key in properties) {
     handleType(properties[key]);
-    if (
-      properties[key].type === "array" ||
-      properties[key].type === "object"
-    ) {
+    if (properties[key].type === 'array' || properties[key].type === 'object') {
       handleSchema(properties[key]);
     }
   }

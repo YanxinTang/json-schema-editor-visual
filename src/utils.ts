@@ -1,4 +1,4 @@
-import { Format, JSONSchema } from './types';
+import { Format, JsonSchema } from './types';
 
 export const JSONPATH_JOIN_CHAR = '.';
 
@@ -27,7 +27,7 @@ export const SCHEMA_TYPE = [
   'integer',
 ] as const;
 
-export const defaultSchema: Record<string, JSONSchema> = {
+export const defaultSchema: Record<string, JsonSchema> = {
   string: {
     type: 'string',
   },
@@ -133,9 +133,9 @@ function getFieldstitle(data: Record<string, unknown>): string[] {
 }
 
 export function handleSchemaRequired(
-  schema: JSONSchema,
+  schema: JsonSchema,
   checked: boolean,
-): JSONSchema | void {
+): JsonSchema | void {
   if (schema.type === 'object') {
     const requiredtitle = getFieldstitle(schema.properties || {});
 
@@ -156,7 +156,7 @@ export function handleSchemaRequired(
 }
 
 function handleObject(
-  properties: Record<string, JSONSchema>,
+  properties: Record<string, JsonSchema>,
   checked: boolean,
 ): void {
   for (const key in properties) {

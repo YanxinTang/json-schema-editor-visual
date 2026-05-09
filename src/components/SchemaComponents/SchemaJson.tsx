@@ -43,7 +43,7 @@ import {
 } from '../../store/schemaSlice';
 
 import './schemaJson.css';
-import { JSONSchema, MockSource } from '../../types.js';
+import { JsonSchema, MockSource } from '../../types.js';
 
 const { Option } = Select;
 
@@ -59,7 +59,7 @@ declare const TEST: boolean | undefined;
 
 export interface CommonProps {
   prefix: string[];
-  data: JSONSchema;
+  data: JsonSchema;
   showEdit: (
     prefix: string[],
     name: string,
@@ -85,7 +85,7 @@ export interface SchemaItemProps extends CommonProps {
 
 const mapping = (
   name: string[],
-  data: JSONSchema,
+  data: JsonSchema,
   showEdit: CommonProps['showEdit'],
   showAdv: CommonProps['showAdv'],
   isMock: boolean,
@@ -644,7 +644,7 @@ const DropPlus: React.FC<DropPlusProps> = ({ prefix, name }) => {
  */
 
 export interface SchemaJsonProps {
-  data: JSONSchema;
+  data: JsonSchema;
   showEdit: (
     prefix: string[],
     name: string,
