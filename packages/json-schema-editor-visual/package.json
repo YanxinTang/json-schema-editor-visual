@@ -30,6 +30,7 @@
     "LICENSE"
   ],
   "scripts": {
+    "prepack": "node ../../scripts/prepare-package.mjs",
     "build": "rslib",
     "build:test": "cross-env NODE_ENV='test' rslib",
     "dev": "rslib --watch",
