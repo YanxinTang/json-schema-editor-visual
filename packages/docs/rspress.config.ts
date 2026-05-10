@@ -6,6 +6,7 @@ import { pluginWorkspaceDev } from 'rsbuild-plugin-workspace-dev';
 
 export default defineConfig({
   root: path.join(__dirname, 'src'),
+  base: '/json-schema-editor-visual/',
   title: 'JsonSchemaEditorVisual',
   lang: 'zh',
   builderConfig: {
