@@ -103,3 +103,78 @@ export default () => {
 ## API
 
 <API moduleName="JsonSchemaEditorVisual" zh />
+
+## 从 json-schema-editor-visual 迁移
+
+本项目 fork 自 [Open-Federation/json-schema-editor-visual](https://github.com/Open-Federation/json-schema-editor-visual)，对 API 做了重新设计。
+
+### 安装
+
+```bash
+# 旧版
+npm install json-schema-editor-visual
+
+# 新版
+npm add @tyx1703/json-schema-editor-visual
+```
+
+### 工厂函数 → 组件
+
+```jsx
+// 旧版
+const schemaEditor = require('json-schema-editor-visual/dist/main.js');
+const SchemaEditor = schemaEditor({ lang: 'zh_CN' });
+
+// 新版
+import JsonSchemaEditorVisual from '@tyx1703/json-schema-editor-visual';
+```
+
+### 语言 / 国际化
+
+```jsx
+// 旧版
+const SchemaEditor = schemaEditor({ lang: 'zh_CN' });
+
+// 新版
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/locale/zh_CN';
+
+<ConfigProvider locale={zhCN}>
+  <JsonSchemaEditorVisual />
+</ConfigProvider>;
+```
+
+### Mock & Format → Props
+
+```jsx
+// 旧版
+const SchemaEditor = schemaEditor({ mock: MOCK, format: FORMAT });
+
+// 新版
+<JsonSchemaEditorVisual mock={MOCK} format={FORMAT} />;
+```
+
+### CSS — 不再需要手动导入
+
+```jsx
+// 旧版
+import 'antd/dist/antd.css';
+require('json-schema-editor-visual/dist/main.css');
+
+// 新版 — 无需导入
+```
+
+### 破坏性变更总结
+
+| 变更        | 旧版                            | 新版                                 |
+| ----------- | ------------------------------- | ------------------------------------ |
+| 包名        | `json-schema-editor-visual`     | `@tyx1703/json-schema-editor-visual` |
+| 导出方式    | 工厂函数 `schemaEditor(config)` | 直接导出组件                         |
+| 语言配置    | `{ lang: 'zh_CN' }`             | antd `ConfigProvider`                |
+| Mock 数据   | 工厂函数选项                    | 组件 prop                            |
+| Format 选项 | 工厂函数选项                    | 组件 prop                            |
+| CSS 导入    | 需要手动导入 `main.css`         | 不需要                               |
+| React 版本  | >=16.9.0                        | ^18 或 ^19                           |
+| antd 版本   | 4                               | ^5 或 ^6                             |
+| 编辑器      | Ace Editor                      | Monaco Editor                        |
+| Model API   | `Model.schema` 可操作           | 已移除                               |

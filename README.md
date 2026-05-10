@@ -2,13 +2,6 @@
 
 A React component for visually editing JSON Schema.
 
-## Peer Dependencies
-
-- `react` ^18 or ^19
-- `react-dom` ^18 or ^19
-- `antd` ^5 or ^6
-- `@ant-design/icons` ^5 or ^6
-
 ## Install
 
 ```bash
@@ -95,6 +88,80 @@ The component defaults to Chinese (`zh_CN`) when the antd locale starts with `zh
 | `showEditor` | `boolean`                  | `true`  | Show/hide the left-side JSON source editor panel                                            |
 | `format`     | `Format`                   | `[]`    | Custom format options (`{ name: string; title?: string }[]`)                                |
 | `mock`       | `MockSource`               | —       | Mock data source; when provided, a mock column appears (`{ name: string; mock: string }[]`) |
+
+## Migrating from json-schema-editor-visual
+
+This is a fork of [Open-Federation/json-schema-editor-visual](https://github.com/Open-Federation/json-schema-editor-visual) with a redesigned API.
+
+### Install
+
+```bash
+# old
+npm install json-schema-editor-visual
+
+# new
+pnpm add @tyx1703/json-schema-editor-visual
+```
+
+### Factory function → Component
+
+```jsx
+// old
+const schemaEditor = require('json-schema-editor-visual/dist/main.js');
+const SchemaEditor = schemaEditor({ lang: 'zh_CN' });
+
+// new
+import JsonSchemaEditorVisual from '@tyx1703/json-schema-editor-visual';
+```
+
+### Locale via ConfigProvider
+
+```jsx
+// old
+const SchemaEditor = schemaEditor({ lang: 'zh_CN' });
+
+// new
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/locale/zh_CN';
+
+<ConfigProvider locale={zhCN}>
+  <JsonSchemaEditorVisual />
+</ConfigProvider>;
+```
+
+### Mock & Format → Props
+
+```jsx
+// old
+const SchemaEditor = schemaEditor({ mock: MOCK, format: FORMAT });
+
+// new
+<JsonSchemaEditorVisual mock={MOCK} format={FORMAT} />;
+```
+
+### CSS — no longer needed
+
+```jsx
+// old — required
+import 'antd/dist/antd.css';
+require('json-schema-editor-visual/dist/main.css');
+
+// new — nothing to import
+```
+
+### Breaking changes summary
+
+| Change        | Old                            | New                                  |
+| ------------- | ------------------------------ | ------------------------------------ |
+| Package name  | `json-schema-editor-visual`    | `@tyx1703/json-schema-editor-visual` |
+| Export        | Factory `schemaEditor(config)` | Direct component                     |
+| Locale        | `{ lang: 'zh_CN' }`            | antd `ConfigProvider`                |
+| Mock / Format | Factory options                | Component props                      |
+| CSS import    | Manual `main.css`              | Not needed                           |
+| React         | >=16.9.0                       | ^18 or ^19                           |
+| antd          | 4                              | ^5 or ^6                             |
+| Editor        | Ace                            | Monaco                               |
+| Model API     | `Model.schema`                 | Removed                              |
 
 ## Development
 
