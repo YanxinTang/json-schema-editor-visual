@@ -22,7 +22,6 @@ import {
 } from '@ant-design/icons';
 const Option = Select.Option;
 const { TextArea } = Input;
-const TabPane = Tabs.TabPane;
 
 import AceEditor from './components/MonacoEditor';
 import SchemaJson from './components/SchemaComponents/SchemaJson.js';
@@ -44,21 +43,21 @@ import {
 } from './store/schemaSlice';
 import './index.css';
 
-export interface JsonSchemaEditorOwnedProps {
+export interface JsonSchemaEditorProps {
   data?: string;
-  showEditor?: boolean;
   onChange?: (schema: string) => void;
+  showEditor?: boolean;
   format?: Format;
   mock?: MockSource;
 }
 
 export default function JsonSchemaEditor({
   data,
-  showEditor,
   onChange,
+  showEditor,
   format = defaultFormat,
   mock,
-}: JsonSchemaEditorOwnedProps) {
+}: JsonSchemaEditorProps) {
   const dispatch = useAppDispatch();
   const schema = useAppSelector((state) => state.schema.data);
   const LocalProvider = useLocalProvider();
@@ -251,6 +250,7 @@ export default function JsonSchemaEditor({
         {LocalProvider('import_json')}
       </Button>
       <Modal
+        width={780}
         maskClosable={false}
         open={visible}
         title={LocalProvider('import_json')}
@@ -273,14 +273,27 @@ export default function JsonSchemaEditor({
           onChange={(key) => {
             importJsonTypeRef.current = key;
           }}
-        >
-          <TabPane tab="JSON" key="json">
-            <AceEditor data="" mode="json" onChange={handleImportJson} />
-          </TabPane>
-          <TabPane tab="JSON-SCHEMA" key="schema">
-            <AceEditor data="" mode="json" onChange={handleImportJsonSchema} />
-          </TabPane>
-        </Tabs>
+          items={[
+            {
+              key: 'json',
+              label: 'JSON',
+              children: (
+                <AceEditor data="" mode="json" onChange={handleImportJson} />
+              ),
+            },
+            {
+              key: 'schema',
+              label: 'JSON-SCHEMA',
+              children: (
+                <AceEditor
+                  data=""
+                  mode="json"
+                  onChange={handleImportJsonSchema}
+                />
+              ),
+            },
+          ]}
+        ></Tabs>
       </Modal>
 
       <Modal

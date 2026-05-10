@@ -1,17 +1,14 @@
 import { Provider } from 'react-redux';
 import { createStore } from './store';
-import { format as defaultFormat } from './utils';
-import JsonSchemaEditor, {
-  JsonSchemaEditorOwnedProps,
-} from './JsonSchemaEditor';
+import JsonSchemaEditor, { JsonSchemaEditorProps } from './JsonSchemaEditor';
 
 export default function schemaEditor() {
   const store = createStore();
 
-  const Component = ({ format, ...rest }: JsonSchemaEditorOwnedProps) => {
+  const Component = (props: JsonSchemaEditorProps) => {
     return (
       <Provider store={store}>
-        <JsonSchemaEditor format={format ?? defaultFormat} {...rest} />
+        <JsonSchemaEditor {...props} />
       </Provider>
     );
   };
