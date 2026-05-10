@@ -2,14 +2,16 @@ export type Format = { name: string; title?: string }[];
 
 export type MockSource = { name: string; mock: string }[];
 
-// --- Discriminated union JSON Schema types ---
-
+/**
+ * Discriminated union JSON Schema types
+ */
 interface JsonSchemaBase {
   title?: string;
   description?: string;
   enumDesc?: string;
-  mock?: unknown;
-  // Common structural fields (used across types without narrowing)
+  mock?: {
+    mock: string;
+  };
   items?: JsonSchema;
   properties?: Record<string, JsonSchema>;
   required?: string[];

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import {
   Input,
   Row,
@@ -26,7 +26,7 @@ const TabPane = Tabs.TabPane;
 
 import AceEditor from './components/MonacoEditor';
 import SchemaJson from './components/SchemaComponents/SchemaJson.js';
-import { SCHEMA_TYPE, debounce } from './utils';
+import { SCHEMA_TYPE, debounce, format as defaultFormat } from './utils';
 import GenerateSchema from 'generate-schema/src/schemas/json.js';
 import CustomItem from './components/SchemaComponents/SchemaOther';
 import { useLocalProvider } from './components/LocalProvider';
@@ -45,25 +45,20 @@ import {
 import './index.css';
 
 export interface JsonSchemaEditorOwnedProps {
-  isMock?: boolean;
   data?: string;
   showEditor?: boolean;
   onChange?: (schema: string) => void;
+  format?: Format;
+  mock?: MockSource;
 }
 
-export interface JsonSchemaProps extends JsonSchemaEditorOwnedProps {
-  formatSource: Format;
-  mockSource?: MockSource;
-}
-
-const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
-  isMock,
+export default function JsonSchemaEditor({
   data,
   showEditor,
   onChange,
-  formatSource,
-  mockSource,
-}) => {
+  format = defaultFormat,
+  mock,
+}: JsonSchemaEditorOwnedProps) {
   const dispatch = useAppDispatch();
   const schema = useAppSelector((state) => state.schema.data);
   const LocalProvider = useLocalProvider();
@@ -337,7 +332,7 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
           <CustomItem
             data={JSON.stringify(curItemCustomValue, null, 2)}
             changeCustomValue={changeCustomValue}
-            formatSource={formatSource}
+            format={format}
           />
         </Modal>
       )}
@@ -403,7 +398,7 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
                 ))}
               </Select>
             </Col>
-            {isMock && (
+            {mock && (
               <Col span={3} className="col-item col-item-mock">
                 <MockSelect
                   schema={schema}
@@ -411,11 +406,11 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
                     showEdit([], 'mock', schema.mock, schema.type)
                   }
                   onChange={(value: string) => changeValue(['mock'], value)}
-                  mockSource={mockSource}
+                  mock={mock}
                 />
               </Col>
             )}
-            <Col span={isMock ? 4 : 5} className="col-item col-item-mock">
+            <Col span={mock ? 4 : 5} className="col-item col-item-mock">
               <Space.Compact>
                 <Input
                   placeholder={'Title'}
@@ -428,7 +423,7 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
                 />
               </Space.Compact>
             </Col>
-            <Col span={isMock ? 4 : 5} className="col-item col-item-desc">
+            <Col span={mock ? 4 : 5} className="col-item col-item-desc">
               <Space.Compact>
                 <Input
                   placeholder={'description'}
@@ -466,14 +461,11 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
               data={schema}
               showEdit={showEdit}
               showAdv={showAdv}
-              isMock={isMock ?? false}
-              mockSource={mockSource}
+              mock={mock}
             />
           )}
         </Col>
       </Row>
     </div>
   );
-};
-
-export default JsonSchemaEditor;
+}

@@ -8,21 +8,21 @@ interface MockSelectProps {
   schema: JsonSchema;
   showEdit: () => void;
   onChange: (value: string) => void;
-  mockSource?: MockSource;
+  mock?: MockSource;
 }
 
 const MockSelect: React.FC<MockSelectProps> = ({
   schema,
   showEdit,
   onChange,
-  mockSource,
+  mock,
 }) => {
   const LocaleProvider = useLocalProvider();
   const disabled = schema.type === 'object' || schema.type === 'array';
 
   const options = useMemo(
-    () => (mockSource || []).map((item) => ({ value: item.mock })),
-    [mockSource],
+    () => (mock || []).map((item) => ({ value: item.mock })),
+    [mock],
   );
 
   console.log('schema: ', schema);
@@ -36,13 +36,7 @@ const MockSelect: React.FC<MockSelectProps> = ({
         options={options}
         placeholder={LocaleProvider('mock')}
         filterOption={true}
-        value={
-          schema.mock &&
-          typeof schema.mock === 'object' &&
-          'mock' in schema.mock
-            ? (schema.mock as { mock: string }).mock
-            : ''
-        }
+        value={schema.mock?.mock}
         onChange={onChange}
         disabled={disabled}
       ></AutoComplete>

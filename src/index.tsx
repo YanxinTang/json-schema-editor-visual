@@ -1,24 +1,17 @@
+import { Provider } from 'react-redux';
 import { createStore } from './store';
 import { format as defaultFormat } from './utils';
-import { Format, MockSource } from './types';
-import App, { JsonSchemaEditorOwnedProps } from './App';
-import { Provider } from 'react-redux';
+import JsonSchemaEditor, {
+  JsonSchemaEditorOwnedProps,
+} from './JsonSchemaEditor';
 
-export interface SchemaEditorConfiguration {
-  format?: Format;
-  mock?: MockSource;
-}
-
-export default function schemaEditor(config: SchemaEditorConfiguration = {}) {
+export default function schemaEditor() {
   const store = createStore();
 
-  const formatSource = config.format ?? defaultFormat;
-  const mockSource = config.mock;
-
-  const Component = (props: JsonSchemaEditorOwnedProps) => {
+  const Component = ({ format, ...rest }: JsonSchemaEditorOwnedProps) => {
     return (
       <Provider store={store}>
-        <App formatSource={formatSource} mockSource={mockSource} {...props} />
+        <JsonSchemaEditor format={format ?? defaultFormat} {...rest} />
       </Provider>
     );
   };

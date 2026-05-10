@@ -502,8 +502,8 @@ describe('JsonSchemaReactEditor', () => {
       { name: 'uuid', title: 'UUID' },
       { name: 'phone', title: 'Phone Number' },
     ];
-    const SchemaEditor = schemaEditor({ format: customFormats });
-    await render(<SchemaEditor onChange={onChange} />);
+    const SchemaEditor = schemaEditor();
+    await render(<SchemaEditor format={customFormats} onChange={onChange} />);
 
     const addedRow = await addTypedNode(page, 'string');
 
@@ -569,13 +569,13 @@ describe('JsonSchemaReactEditor', () => {
     );
   });
 
-  test('isMock 为 true 时显示 mock 列', async () => {
+  test('传入 mock 时显示 mock 列', async () => {
     const mockSource = [
       { name: '字符串', mock: '@string' },
       { name: '自然数', mock: '@natural' },
     ];
-    const SchemaEditor = schemaEditor({ mock: mockSource });
-    await render(<SchemaEditor isMock />);
+    const SchemaEditor = schemaEditor();
+    await render(<SchemaEditor mock={mockSource} />);
 
     // mock AutoComplete 应可见（MockSelect 使用 certain-category-search 类名）
     await expect
@@ -583,12 +583,8 @@ describe('JsonSchemaReactEditor', () => {
       .toBeVisible();
   });
 
-  test('isMock 为 false 时不显示 mock 列', async () => {
-    const mockSource = [
-      { name: '字符串', mock: '@string' },
-      { name: '自然数', mock: '@natural' },
-    ];
-    const SchemaEditor = schemaEditor({ mock: mockSource });
+  test('未传 mock 时不显示 mock 列', async () => {
+    const SchemaEditor = schemaEditor();
     await render(<SchemaEditor />);
 
     // mock AutoComplete 不应存在
@@ -602,8 +598,8 @@ describe('JsonSchemaReactEditor', () => {
       { name: '字符串', mock: '@string' },
       { name: '自然数', mock: '@natural' },
     ];
-    const SchemaEditor = schemaEditor({ mock: mockSource });
-    await render(<SchemaEditor isMock />);
+    const SchemaEditor = schemaEditor();
+    await render(<SchemaEditor mock={mockSource} />);
 
     // 根节点是 object 类型，mock 输入框应禁用
     const mockInput = page.locator('.certain-category-search input').first();
@@ -616,8 +612,8 @@ describe('JsonSchemaReactEditor', () => {
       { name: '字符串', mock: '@string' },
       { name: '自然数', mock: '@natural' },
     ];
-    const SchemaEditor = schemaEditor({ mock: mockSource });
-    await render(<SchemaEditor isMock />);
+    const SchemaEditor = schemaEditor();
+    await render(<SchemaEditor mock={mockSource} />);
 
     // 新增 array 类型节点
     const addedRow = await addTypedNode(page, 'array');
@@ -634,8 +630,8 @@ describe('JsonSchemaReactEditor', () => {
       { name: '字符串', mock: '@string' },
       { name: '自然数', mock: '@natural' },
     ];
-    const SchemaEditor = schemaEditor({ mock: mockSource });
-    await render(<SchemaEditor isMock />);
+    const SchemaEditor = schemaEditor();
+    await render(<SchemaEditor mock={mockSource} />);
 
     // 新增 string 类型节点
     const addedRow = await addTypedNode(page, 'string');
@@ -650,8 +646,8 @@ describe('JsonSchemaReactEditor', () => {
       { name: '字符串', mock: '@string' },
       { name: '自然数', mock: '@natural' },
     ];
-    const SchemaEditor = schemaEditor({ mock: mockSource });
-    await render(<SchemaEditor isMock onChange={onChange} />);
+    const SchemaEditor = schemaEditor();
+    await render(<SchemaEditor mock={mockSource} onChange={onChange} />);
 
     // 新增 string 类型节点
     const addedRow = await addTypedNode(page, 'string');
@@ -676,8 +672,8 @@ describe('JsonSchemaReactEditor', () => {
       { name: '自然数', mock: '@natural' },
     ];
     const data = `{"type":"object","title":"title","properties":{"field_1":{"type":"string","mock":{"mock":"@string"}}},"required":["field_1"]}`;
-    const SchemaEditor = schemaEditor({ mock: mockSource });
-    await render(<SchemaEditor isMock data={data} />);
+    const SchemaEditor = schemaEditor();
+    await render(<SchemaEditor mock={mockSource} data={data} />);
 
     // 验证 mock 输入框显示正确的值
     const field1 = page.locator('input[value="field_1"]');

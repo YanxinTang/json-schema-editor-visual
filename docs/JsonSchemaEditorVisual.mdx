@@ -73,12 +73,12 @@ const MOCK_SOURCE = [
   { name: '协议', mock: '@protocol' },
 ];
 
-const SchemaEditor = schemaEditor({ lang: 'zh_CN', mock: MOCK_SOURCE });
+const SchemaEditor = schemaEditor();
 
 export default () => {
   return (
     <ConfigProvider locale={zhCN}>
-      <SchemaEditor isMock />
+      <SchemaEditor mock={MOCK_SOURCE} />
     </ConfigProvider>
   );
 };

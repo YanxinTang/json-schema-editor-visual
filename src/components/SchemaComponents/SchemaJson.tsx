@@ -67,8 +67,7 @@ export interface CommonProps {
     type: string,
   ) => void;
   showAdv: (prefix: string[], value: unknown) => void;
-  isMock: boolean;
-  mockSource?: MockSource;
+  mock?: MockSource;
 }
 
 export interface SchemaItemProps extends CommonProps {
@@ -88,8 +87,7 @@ const mapping = (
   data: JsonSchema,
   showEdit: CommonProps['showEdit'],
   showAdv: CommonProps['showAdv'],
-  isMock: boolean,
-  mockSource?: MockSource,
+  mock?: MockSource,
 ) => {
   switch (data.type) {
     case 'array':
@@ -99,8 +97,7 @@ const mapping = (
           data={data}
           showEdit={showEdit}
           showAdv={showAdv}
-          isMock={isMock}
-          mockSource={mockSource}
+          mock={mock}
         />
       );
     case 'object': {
@@ -111,8 +108,7 @@ const mapping = (
           data={data}
           showEdit={showEdit}
           showAdv={showAdv}
-          isMock={isMock}
-          mockSource={mockSource}
+          mock={mock}
         />
       );
     }
@@ -126,7 +122,8 @@ const mapping = (
  */
 
 const SchemaArray: React.FC<CommonProps> = React.memo(
-  ({ data, prefix, showEdit, showAdv, isMock, mockSource }) => {
+  ({ data, prefix, showEdit, showAdv, mock }) => {
+    const isMock = Boolean(mock);
     const dispatch = useAppDispatch();
     const open = useAppSelector((state) => state.schema.open);
     const LocaleProvider = useLocalProvider();
@@ -239,7 +236,7 @@ const SchemaArray: React.FC<CommonProps> = React.memo(
                 schema={items}
                 showEdit={() => handleShowEdit('mock', items.type)}
                 onChange={handleChangeMock}
-                mockSource={mockSource}
+                mock={mock}
               />
             </Col>
           )}
@@ -288,7 +285,7 @@ const SchemaArray: React.FC<CommonProps> = React.memo(
           </Col>
         </Row>
         <div className="option-formStyle">
-          {mapping(prefixArray, items, showEdit, showAdv, isMock, mockSource)}
+          {mapping(prefixArray, items, showEdit, showAdv, mock)}
         </div>
       </div>
     );
@@ -300,7 +297,7 @@ const SchemaArray: React.FC<CommonProps> = React.memo(
  */
 
 const SchemaItem: React.FC<SchemaItemProps> = React.memo(
-  ({ name, data, prefix, showEdit, showAdv, isMock, mockSource }) => {
+  ({ name, data, prefix, showEdit, showAdv, mock }) => {
     const dispatch = useAppDispatch();
     const open = useAppSelector((state) => state.schema.open);
     const LocaleProvider = useLocalProvider();
@@ -392,11 +389,7 @@ const SchemaItem: React.FC<SchemaItemProps> = React.memo(
     if (!show) return null;
 
     return (
-      <div
-        data-testid={
-          typeof TEST !== 'undefined' && TEST ? 'SchemaItem' : undefined
-        }
-      >
+      <div data-testid={TEST ? 'SchemaItem' : null}>
         <Row justify="space-around" align="middle">
           <Col
             span={8}
@@ -420,11 +413,7 @@ const SchemaItem: React.FC<SchemaItemProps> = React.memo(
                   <FieldInput
                     onChange={handleChangeName}
                     value={name}
-                    data-testid={
-                      typeof TEST !== 'undefined' && TEST
-                        ? 'SchemaItem_propNameInput'
-                        : undefined
-                    }
+                    data-testid={TEST ? 'SchemaItem_propNameInput' : null}
                   />
                   <Tooltip placement="top" title={LocaleProvider('required')}>
                     <Button type="text">
@@ -457,28 +446,24 @@ const SchemaItem: React.FC<SchemaItemProps> = React.memo(
             </Select>
           </Col>
 
-          {isMock && (
+          {mock && (
             <Col span={3} className="col-item col-item-mock">
               <MockSelect
                 schema={value}
                 showEdit={() => handleShowEdit('mock', value.type)}
                 onChange={handleChangeMock}
-                mockSource={mockSource}
+                mock={mock}
               />
             </Col>
           )}
 
-          <Col span={isMock ? 4 : 5} className="col-item col-item-mock">
+          <Col span={mock ? 4 : 5} className="col-item col-item-mock">
             <Space.Compact>
               <Input
                 placeholder={LocaleProvider('title')}
                 value={value.title}
                 onChange={handleChangeTitle}
-                data-testid={
-                  typeof TEST !== 'undefined' && TEST
-                    ? 'SchemaItem_titleInput'
-                    : undefined
-                }
+                data-testid={TEST ? 'SchemaItem_titleInput' : null}
               />
               <Button
                 icon={<EditOutlined />}
@@ -487,17 +472,13 @@ const SchemaItem: React.FC<SchemaItemProps> = React.memo(
             </Space.Compact>
           </Col>
 
-          <Col span={isMock ? 4 : 5} className="col-item col-item-desc">
+          <Col span={mock ? 4 : 5} className="col-item col-item-desc">
             <Space.Compact>
               <Input
                 placeholder={LocaleProvider('description')}
                 value={value.description}
                 onChange={handleChangeDesc}
-                data-testid={
-                  typeof TEST !== 'undefined' && TEST
-                    ? 'SchemaItem_descInput'
-                    : undefined
-                }
+                data-testid={TEST ? 'SchemaItem_descInput' : null}
               />
               <Button
                 icon={<EditOutlined />}
@@ -506,15 +487,11 @@ const SchemaItem: React.FC<SchemaItemProps> = React.memo(
             </Space.Compact>
           </Col>
 
-          <Col span={isMock ? 2 : 3} className="col-item col-item-setting">
+          <Col span={mock ? 2 : 3} className="col-item col-item-setting">
             <span
               className="adv-set"
               onClick={handleShowAdv}
-              data-testid={
-                typeof TEST !== 'undefined' && TEST
-                  ? 'SchemaItem_FieldInput_advSet'
-                  : undefined
-              }
+              data-testid={TEST ? 'SchemaItem_FieldInput_advSet' : null}
             >
               <Tooltip placement="top" title={LocaleProvider('adv_setting')}>
                 <SettingOutlined />
@@ -538,7 +515,7 @@ const SchemaItem: React.FC<SchemaItemProps> = React.memo(
           </Col>
         </Row>
         <div className="option-formStyle">
-          {mapping(prefixArray, value, showEdit, showAdv, isMock, mockSource)}
+          {mapping(prefixArray, value, showEdit, showAdv, mock)}
         </div>
       </div>
     );
@@ -554,8 +531,7 @@ const SchemaObjectComponent: React.FC<CommonProps> = ({
   prefix,
   showEdit,
   showAdv,
-  isMock,
-  mockSource,
+  mock,
 }) => {
   // 仅作为依赖注入，触发组件在Redux state open发生变化时重新渲染
   const _open = useAppSelector((state) => state.schema.open);
@@ -570,8 +546,7 @@ const SchemaObjectComponent: React.FC<CommonProps> = ({
           prefix={prefix}
           showEdit={showEdit}
           showAdv={showAdv}
-          isMock={isMock}
-          mockSource={mockSource}
+          mock={mock}
         />
       ))}
     </div>
@@ -655,18 +630,16 @@ export interface SchemaJsonProps {
     type: string,
   ) => void;
   showAdv: (prefix: string[], value: unknown) => void;
-  isMock: boolean;
-  mockSource?: MockSource;
+  mock?: MockSource;
 }
 
 const SchemaJson: React.FC<SchemaJsonProps> = ({
   data,
   showEdit,
   showAdv,
-  isMock,
-  mockSource,
+  mock,
 }) => {
-  const item = mapping([], data, showEdit, showAdv, isMock, mockSource);
+const item = mapping([], data, showEdit, showAdv, mock);
   return <div className="schema-content">{item}</div>;
 };
 

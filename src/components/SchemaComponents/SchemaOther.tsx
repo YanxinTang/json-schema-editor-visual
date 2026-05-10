@@ -294,7 +294,7 @@ const SchemaNumber: React.FC<SchemaNumberProps> = ({
                 changeCustomValue,
               )
             }
-            data-testid={TEST ? 'advSettingModal_default' : undefined}
+            data-testid={TEST ? 'advSettingModal_default' : null}
           />
         </Col>
       </Row>
@@ -324,9 +324,7 @@ const SchemaNumber: React.FC<SchemaNumberProps> = ({
                     changeCustomValue,
                   )
                 }
-                data-testid={
-                  TEST ? 'advSettingModal_exclusiveMinimum' : undefined
-                }
+                data-testid={TEST ? 'advSettingModal_exclusiveMinimum' : null}
               />
             </Col>
           </Row>
@@ -356,9 +354,7 @@ const SchemaNumber: React.FC<SchemaNumberProps> = ({
                     changeCustomValue,
                   )
                 }
-                data-testid={
-                  TEST ? 'advSettingModal_exclusiveMaximum' : undefined
-                }
+                data-testid={TEST ? 'advSettingModal_exclusiveMaximum' : null}
               />
             </Col>
           </Row>
@@ -377,7 +373,7 @@ const SchemaNumber: React.FC<SchemaNumberProps> = ({
                 onChange={(e) =>
                   changeOtherValue(e, 'minimum', data, changeCustomValue)
                 }
-                data-testid={TEST ? 'advSettingModal_minimum' : undefined}
+                data-testid={TEST ? 'advSettingModal_minimum' : null}
               />
             </Col>
           </Row>
@@ -394,7 +390,7 @@ const SchemaNumber: React.FC<SchemaNumberProps> = ({
                 onChange={(e) =>
                   changeOtherValue(e, 'maximum', data, changeCustomValue)
                 }
-                data-testid={TEST ? 'advSettingModal_maximum' : undefined}
+                data-testid={TEST ? 'advSettingModal_maximum' : null}
               />
             </Col>
           </Row>
@@ -407,7 +403,7 @@ const SchemaNumber: React.FC<SchemaNumberProps> = ({
             <Checkbox
               checked={checked}
               onChange={(e) => onChangeCheckBox(e.target.checked)}
-              data-testid={TEST ? 'advSettingModal_enumCheckbox' : undefined}
+              data-testid={TEST ? 'advSettingModal_enumCheckbox' : null}
             />{' '}
             :
           </span>
@@ -421,7 +417,7 @@ const SchemaNumber: React.FC<SchemaNumberProps> = ({
             onChange={(e) => {
               changeEnumOtherValue(e.target.value);
             }}
-            data-testid={TEST ? 'advSettingModal_enumTextarea' : undefined}
+            data-testid={TEST ? 'advSettingModal_enumTextarea' : null}
           />
         </Col>
       </Row>
@@ -439,7 +435,7 @@ const SchemaNumber: React.FC<SchemaNumberProps> = ({
               onChange={(e) => {
                 changeEnumDescOtherValue(e.target.value);
               }}
-              data-testid={TEST ? 'advSettingModal_enumDesc' : undefined}
+              data-testid={TEST ? 'advSettingModal_enumDesc' : null}
             />
           </Col>
         </Row>
@@ -478,7 +474,7 @@ const SchemaBoolean: React.FC<SchemaBooleanProps> = ({
               )
             }
             style={{ width: 200 }}
-            data-testid={TEST ? 'advSettingModal_defaultSelect' : undefined}
+            data-testid={TEST ? 'advSettingModal_defaultSelect' : null}
           >
             <Option value="true">true</Option>
             <Option value="false">false</Option>
@@ -521,7 +517,7 @@ const SchemaArray: React.FC<SchemaArrayAdvProps> = ({
             onChange={(e) =>
               changeOtherValue(e, 'uniqueItems', data, changeCustomValue)
             }
-            data-testid={TEST ? 'advSettingModal_uniqueItemsSwitch' : undefined}
+            data-testid={TEST ? 'advSettingModal_uniqueItemsSwitch' : null}
           />
         </Col>
       </Row>
@@ -538,7 +534,7 @@ const SchemaArray: React.FC<SchemaArrayAdvProps> = ({
                 onChange={(e) =>
                   changeOtherValue(e, 'minItems', data, changeCustomValue)
                 }
-                data-testid={TEST ? 'advSettingModal_minItemsInput' : undefined}
+                data-testid={TEST ? 'advSettingModal_minItemsInput' : null}
               />
             </Col>
           </Row>
@@ -555,7 +551,7 @@ const SchemaArray: React.FC<SchemaArrayAdvProps> = ({
                 onChange={(e) =>
                   changeOtherValue(e, 'maxItems', data, changeCustomValue)
                 }
-                data-testid={TEST ? 'advSettingModal_maxItemsInput' : undefined}
+                data-testid={TEST ? 'advSettingModal_maxItemsInput' : null}
               />
             </Col>
           </Row>
@@ -617,17 +613,16 @@ const handleInputEditor = (
 interface CustomItemProps {
   data: string;
   changeCustomValue: (data: JsonSchema) => void;
-  formatSource: Format;
+  format: Format;
 }
 
 const CustomItem: React.FC<CustomItemProps> = ({
   data,
   changeCustomValue,
-  formatSource,
+  format,
 }) => {
   const LocalProvider = useLocalProvider();
   const parsed = JSON.parse(data) as JsonSchema;
-  const format = formatSource;
   const optionForm = mapping(parsed, changeCustomValue, format);
 
   return (
