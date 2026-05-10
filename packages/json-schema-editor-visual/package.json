@@ -1,6 +1,6 @@
 {
   "name": "@tyx1703/json-schema-editor-visual",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A React component for visually editing JSON Schema",
   "type": "module",
   "license": "MIT",
