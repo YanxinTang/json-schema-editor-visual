@@ -1,5 +1,5 @@
 {
-  "name": "json-schema-editor-visual",
+  "name": "@tyx1703/json-schema-editor-visual",
   "version": "1.0.0",
   "type": "module",
   "exports": {
