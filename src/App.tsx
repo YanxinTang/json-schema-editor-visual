@@ -29,7 +29,7 @@ import SchemaJson from './components/SchemaComponents/SchemaJson.js';
 import { SCHEMA_TYPE, debounce } from './utils';
 import GenerateSchema from 'generate-schema/src/schemas/json.js';
 import CustomItem from './components/SchemaComponents/SchemaOther';
-import LocalProvider from './components/LocalProvider';
+import { useLocalProvider } from './components/LocalProvider';
 import MockSelect from './components/MockSelect';
 import { JsonSchema, MockSource, Format } from './types';
 import { useAppDispatch, useAppSelector } from './store';
@@ -66,6 +66,7 @@ const JsonSchemaEditor: React.FC<JsonSchemaProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const schema = useAppSelector((state) => state.schema.data);
+  const LocalProvider = useLocalProvider();
 
   // Refs
   const jsonDataRef = useRef<Record<string, unknown> | null>(null);

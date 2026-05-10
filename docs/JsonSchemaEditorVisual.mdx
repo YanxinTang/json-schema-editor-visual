@@ -15,10 +15,12 @@ export default () => {
 };
 ```
 
-### Mock and language support
+### Feature usage
 
 ```jsx preview
 import React from 'react';
+import zhCN from 'antd/locale/zh_CN';
+import { ConfigProvider } from 'antd';
 import schemaEditor from 'json-schema-editor-visual';
 
 const MOCK_SOURCE = [
@@ -74,7 +76,11 @@ const MOCK_SOURCE = [
 const SchemaEditor = schemaEditor({ lang: 'zh_CN', mock: MOCK_SOURCE });
 
 export default () => {
-  return <SchemaEditor isMock />;
+  return (
+    <ConfigProvider locale={zhCN}>
+      <SchemaEditor isMock />
+    </ConfigProvider>
+  );
 };
 ```
 

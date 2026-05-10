@@ -1,7 +1,9 @@
 import { afterEach, describe, expect, rs, test } from '@rstest/core';
-import schemaEditor from '../src';
 import { BrowserPage, page } from '@rstest/browser';
 import { render } from '@rstest/browser-react';
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/locale/zh_CN';
+import schemaEditor from '../src';
 
 describe('JsonSchemaReactEditor', () => {
   test('初始状态渲染', async () => {
@@ -690,16 +692,24 @@ describe('JsonSchemaReactEditor', () => {
 
 describe('国际化 (i18n)', () => {
   test('zh_CN 语言下显示中文导入按钮', async () => {
-    const SchemaEditor = schemaEditor({ lang: 'zh_CN' });
-    await render(<SchemaEditor />);
+    const SchemaEditor = schemaEditor();
+    await render(
+      <ConfigProvider locale={zhCN}>
+        <SchemaEditor />
+      </ConfigProvider>,
+    );
     await expect
       .element(page.getByRole('button', { name: '导入 json' }))
       .toBeVisible();
   });
 
   test('zh_CN 语言下显示中文高级设置', async () => {
-    const SchemaEditor = schemaEditor({ lang: 'zh_CN' });
-    await render(<SchemaEditor />);
+    const SchemaEditor = schemaEditor();
+    await render(
+      <ConfigProvider locale={zhCN}>
+        <SchemaEditor />
+      </ConfigProvider>,
+    );
     await page.getByRole('img', { name: 'setting' }).click();
     await expect
       .element(page.getByRole('dialog', { name: '高级设置' }))
@@ -707,16 +717,24 @@ describe('国际化 (i18n)', () => {
   });
 
   test('zh_CN 语言下显示中文标题和描述占位符', async () => {
-    const SchemaEditor = schemaEditor({ lang: 'zh_CN' });
-    await render(<SchemaEditor />);
+    const SchemaEditor = schemaEditor();
+    await render(
+      <ConfigProvider locale={zhCN}>
+        <SchemaEditor />
+      </ConfigProvider>,
+    );
     const addedRow = await addTypedNode(page, 'string');
     await expect.element(addedRow.getByPlaceholder('标题')).toBeVisible();
     await expect.element(addedRow.getByPlaceholder('备注')).toBeVisible();
   });
 
   test('zh_CN 语言下显示中文节点操作提示', async () => {
-    const SchemaEditor = schemaEditor({ lang: 'zh_CN' });
-    await render(<SchemaEditor />);
+    const SchemaEditor = schemaEditor();
+    await render(
+      <ConfigProvider locale={zhCN}>
+        <SchemaEditor />
+      </ConfigProvider>,
+    );
     const addedRow = await addTypedNode(page, 'object');
     await addedRow.getByRole('img', { name: 'plus' }).hover();
     await expect
@@ -728,8 +746,12 @@ describe('国际化 (i18n)', () => {
   });
 
   test('zh_CN 语言下高级设置模态框显示中文', async () => {
-    const SchemaEditor = schemaEditor({ lang: 'zh_CN' });
-    await render(<SchemaEditor />);
+    const SchemaEditor = schemaEditor();
+    await render(
+      <ConfigProvider locale={zhCN}>
+        <SchemaEditor />
+      </ConfigProvider>,
+    );
     const addedRow = await addTypedNode(page, 'string');
     await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
     const advModal = page.getByRole('dialog', { name: '高级设置' });

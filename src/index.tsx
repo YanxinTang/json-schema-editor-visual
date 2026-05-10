@@ -1,23 +1,18 @@
-import * as utils from './utils';
 import { createStore } from './store';
+import { format as defaultFormat } from './utils';
 import { Format, MockSource } from './types';
 import App, { JsonSchemaEditorOwnedProps } from './App';
 import { Provider } from 'react-redux';
 
 export interface SchemaEditorConfiguration {
-  lang?: 'zh_CN' | 'en_US';
   format?: Format;
   mock?: MockSource;
 }
 
 export default function schemaEditor(config: SchemaEditorConfiguration = {}) {
-  if (config.lang) {
-    utils.setLang(config.lang);
-  }
-
   const store = createStore();
 
-  const formatSource = config.format ?? utils.format;
+  const formatSource = config.format ?? defaultFormat;
   const mockSource = config.mock;
 
   const Component = (props: JsonSchemaEditorOwnedProps) => {

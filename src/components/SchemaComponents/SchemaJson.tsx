@@ -28,7 +28,7 @@ import {
   isEqual,
 } from '../../utils.js';
 import FieldInput from './FieldInput.js';
-import LocaleProvider from '../LocalProvider';
+import { useLocalProvider } from '../LocalProvider';
 import MockSelect from '../MockSelect';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
@@ -129,6 +129,7 @@ const SchemaArray: React.FC<CommonProps> = React.memo(
   ({ data, prefix, showEdit, showAdv, isMock, mockSource }) => {
     const dispatch = useAppDispatch();
     const open = useAppSelector((state) => state.schema.open);
+    const LocaleProvider = useLocalProvider();
 
     const tagPaddingLeftStyle = useMemo(() => {
       const length = prefix.filter((name) => name !== 'properties').length;
@@ -302,6 +303,7 @@ const SchemaItem: React.FC<SchemaItemProps> = React.memo(
   ({ name, data, prefix, showEdit, showAdv, isMock, mockSource }) => {
     const dispatch = useAppDispatch();
     const open = useAppSelector((state) => state.schema.open);
+    const LocaleProvider = useLocalProvider();
 
     const tagPaddingLeftStyle = useMemo(() => {
       const length = prefix.filter((n) => n !== 'properties').length;
@@ -599,6 +601,7 @@ export interface DropPlusProps {
  */
 const DropPlus: React.FC<DropPlusProps> = ({ prefix, name }) => {
   const dispatch = useAppDispatch();
+  const LocaleProvider = useLocalProvider();
 
   const menu = (
     <Menu>

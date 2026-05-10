@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { AutoComplete, Space, Button } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
-import LocaleProvider from '../LocalProvider';
+import { useLocalProvider } from '../LocalProvider';
 import { JsonSchema, MockSource } from '../../types';
 
 interface MockSelectProps {
@@ -17,6 +17,7 @@ const MockSelect: React.FC<MockSelectProps> = ({
   onChange,
   mockSource,
 }) => {
+  const LocaleProvider = useLocalProvider();
   const disabled = schema.type === 'object' || schema.type === 'array';
 
   const options = useMemo(

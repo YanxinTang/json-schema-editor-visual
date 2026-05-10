@@ -2,12 +2,6 @@ import { Format, JsonSchema } from './types';
 
 export const JSONPATH_JOIN_CHAR = '.';
 
-export let lang = 'en_US';
-
-export function setLang(language: 'zh_CN' | 'en_US'): void {
-  lang = language;
-}
-
 export const format: Format = [
   { name: 'date-time' },
   { name: 'date' },

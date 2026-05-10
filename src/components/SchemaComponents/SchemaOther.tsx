@@ -16,7 +16,7 @@ import { isNil } from '../../utils';
 const Option = Select.Option;
 import AceEditor from '../MonacoEditor';
 import type { MockEditorData } from '../MonacoEditor';
-import LocalProvider from '../LocalProvider';
+import { useLocalProvider } from '../LocalProvider';
 import {
   JsonSchema,
   JsonSchemaString,
@@ -49,6 +49,7 @@ const SchemaString: React.FC<SchemaStringProps> = ({
   changeCustomValue,
   format,
 }) => {
+  const LocalProvider = useLocalProvider();
   const [checked, setChecked] = useState(isNil(data.enum) ? false : true);
 
   useEffect(() => {
@@ -237,6 +238,7 @@ const SchemaNumber: React.FC<SchemaNumberProps> = ({
   data,
   changeCustomValue,
 }) => {
+  const LocalProvider = useLocalProvider();
   const [checked, setChecked] = useState(isNil(data.enum) ? false : true);
   const [enumValue, setEnumValue] = useState(
     isNil(data.enum) ? '' : data.enum.join('\n'),
@@ -455,6 +457,7 @@ const SchemaBoolean: React.FC<SchemaBooleanProps> = ({
   data,
   changeCustomValue,
 }) => {
+  const LocalProvider = useLocalProvider();
   const value = isNil(data.default) ? '' : data.default ? 'true' : 'false';
   return (
     <div>
@@ -495,6 +498,7 @@ const SchemaArray: React.FC<SchemaArrayAdvProps> = ({
   data,
   changeCustomValue,
 }) => {
+  const LocalProvider = useLocalProvider();
   return (
     <div>
       <div className="default-setting">{LocalProvider('base_setting')}</div>
@@ -621,6 +625,7 @@ const CustomItem: React.FC<CustomItemProps> = ({
   changeCustomValue,
   formatSource,
 }) => {
+  const LocalProvider = useLocalProvider();
   const parsed = JSON.parse(data) as JsonSchema;
   const format = formatSource;
   const optionForm = mapping(parsed, changeCustomValue, format);
