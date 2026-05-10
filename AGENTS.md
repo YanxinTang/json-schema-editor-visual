@@ -27,7 +27,6 @@ You are an expert in JavaScript, Rspack, Rsbuild, Rslib, and library development
 - Run `pnpm run doc` to start the Rspress documentation dev server, which will also start Rslib in watch mode
 - Run `pnpm run doc:build` to build the documentation
 
-
 ## Notes
 
 ### Testing

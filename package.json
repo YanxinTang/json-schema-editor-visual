@@ -1,28 +1,30 @@
 {
-  "name": "@tyx1703/json-schema-editor-visual",
+  "name": "json-schema-editor-visual",
+  "private": true,
   "version": "1.0.0",
   "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    }
-  },
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "description": "",
   "scripts": {
     "prepare": "simple-git-hooks",
-    "build": "rslib",
-    "dev": "rslib --watch",
-    "doc": "rspress dev",
-    "doc:build": "rspress build",
-    "doc:preview": "rspress preview",
     "format": "prettier --write .",
-    "lint": "rslint",
-    "test": "rstest",
-    "test:watch": "rstest --watch"
+    "lint": "rslint"
+  },
+  "devDependencies": {
+    "@rslint/core": "^0.5.2",
+    "nano-staged": "^1.0.2",
+    "playwright": "^1.49.1",
+    "prettier": "^3.8.3",
+    "simple-git-hooks": "^2.13.1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.0.8",
+      "onFail": "download"
+    }
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm exec nano-staged"
@@ -33,48 +35,5 @@
       "rslint --type-check",
       "prettier --experimental-cli --write"
     ]
-  },
-  "dependencies": {
-    "@monaco-editor/react": "^4.7.0",
-    "@reduxjs/toolkit": "^2.11.2",
-    "generate-schema": "^2.6.0",
-    "monaco-editor": "^0.55.1",
-    "react-redux": "^9.2.0"
-  },
-  "devDependencies": {
-    "@ant-design/icons": "^5.0.0",
-    "@rsbuild/plugin-react": "^2.0.0",
-    "@rslib/core": "^0.21.4",
-    "@rslint/core": "^0.5.2",
-    "@rspress/core": "^2.0.10",
-    "@rspress/plugin-api-docgen": "^2.0.10",
-    "@rspress/plugin-preview": "^2.0.10",
-    "@rstest/adapter-rslib": "^0.2.2",
-    "@rstest/browser": "^0.9.10",
-    "@rstest/browser-react": "^0.9.10",
-    "@rstest/core": "^0.9.10",
-    "@rstest/coverage-istanbul": "^0.3.2",
-    "@testing-library/dom": "^10.0.0",
-    "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.2",
-    "@testing-library/user-event": "^14.6.1",
-    "@types/node": "^24.12.2",
-    "@types/react": "^19.2.14",
-    "antd": "^5.0.0",
-    "happy-dom": "^20.9.0",
-    "nano-staged": "^1.0.2",
-    "playwright": "^1.49.1",
-    "prettier": "^3.8.3",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5",
-    "rsbuild-plugin-workspace-dev": "^0.1.4",
-    "simple-git-hooks": "^2.13.1",
-    "typescript": "^6.0.3"
-  },
-  "peerDependencies": {
-    "@ant-design/icons": "^5.0.0",
-    "antd": "^5.0.0",
-    "react": ">=16.9.0",
-    "react-dom": ">=16.9.0"
   }
 }

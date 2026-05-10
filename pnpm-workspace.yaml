@@ -1,2 +1,5 @@
+packages:
+  - packages/*
+  - fixtures/*
 allowBuilds:
   simple-git-hooks: true

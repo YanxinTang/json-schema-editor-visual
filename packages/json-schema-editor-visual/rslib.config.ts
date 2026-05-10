@@ -7,8 +7,8 @@ export default defineConfig({
       index: ['./src/**'],
     },
     define: {
-      TEST: JSON.stringify(true)
-    }
+      TEST: JSON.stringify(true),
+    },
   },
   lib: [
     {

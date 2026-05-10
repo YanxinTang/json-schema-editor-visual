@@ -5,7 +5,7 @@ import { pluginPreview } from '@rspress/plugin-preview';
 import { pluginWorkspaceDev } from 'rsbuild-plugin-workspace-dev';
 
 export default defineConfig({
-  root: path.join(__dirname, 'docs'),
+  root: path.join(__dirname, 'src'),
   title: 'JsonSchemaEditorVisual',
   lang: 'zh',
   builderConfig: {
@@ -18,7 +18,7 @@ export default defineConfig({
   plugins: [
     pluginApiDocgen({
       entries: {
-        JsonSchemaEditorVisual: './src/index.tsx',
+        JsonSchemaEditorVisual: '../json-schema-editor-visual/src/index.tsx',
       },
       apiParseTool: 'react-docgen-typescript',
     }),

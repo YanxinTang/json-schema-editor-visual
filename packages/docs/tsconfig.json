@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "rootDir": ".",
+    "lib": ["DOM", "ES2022"],
+    "jsx": "react-jsx",
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "useDefineForClassFields": true,
+    "paths": {
+      "json-schema-editor-visual": ["."]
+    }
+  },
+  "include": ["src", "rspress.config.ts"]
+}

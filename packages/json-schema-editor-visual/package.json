@@ -1,0 +1,57 @@
+{
+  "name": "@tyx1703/json-schema-editor-visual",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rslib",
+    "dev": "rslib --watch",
+    "test": "rstest",
+    "test:watch": "rstest --watch"
+  },
+  "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
+    "@reduxjs/toolkit": "^2.11.2",
+    "generate-schema": "^2.6.0",
+    "monaco-editor": "^0.55.1",
+    "react-redux": "^9.2.0"
+  },
+  "devDependencies": {
+    "@ant-design/icons": "^5.0.0",
+    "@rsbuild/plugin-react": "^2.0.0",
+    "@rslib/core": "^0.21.4",
+    "@rslint/core": "^0.5.2",
+    "@rstest/adapter-rslib": "^0.2.2",
+    "@rstest/browser": "^0.9.10",
+    "@rstest/browser-react": "^0.9.10",
+    "@rstest/core": "^0.9.10",
+    "@rstest/coverage-istanbul": "^0.3.2",
+    "@testing-library/dom": "^10.0.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^24.12.2",
+    "@types/react": "^19.2.14",
+    "antd": "^5.0.0",
+    "happy-dom": "^20.9.0",
+    "playwright": "^1.49.1",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "typescript": "^6.0.3"
+  },
+  "peerDependencies": {
+    "@ant-design/icons": "^5 || ^6",
+    "antd": "^5 || ^6",
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
+  }
+}
