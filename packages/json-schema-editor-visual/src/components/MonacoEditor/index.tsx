@@ -1,40 +1,5 @@
 import React, { useCallback } from 'react';
-import * as monaco from 'monaco-editor';
 import Editor, { loader } from '@monaco-editor/react';
-
-self.MonacoEnvironment = {
-  getWorker: function (moduleId, label) {
-    if (label === 'json') {
-      return new Worker(
-        new URL(
-          'monaco-editor/esm/vs/language/json/json.worker',
-          import.meta.url,
-        ),
-      );
-    }
-    if (label === 'html' || label === 'handlebars' || label === 'razor') {
-      return new Worker(
-        new URL(
-          'monaco-editor/esm/vs/language/html/html.worker',
-          import.meta.url,
-        ),
-      );
-    }
-    if (label === 'typescript' || label === 'javascript') {
-      return new Worker(
-        new URL(
-          'monaco-editor/esm/vs/language/typescript/ts.worker',
-          import.meta.url,
-        ),
-      );
-    }
-    return new Worker(
-      new URL('monaco-editor/esm/vs/editor/editor.worker', import.meta.url),
-    );
-  },
-};
-
-loader.config({ monaco });
 
 export interface MockEditorData {
   text: string;
@@ -69,6 +34,8 @@ interface AceEditorProps {
   mode?: ModeKey;
 }
 
+const isBrowser = typeof window !== 'undefined';
+
 const AceEditor: React.FC<AceEditorProps> = ({
   data,
   onChange,
@@ -83,6 +50,44 @@ const AceEditor: React.FC<AceEditorProps> = ({
     [onChange],
   );
 
+  const handleBeforeMount = useCallback(async () => {
+    const monaco = await import('monaco-editor');
+    self.MonacoEnvironment = {
+      getWorker(_moduleId: string, label: string) {
+        if (label === 'json') {
+          return new Worker(
+            new URL(
+              'monaco-editor/esm/vs/language/json/json.worker',
+              import.meta.url,
+            ),
+          );
+        }
+        if (label === 'html' || label === 'handlebars' || label === 'razor') {
+          return new Worker(
+            new URL(
+              'monaco-editor/esm/vs/language/html/html.worker',
+              import.meta.url,
+            ),
+          );
+        }
+        if (label === 'typescript' || label === 'javascript') {
+          return new Worker(
+            new URL(
+              'monaco-editor/esm/vs/language/typescript/ts.worker',
+              import.meta.url,
+            ),
+          );
+        }
+        return new Worker(
+          new URL('monaco-editor/esm/vs/editor/editor.worker', import.meta.url),
+        );
+      },
+    };
+    loader.config({ monaco });
+  }, []);
+
+  if (!isBrowser) return null;
+
   return (
     <div
       className={className ?? 'monaco-editor-container'}
@@ -93,6 +98,7 @@ const AceEditor: React.FC<AceEditorProps> = ({
         language={LanguageMap[mode] ?? 'plaintext'}
         value={data ?? ''}
         onChange={handleChange}
+        beforeMount={handleBeforeMount}
         options={{
           minimap: { enabled: false },
           fontSize: 14,
