@@ -82,7 +82,7 @@ export type MessageKey = keyof (typeof langs)['en_US'];
  * 从 antd ConfigProvider 中获取当前语言环境，并返回国际化查询函数
  * @returns 一个接受 MessageKey 返回对应语言字符串的函数
  */
-export function useLocalProvider(): (message: MessageKey) => string {
+export function useLocalProvider() {
   const { locale } = useContext(ConfigProvider.ConfigContext);
 
   const langKey: LangKey = locale?.locale.startsWith('zh') ? 'zh_CN' : 'en_US';
