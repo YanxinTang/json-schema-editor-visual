@@ -26,7 +26,7 @@ const TabPane = Tabs.TabPane;
 
 declare const TEST: boolean | undefined;
 import './index.css';
-import AceEditor from './components/AceEditor/AceEditor';
+import AceEditor from './components/MonacoEditor';
 import _ from 'underscore';
 import SchemaJson from './components/SchemaComponents/SchemaJson.js';
 import { SCHEMA_TYPE, debounce } from './utils';
@@ -37,7 +37,7 @@ import MockSelect from './components/MockSelect';
 import { JsonSchema, MockSource, Format } from './types';
 import { useAppDispatch, useAppSelector } from './store';
 import type { MessageKey } from './components/LocalProvider';
-import type { MockEditorData } from './components/AceEditor/AceEditor';
+import type { MockEditorData } from './components/MonacoEditor';
 import {
   changeEditorSchemaAction,
   changeTypeAction,
