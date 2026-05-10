@@ -1,16 +1,33 @@
 {
   "name": "@tyx1703/json-schema-editor-visual",
   "version": "1.0.0",
+  "description": "A React component for visually editing JSON Schema",
   "type": "module",
+  "license": "MIT",
+  "author": "tyx1703",
+  "repository": "github:YanxinTang/json-schema-editor-visual",
+  "keywords": [
+    "json-schema",
+    "editor",
+    "react",
+    "visual",
+    "antd"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
-    }
+    },
+    "./dist/index.css": "./dist/index.css"
   },
   "types": "./dist/index.d.ts",
+  "sideEffects": [
+    "**/*.css"
+  ],
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "rslib",
