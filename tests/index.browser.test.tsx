@@ -3,11 +3,10 @@ import { BrowserPage, page } from '@rstest/browser';
 import { render } from '@rstest/browser-react';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
-import schemaEditor from '../src';
+import SchemaEditor from '../src';
 
 describe('JsonSchemaReactEditor', () => {
   test('初始状态渲染', async () => {
-    const SchemaEditor = schemaEditor();
     await render(<SchemaEditor />);
 
     // 顶部导入按钮
@@ -45,7 +44,6 @@ describe('JsonSchemaReactEditor', () => {
 
   test('初始值渲染', async () => {
     const data = `{"type":"object","title":"title","properties":{"field_1":{"type":"string","title":"field_1_title","description":"field_1_description"}},"required":["field_1"]}`;
-    const SchemaEditor = schemaEditor();
     await render(<SchemaEditor data={data} />);
 
     const field1 = page.locator('input[value="field_1"]');
@@ -65,7 +63,6 @@ describe('JsonSchemaReactEditor', () => {
   });
 
   test('导入按钮可被点击，点击后打开导入模态框', async () => {
-    const SchemaEditor = schemaEditor();
     await render(<SchemaEditor />);
 
     await page.getByRole('button', { name: 'Import JSON' }).click();
@@ -76,7 +73,6 @@ describe('JsonSchemaReactEditor', () => {
   });
 
   test('标题编辑按钮可被点击，点击后打开标题模态框', async () => {
-    const SchemaEditor = schemaEditor();
     await render(<SchemaEditor />);
 
     const titleInput = page.locator('input[value="title"]');
@@ -92,7 +88,6 @@ describe('JsonSchemaReactEditor', () => {
   });
 
   test('描述编辑按钮可被点击，点击后打开描述模态框', async () => {
-    const SchemaEditor = schemaEditor();
     await render(<SchemaEditor />);
 
     const descInput = page.getByPlaceholder('description');
@@ -108,7 +103,6 @@ describe('JsonSchemaReactEditor', () => {
   });
 
   test('高级设置按钮可被点击，点击后打开高级设置模态框', async () => {
-    const SchemaEditor = schemaEditor();
     await render(<SchemaEditor />);
 
     await page.getByRole('img', { name: 'setting' }).click();
@@ -119,7 +113,6 @@ describe('JsonSchemaReactEditor', () => {
   });
 
   test('添加节点按钮可被点击，点击后新增子节点', async () => {
-    const SchemaEditor = schemaEditor();
     await render(<SchemaEditor />);
 
     await page.getByRole('img', { name: 'plus' }).click();
@@ -135,8 +128,7 @@ describe('JsonSchemaReactEditor', () => {
   });
 
   test('编辑 string 类型子节点', async () => {
-    const onChange = rs.fn((event) => console.log(event));
-    const SchemaEditor = schemaEditor();
+    const onChange = rs.fn();
     await render(<SchemaEditor onChange={onChange} />);
 
     // 新增节点
@@ -179,8 +171,7 @@ describe('JsonSchemaReactEditor', () => {
   });
 
   test('string 节点高级设置', async () => {
-    const onChange = rs.fn((event) => console.log(event));
-    const SchemaEditor = schemaEditor();
+    const onChange = rs.fn();
     await render(<SchemaEditor onChange={onChange} />);
 
     // 新增节点
@@ -214,8 +205,7 @@ describe('JsonSchemaReactEditor', () => {
   });
 
   test('编辑 number 类型子节点', async () => {
-    const onChange = rs.fn((event) => console.log(event));
-    const SchemaEditor = schemaEditor();
+    const onChange = rs.fn();
     await render(<SchemaEditor onChange={onChange} />);
 
     // 新增节点
@@ -246,8 +236,7 @@ describe('JsonSchemaReactEditor', () => {
   });
 
   test('number 节点高级设置', async () => {
-    const onChange = rs.fn((event) => console.log(event));
-    const SchemaEditor = schemaEditor();
+    const onChange = rs.fn();
     await render(<SchemaEditor onChange={onChange} />);
 
     // 新增节点
@@ -275,8 +264,7 @@ describe('JsonSchemaReactEditor', () => {
   });
 
   test('编辑 array 类型子节点', async () => {
-    const onChange = rs.fn((event) => console.log(event));
-    const SchemaEditor = schemaEditor();
+    const onChange = rs.fn();
     await render(<SchemaEditor onChange={onChange} />);
 
     // 新增节点
@@ -305,8 +293,7 @@ describe('JsonSchemaReactEditor', () => {
   });
 
   test('array 节点高级设置', async () => {
-    const onChange = rs.fn((event) => console.log(event));
-    const SchemaEditor = schemaEditor();
+    const onChange = rs.fn();
     await render(<SchemaEditor onChange={onChange} />);
 
     // 新增节点
@@ -329,8 +316,7 @@ describe('JsonSchemaReactEditor', () => {
   });
 
   test('编辑 object 类型子节点', async () => {
-    const onChange = rs.fn((event) => console.log(event));
-    const SchemaEditor = schemaEditor();
+    const onChange = rs.fn();
     await render(<SchemaEditor onChange={onChange} />);
 
     // 新增节点
@@ -364,8 +350,7 @@ describe('JsonSchemaReactEditor', () => {
   });
 
   test('object 节点高级设置', async () => {
-    const onChange = rs.fn((event) => console.log(event));
-    const SchemaEditor = schemaEditor();
+    const onChange = rs.fn();
     await render(<SchemaEditor onChange={onChange} />);
 
     // 新增节点
@@ -384,8 +369,7 @@ describe('JsonSchemaReactEditor', () => {
   });
 
   test('编辑 boolean 类型子节点', async () => {
-    const onChange = rs.fn((event) => console.log(event));
-    const SchemaEditor = schemaEditor();
+    const onChange = rs.fn();
     await render(<SchemaEditor onChange={onChange} />);
 
     const addedRow = await addTypedNode(page, 'boolean');
@@ -415,8 +399,7 @@ describe('JsonSchemaReactEditor', () => {
   });
 
   test('boolean 节点高级设置', async () => {
-    const onChange = rs.fn((event) => console.log(event));
-    const SchemaEditor = schemaEditor();
+    const onChange = rs.fn();
     await render(<SchemaEditor onChange={onChange} />);
 
     const addedRow = await addTypedNode(page, 'boolean');
@@ -439,8 +422,7 @@ describe('JsonSchemaReactEditor', () => {
   });
 
   test('编辑 integer 类型子节点', async () => {
-    const onChange = rs.fn((event) => console.log(event));
-    const SchemaEditor = schemaEditor();
+    const onChange = rs.fn();
     await render(<SchemaEditor onChange={onChange} />);
 
     const addedRow = await addTypedNode(page, 'integer');
@@ -470,8 +452,7 @@ describe('JsonSchemaReactEditor', () => {
   });
 
   test('integer 节点高级设置', async () => {
-    const onChange = rs.fn((event) => console.log(event));
-    const SchemaEditor = schemaEditor();
+    const onChange = rs.fn();
     await render(<SchemaEditor onChange={onChange} />);
 
     const addedRow = await addTypedNode(page, 'integer');
@@ -497,12 +478,11 @@ describe('JsonSchemaReactEditor', () => {
   });
 
   test('string 节点高级设置 - 自定义 format 列表', async () => {
-    const onChange = rs.fn((event) => console.log(event));
+    const onChange = rs.fn();
     const customFormats = [
       { name: 'uuid', title: 'UUID' },
       { name: 'phone', title: 'Phone Number' },
     ];
-    const SchemaEditor = schemaEditor();
     await render(<SchemaEditor format={customFormats} onChange={onChange} />);
 
     const addedRow = await addTypedNode(page, 'string');
@@ -543,8 +523,7 @@ describe('JsonSchemaReactEditor', () => {
   });
 
   test('object 节点增加子节点和相邻节点', async () => {
-    const onChange = rs.fn((event) => console.log(event));
-    const SchemaEditor = schemaEditor();
+    const onChange = rs.fn();
     await render(<SchemaEditor onChange={onChange} />);
 
     // 新增节点
@@ -574,7 +553,6 @@ describe('JsonSchemaReactEditor', () => {
       { name: '字符串', mock: '@string' },
       { name: '自然数', mock: '@natural' },
     ];
-    const SchemaEditor = schemaEditor();
     await render(<SchemaEditor mock={mockSource} />);
 
     // mock AutoComplete 应可见（MockSelect 使用 certain-category-search 类名）
@@ -584,7 +562,6 @@ describe('JsonSchemaReactEditor', () => {
   });
 
   test('未传 mock 时不显示 mock 列', async () => {
-    const SchemaEditor = schemaEditor();
     await render(<SchemaEditor />);
 
     // mock AutoComplete 不应存在
@@ -598,7 +575,6 @@ describe('JsonSchemaReactEditor', () => {
       { name: '字符串', mock: '@string' },
       { name: '自然数', mock: '@natural' },
     ];
-    const SchemaEditor = schemaEditor();
     await render(<SchemaEditor mock={mockSource} />);
 
     // 根节点是 object 类型，mock 输入框应禁用
@@ -612,7 +588,6 @@ describe('JsonSchemaReactEditor', () => {
       { name: '字符串', mock: '@string' },
       { name: '自然数', mock: '@natural' },
     ];
-    const SchemaEditor = schemaEditor();
     await render(<SchemaEditor mock={mockSource} />);
 
     // 新增 array 类型节点
@@ -630,7 +605,6 @@ describe('JsonSchemaReactEditor', () => {
       { name: '字符串', mock: '@string' },
       { name: '自然数', mock: '@natural' },
     ];
-    const SchemaEditor = schemaEditor();
     await render(<SchemaEditor mock={mockSource} />);
 
     // 新增 string 类型节点
@@ -641,12 +615,11 @@ describe('JsonSchemaReactEditor', () => {
   });
 
   test('选择 mock 值后更新 schema', async () => {
-    const onChange = rs.fn((event) => console.log(event));
+    const onChange = rs.fn();
     const mockSource = [
       { name: '字符串', mock: '@string' },
       { name: '自然数', mock: '@natural' },
     ];
-    const SchemaEditor = schemaEditor();
     await render(<SchemaEditor mock={mockSource} onChange={onChange} />);
 
     // 新增 string 类型节点
@@ -672,7 +645,6 @@ describe('JsonSchemaReactEditor', () => {
       { name: '自然数', mock: '@natural' },
     ];
     const data = `{"type":"object","title":"title","properties":{"field_1":{"type":"string","mock":{"mock":"@string"}}},"required":["field_1"]}`;
-    const SchemaEditor = schemaEditor();
     await render(<SchemaEditor mock={mockSource} data={data} />);
 
     // 验证 mock 输入框显示正确的值
@@ -688,7 +660,6 @@ describe('JsonSchemaReactEditor', () => {
 
 describe('国际化 (i18n)', () => {
   test('zh_CN 语言下显示中文导入按钮', async () => {
-    const SchemaEditor = schemaEditor();
     await render(
       <ConfigProvider locale={zhCN}>
         <SchemaEditor />
@@ -700,7 +671,6 @@ describe('国际化 (i18n)', () => {
   });
 
   test('zh_CN 语言下显示中文高级设置', async () => {
-    const SchemaEditor = schemaEditor();
     await render(
       <ConfigProvider locale={zhCN}>
         <SchemaEditor />
@@ -713,7 +683,6 @@ describe('国际化 (i18n)', () => {
   });
 
   test('zh_CN 语言下显示中文标题和描述占位符', async () => {
-    const SchemaEditor = schemaEditor();
     await render(
       <ConfigProvider locale={zhCN}>
         <SchemaEditor />
@@ -725,7 +694,6 @@ describe('国际化 (i18n)', () => {
   });
 
   test('zh_CN 语言下显示中文节点操作提示', async () => {
-    const SchemaEditor = schemaEditor();
     await render(
       <ConfigProvider locale={zhCN}>
         <SchemaEditor />
@@ -742,7 +710,6 @@ describe('国际化 (i18n)', () => {
   });
 
   test('zh_CN 语言下高级设置模态框显示中文', async () => {
-    const SchemaEditor = schemaEditor();
     await render(
       <ConfigProvider locale={zhCN}>
         <SchemaEditor />
