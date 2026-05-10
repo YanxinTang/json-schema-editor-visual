@@ -426,7 +426,7 @@ export default function JsonSchemaEditor({
             <Col span={mock ? 4 : 5} className="col-item col-item-mock">
               <Space.Compact>
                 <Input
-                  placeholder={'Title'}
+                  placeholder={LocalProvider('title')}
                   value={schema.title}
                   onChange={(e) => changeValue(['title'], e.target.value)}
                 />
@@ -439,7 +439,7 @@ export default function JsonSchemaEditor({
             <Col span={mock ? 4 : 5} className="col-item col-item-desc">
               <Space.Compact>
                 <Input
-                  placeholder={'description'}
+                  placeholder={LocalProvider('description')}
                   value={schema.description}
                   onChange={(e) => changeValue(['description'], e.target.value)}
                 />
