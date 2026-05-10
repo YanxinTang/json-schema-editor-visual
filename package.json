@@ -38,6 +38,7 @@
     "@monaco-editor/react": "^4.7.0",
     "@reduxjs/toolkit": "^2.11.2",
     "generate-schema": "^2.6.0",
+    "monaco-editor": "^0.55.1",
     "prop-types": "^15.8.1",
     "react-redux": "^9.2.0",
     "underscore": "^1.13.8"

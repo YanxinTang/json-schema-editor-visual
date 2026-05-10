@@ -17,6 +17,9 @@ importers:
       generate-schema:
         specifier: ^2.6.0
         version: 2.6.0
+      monaco-editor:
+        specifier: ^0.55.1
+        version: 0.55.1
       prop-types:
         specifier: ^15.8.1
         version: 15.8.1
