@@ -39,18 +39,16 @@
     "@reduxjs/toolkit": "^2.11.2",
     "generate-schema": "^2.6.0",
     "monaco-editor": "^0.55.1",
-    "prop-types": "^15.8.1",
-    "react-redux": "^9.2.0",
-    "underscore": "^1.13.8"
+    "react-redux": "^9.2.0"
   },
   "devDependencies": {
-    "@ant-design/icons": "5",
+    "@ant-design/icons": "^5.0.0",
     "@rsbuild/plugin-react": "^2.0.0",
-    "@rslib/core": "^0.21.3",
-    "@rslint/core": "^0.5.0",
-    "@rspress/core": "^2.0.9",
-    "@rspress/plugin-api-docgen": "^2.0.9",
-    "@rspress/plugin-preview": "^2.0.9",
+    "@rslib/core": "^0.21.4",
+    "@rslint/core": "^0.5.2",
+    "@rspress/core": "^2.0.10",
+    "@rspress/plugin-api-docgen": "^2.0.10",
+    "@rspress/plugin-preview": "^2.0.10",
     "@rstest/adapter-rslib": "^0.2.2",
     "@rstest/browser": "^0.9.10",
     "@rstest/browser-react": "^0.9.10",
@@ -62,7 +60,7 @@
     "@testing-library/user-event": "^14.6.1",
     "@types/node": "^24.12.2",
     "@types/react": "^19.2.14",
-    "antd": "5",
+    "antd": "^5.0.0",
     "happy-dom": "^20.9.0",
     "nano-staged": "^1.0.2",
     "playwright": "^1.49.1",
@@ -74,8 +72,8 @@
     "typescript": "^6.0.3"
   },
   "peerDependencies": {
-    "@ant-design/icons": "5",
-    "antd": "5",
+    "@ant-design/icons": "^5.0.0",
+    "antd": "^5.0.0",
     "react": ">=16.9.0",
     "react-dom": ">=16.9.0"
   }
