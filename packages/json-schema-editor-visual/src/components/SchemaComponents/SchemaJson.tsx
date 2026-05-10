@@ -46,8 +46,6 @@ import { JsonSchema, MockSource } from '../../types.js';
 
 const { Option } = Select;
 
-declare const TEST: boolean | undefined;
-
 /**
  * 通用属性接口
  * @property prefix - 当前节点的路径前缀

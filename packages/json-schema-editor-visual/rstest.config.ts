@@ -19,9 +19,4 @@ export default defineConfig({
       },
     },
   ],
-  source: {
-    define: {
-      TEST: JSON.stringify(true),
-    },
-  },
 });

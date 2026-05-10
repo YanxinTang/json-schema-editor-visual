@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "build": "rslib",
-    "build:test": "cross-env TEST=1 rslib",
+    "build:test": "cross-env NODE_ENV='test' rslib",
     "dev": "rslib --watch",
     "test": "rstest",
     "test:watch": "rstest --watch"

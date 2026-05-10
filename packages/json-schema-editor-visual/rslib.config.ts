@@ -7,7 +7,7 @@ export default defineConfig({
       index: ['./src/**'],
     },
     define: {
-      TEST: JSON.stringify(process.env.TEST ? true : false),
+      TEST: JSON.stringify(process.env.NODE_ENV === 'test' ? true : false),
     },
   },
   lib: [
