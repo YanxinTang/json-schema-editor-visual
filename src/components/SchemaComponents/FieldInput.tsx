@@ -8,18 +8,18 @@ interface FieldInputProps extends Omit<InputProps, 'value' | 'onChange'> {
 }
 
 export default function FieldInput({
-  value: propsValue = '',
+  value = '',
   onChange,
   ...restProps
 }: FieldInputProps) {
-  const [internalValue, setInternalValue] = useState<string>(propsValue);
-  const propsValueRef = useRef<string>(propsValue);
+  const [internalValue, setInternalValue] = useState<string>(value);
+  const propsValueRef = useRef<string>(value);
   const onChangeRef = useRef(onChange);
 
   useEffect(() => {
-    propsValueRef.current = propsValue;
-    setInternalValue(propsValue);
-  }, [propsValue]);
+    propsValueRef.current = value;
+    setInternalValue(value);
+  }, [value]);
 
   useEffect(() => {
     onChangeRef.current = onChange;
