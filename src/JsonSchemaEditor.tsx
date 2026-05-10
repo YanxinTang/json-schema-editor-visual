@@ -43,21 +43,25 @@ import {
 } from './store/schemaSlice';
 import './index.css';
 
-export interface JsonSchemaEditorProps {
+/** JSON Schema 编辑器属性 */
+export interface JsonSchemaEditorCoreProps {
+  /** JSON Schema 字符串，用于初始化编辑器 */
   data?: string;
+  /** Schema 变更回调 */
   onChange?: (schema: string) => void;
+  /** 是否显示左侧 JSON 源码编辑器 */
   showEditor?: boolean;
+  /**
+   * 自定义 format 选项列表
+   * @default []
+   */
   format?: Format;
+  /** mock 数据源，传入后自动显示 mock 列 */
   mock?: MockSource;
 }
 
-export default function JsonSchemaEditor({
-  data,
-  onChange,
-  showEditor,
-  format = defaultFormat,
-  mock,
-}: JsonSchemaEditorProps) {
+export default function JsonSchemaEditorCore(props: JsonSchemaEditorCoreProps) {
+  const { data, onChange, showEditor, format = defaultFormat, mock } = props;
   const dispatch = useAppDispatch();
   const schema = useAppSelector((state) => state.schema.data);
   const LocalProvider = useLocalProvider();

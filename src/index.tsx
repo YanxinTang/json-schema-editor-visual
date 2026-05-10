@@ -1,16 +1,18 @@
+import { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import { createStore } from './store';
-import JsonSchemaEditor, { JsonSchemaEditorProps } from './JsonSchemaEditor';
+import JsonSchemaEditorCore, {
+  JsonSchemaEditorCoreProps,
+} from './JsonSchemaEditor';
 
-export default function schemaEditor() {
-  const store = createStore();
+export default function JsonSchemaEditorVisual(
+  props: JsonSchemaEditorCoreProps,
+) {
+  const store = useMemo(() => createStore(), []);
 
-  const Component = (props: JsonSchemaEditorProps) => {
-    return (
-      <Provider store={store}>
-        <JsonSchemaEditor {...props} />
-      </Provider>
-    );
-  };
-  return Component;
+  return (
+    <Provider store={store}>
+      <JsonSchemaEditorCore {...props} />
+    </Provider>
+  );
 }
