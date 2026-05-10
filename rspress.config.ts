@@ -6,8 +6,8 @@ import { pluginWorkspaceDev } from 'rsbuild-plugin-workspace-dev';
 
 export default defineConfig({
   root: path.join(__dirname, 'docs'),
-  title: 'Rslib Module Doc',
-  lang: 'en',
+  title: 'JsonSchemaEditorVisual',
+  lang: 'zh',
   builderConfig: {
     plugins: [
       pluginWorkspaceDev({
@@ -18,7 +18,7 @@ export default defineConfig({
   plugins: [
     pluginApiDocgen({
       entries: {
-        Button: './src/Button.tsx',
+        JsonSchemaEditorVisual: './src/index.tsx',
       },
       apiParseTool: 'react-docgen-typescript',
     }),
