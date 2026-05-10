@@ -26,6 +26,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "packageManager": "pnpm@11.0.8",
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
