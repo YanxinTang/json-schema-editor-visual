@@ -20,12 +20,12 @@ import {
   PlusOutlined,
   CloseOutlined,
 } from '@ant-design/icons';
-import _ from 'underscore';
 import {
   JSONPATH_JOIN_CHAR,
   SCHEMA_TYPE,
   getData,
   isNil,
+  isEqual,
 } from '../../utils.js';
 import FieldInput from './FieldInput.js';
 import LocaleProvider from '../LocalProvider';
@@ -581,8 +581,8 @@ const SchemaObject = React.memo(
   SchemaObjectComponent,
   (prevProps, nextProps) => {
     return (
-      _.isEqual(prevProps.data, nextProps.data) &&
-      _.isEqual(prevProps.prefix, nextProps.prefix)
+      isEqual(prevProps.data, nextProps.data) &&
+      isEqual(prevProps.prefix, nextProps.prefix)
     );
   },
 );

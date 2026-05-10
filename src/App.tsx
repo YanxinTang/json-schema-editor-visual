@@ -24,10 +24,7 @@ const Option = Select.Option;
 const { TextArea } = Input;
 const TabPane = Tabs.TabPane;
 
-declare const TEST: boolean | undefined;
-import './index.css';
 import AceEditor from './components/MonacoEditor';
-import _ from 'underscore';
 import SchemaJson from './components/SchemaComponents/SchemaJson.js';
 import { SCHEMA_TYPE, debounce } from './utils';
 import GenerateSchema from 'generate-schema/src/schemas/json.js';
@@ -45,6 +42,7 @@ import {
   changeValueAction,
   requireAllAction,
 } from './store/schemaSlice';
+import './index.css';
 
 export interface JsonSchemaEditorOwnedProps {
   isMock?: boolean;

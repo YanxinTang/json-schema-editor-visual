@@ -180,6 +180,46 @@ export function isNil(value: unknown): value is null | undefined {
   return value == null;
 }
 
+/**
+ * 深度比较两个值是否相等
+ * @param a - 第一个值
+ * @param b - 第二个值
+ * @returns 两个值深度相等时返回 true
+ */
+export function isEqual(a: unknown, b: unknown): boolean {
+  if (a === b) return true;
+  if (a == null || b == null) return false;
+  if (typeof a !== typeof b) return false;
+
+  if (Array.isArray(a)) {
+    if (!Array.isArray(b) || a.length !== b.length) return false;
+    for (let i = 0; i < a.length; i++) {
+      if (!isEqual(a[i], b[i])) return false;
+    }
+    return true;
+  }
+
+  if (typeof a === 'object') {
+    const keysA = Object.keys(a as Record<string, unknown>);
+    const keysB = Object.keys(b as Record<string, unknown>);
+    if (keysA.length !== keysB.length) return false;
+    for (const key of keysA) {
+      if (
+        !Object.prototype.hasOwnProperty.call(b, key) ||
+        !isEqual(
+          (a as Record<string, unknown>)[key],
+          (b as Record<string, unknown>)[key],
+        )
+      ) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  return false;
+}
+
 export function cloneObject<T>(obj: T): T {
   if (typeof obj === 'object' && obj !== null) {
     if (Array.isArray(obj)) {
