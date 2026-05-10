@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { AutoComplete, Space, Button } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import { useLocalProvider } from '../LocalProvider';
@@ -11,12 +11,12 @@ interface MockSelectProps {
   mock?: MockSource;
 }
 
-const MockSelect: React.FC<MockSelectProps> = ({
+export default function MockSelect({
   schema,
   showEdit,
   onChange,
   mock,
-}) => {
+}: MockSelectProps) {
   const LocaleProvider = useLocalProvider();
   const disabled = schema.type === 'object' || schema.type === 'array';
 
@@ -24,8 +24,6 @@ const MockSelect: React.FC<MockSelectProps> = ({
     () => (mock || []).map((item) => ({ value: item.mock })),
     [mock],
   );
-
-  console.log('schema: ', schema);
 
   return (
     <Space.Compact className="mock-select">
@@ -49,6 +47,4 @@ const MockSelect: React.FC<MockSelectProps> = ({
       ></Button>
     </Space.Compact>
   );
-};
-
-export default MockSelect;
+}

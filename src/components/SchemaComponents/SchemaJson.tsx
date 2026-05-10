@@ -633,14 +633,12 @@ export interface SchemaJsonProps {
   mock?: MockSource;
 }
 
-const SchemaJson: React.FC<SchemaJsonProps> = ({
+export default function SchemaJson({
   data,
   showEdit,
   showAdv,
   mock,
-}) => {
-const item = mapping([], data, showEdit, showAdv, mock);
+}: SchemaJsonProps) {
+  const item = mapping([], data, showEdit, showAdv, mock);
   return <div className="schema-content">{item}</div>;
-};
-
-export default SchemaJson;
+}

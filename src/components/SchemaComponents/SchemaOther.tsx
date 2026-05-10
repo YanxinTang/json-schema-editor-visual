@@ -616,11 +616,11 @@ interface CustomItemProps {
   format: Format;
 }
 
-const CustomItem: React.FC<CustomItemProps> = ({
+export default function CustomItem({
   data,
   changeCustomValue,
   format,
-}) => {
+}: CustomItemProps) {
   const LocalProvider = useLocalProvider();
   const parsed = JSON.parse(data) as JsonSchema;
   const optionForm = mapping(parsed, changeCustomValue, format);
@@ -636,6 +636,4 @@ const CustomItem: React.FC<CustomItemProps> = ({
       />
     </div>
   );
-};
-
-export default CustomItem;
+}
