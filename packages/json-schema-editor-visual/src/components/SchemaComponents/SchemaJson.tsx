@@ -1,7 +1,6 @@
 import React, { useMemo, useCallback } from 'react';
 import {
   Dropdown,
-  Menu,
   Row,
   Col,
   Select,
@@ -578,36 +577,30 @@ const DropPlus: React.FC<DropPlusProps> = ({ prefix, name }) => {
   const dispatch = useAppDispatch();
   const LocaleProvider = useLocalProvider();
 
-  const menu = (
-    <Menu>
-      <Menu.Item key="sibling">
-        <span onClick={() => dispatch(addFieldAction({ prefix, name }))}>
-          {LocaleProvider('sibling_node')}
-        </span>
-      </Menu.Item>
-      <Menu.Item key="child">
-        <span
-          onClick={() => {
-            dispatch(
-              setOpenValueAction({
-                key: [...prefix, name, 'properties'],
-                value: true,
-              }),
-            );
-            dispatch(
-              addChildFieldAction({ key: [...prefix, name, 'properties'] }),
-            );
-          }}
-        >
-          {LocaleProvider('child_node')}
-        </span>
-      </Menu.Item>
-    </Menu>
-  );
+  const menuItems = [
+    {
+      key: 'sibling',
+      label: LocaleProvider('sibling_node'),
+      onClick: () => dispatch(addFieldAction({ prefix, name })),
+    },
+    {
+      key: 'child',
+      label: LocaleProvider('child_node'),
+      onClick: () => {
+        dispatch(
+          setOpenValueAction({
+            key: [...prefix, name, 'properties'],
+            value: true,
+          }),
+        );
+        dispatch(addChildFieldAction({ key: [...prefix, name, 'properties'] }));
+      },
+    },
+  ];
 
   return (
     <Tooltip placement="top" title={LocaleProvider('add_node')}>
-      <Dropdown overlay={menu}>
+      <Dropdown menu={{ items: menuItems }}>
         <PlusOutlined className="plus" />
       </Dropdown>
     </Tooltip>

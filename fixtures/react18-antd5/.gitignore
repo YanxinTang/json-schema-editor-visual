@@ -2,17 +2,15 @@
 .DS_Store
 *.local
 *.log*
-coverage
-test-results
 
 # Dist
 node_modules
 dist/
-storybook-static
-doc_build/
+
+# Profile
+.rspack-profile-*/
 
 # IDE
 .vscode/*
 !.vscode/extensions.json
 .idea
-.claude

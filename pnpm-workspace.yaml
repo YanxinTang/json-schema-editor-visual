@@ -1,5 +1,15 @@
 packages:
   - packages/*
-  - fixtures/*
+  - "!fixtures/*"
+
 allowBuilds:
   simple-git-hooks: true
+
+# hoistPattern:
+#   - "*"
+#   - "!@types/react"
+
+# packageExtensions:
+#   antd@6:
+#     peerDependencies:
+#       "@types/react": "^19.0.0"

@@ -7,10 +7,17 @@
   "scripts": {
     "prepare": "simple-git-hooks",
     "format": "prettier --write .",
-    "lint": "rslint"
+    "lint": "rslint",
+    "e2e": "node scripts/e2e.mjs",
+    "e2e:ui": "node scripts/e2e.mjs --ui",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:report": "playwright show-report"
   },
   "devDependencies": {
+    "@playwright/test": "^1.49.1",
     "@rslint/core": "^0.5.2",
+    "@types/node": "^22.15.3",
     "nano-staged": "^1.0.2",
     "playwright": "^1.49.1",
     "prettier": "^3.8.3",

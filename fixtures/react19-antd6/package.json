@@ -1,0 +1,26 @@
+{
+  "name": "react19-antd6",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "rsbuild build",
+    "dev": "rsbuild --open",
+    "dev:e2e": "rsbuild dev --port 3002",
+    "preview": "rsbuild preview"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^6.2.2",
+    "@tyx1703/json-schema-editor-visual": "file:../../packages/json-schema-editor-visual",
+    "antd": "^6.3.7",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
+  },
+  "devDependencies": {
+    "@rsbuild/core": "^2.0.3",
+    "@rsbuild/plugin-react": "^2.0.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^6.0.3"
+  }
+}
