@@ -15,7 +15,7 @@ import './schemaJson.css';
 import { isNil } from '../../utils';
 const Option = Select.Option;
 import AceEditor from '../MonacoEditor';
-import type { MockEditorData } from '../MonacoEditor';
+import type { MockEditorData } from '../MonacoEditor/Editor';
 import { useLocalProvider } from '../LocalProvider';
 import {
   JsonSchema,

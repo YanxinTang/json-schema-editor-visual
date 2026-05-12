@@ -33,7 +33,7 @@ import MockSelect from './components/MockSelect';
 import { JsonSchema, MockSource, Format } from './types';
 import { useAppDispatch, useAppSelector } from './store';
 import type { MessageKey } from './components/LocalProvider';
-import type { MockEditorData } from './components/MonacoEditor';
+import type { MockEditorData } from './components/MonacoEditor/Editor';
 import {
   changeEditorSchemaAction,
   changeTypeAction,
