@@ -62,7 +62,7 @@ function buildMockEditorData(text: string): MockEditorData {
   }
 }
 
-interface MocanoEditorProps {
+export interface MocanoEditorProps {
   data?: string;
   onChange?: (data: MockEditorData) => void;
   className?: string;
@@ -86,7 +86,11 @@ export function MonacoEditor({
   return (
     <div
       className={className ?? 'monaco-editor-container'}
-      style={!className ? { width: '100%', height: '200px' } : undefined}
+      style={
+        !className
+          ? { width: '100%', height: '400px', border: '1px solid #e5e7eb' }
+          : undefined
+      }
     >
       <Editor
         height="100%"

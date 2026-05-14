@@ -1,5 +1,13 @@
-import { lazy } from 'react';
+import { lazy, Suspense } from 'react';
+import { MocanoEditorProps } from './Editor';
+import MonacoSkeleton from './MonacoSkeleton';
 
-const MonacoEditor = lazy(() => import('./Editor'));
+const Editor = lazy(() => import('./Editor'));
 
-export default MonacoEditor;
+export default function (props: MocanoEditorProps) {
+  return (
+    <Suspense fallback={<MonacoSkeleton />}>
+      <Editor {...props} />
+    </Suspense>
+  );
+}

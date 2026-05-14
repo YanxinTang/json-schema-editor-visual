@@ -1,6 +1,5 @@
 import { Layout as BasicLayout } from '@rspress/core/theme-original';
 import './index.css';
-import 'antd/dist/antd.css';
 import { useEffect, useState } from 'react';
 import { ConfigProvider } from 'antd';
 
@@ -12,7 +11,7 @@ const Layout = () => {
   }, []);
 
   return (
-    <ConfigProvider theme={{ zeroRuntime: true }}>
+    <ConfigProvider theme={{ token: { motion } }}>
       <BasicLayout />
     </ConfigProvider>
   );

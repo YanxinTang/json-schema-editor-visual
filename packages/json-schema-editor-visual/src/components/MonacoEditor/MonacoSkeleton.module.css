@@ -1,0 +1,178 @@
+/* MonacoSkeleton.module.css */
+
+/* =========================
+   Base (Light) Theme
+   ========================= */
+
+.container {
+  --ms-bg: #ffffff;
+  --ms-gutter-bg: #f5f5f5;
+  --ms-border: #e5e7eb;
+  --ms-line-number: #9ca3af;
+
+  --ms-shimmer-base: #f1f5f9;
+  --ms-shimmer-mid: #e2e8f0;
+
+  --ms-scrollbar: #f3f4f6;
+  --ms-scroll-thumb: #cbd5e1;
+
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  content-visibility: auto;
+
+  border: 1px solid var(--ms-border);
+  background: var(--ms-bg);
+
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Auto: follow system preference */
+@media (prefers-color-scheme: dark) {
+  .auto {
+    --ms-bg: #1e1e1e;
+    --ms-gutter-bg: #252526;
+    --ms-border: #3c3c3c;
+    --ms-line-number: #858585;
+
+    --ms-shimmer-base: #2d2d2d;
+    --ms-shimmer-mid: #383838;
+
+    --ms-scrollbar: #1e1e1e;
+    --ms-scroll-thumb: #5a5a5a;
+  }
+}
+
+/* Forced dark */
+.dark {
+  --ms-bg: #1e1e1e;
+  --ms-gutter-bg: #252526;
+  --ms-border: #3c3c3c;
+  --ms-line-number: #858585;
+
+  --ms-shimmer-base: #2d2d2d;
+  --ms-shimmer-mid: #383838;
+
+  --ms-scrollbar: #1e1e1e;
+  --ms-scroll-thumb: #5a5a5a;
+}
+
+/* =========================
+   Layout
+   ========================= */
+
+.gutter {
+  width: 52px;
+  flex-shrink: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  padding: 16px 12px 16px 0;
+
+  background: var(--ms-gutter-bg);
+  border-right: 1px solid var(--ms-border);
+
+  user-select: none;
+}
+
+.lineNumber {
+  height: 16px;
+  margin-bottom: 12px;
+
+  font-size: 12px;
+  line-height: 16px;
+
+  color: var(--ms-line-number);
+  opacity: 0.8;
+}
+
+.content {
+  position: relative;
+  flex: 1;
+
+  padding: 16px;
+  overflow: hidden;
+
+  background: var(--ms-bg);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+
+  height: 16px;
+  margin-bottom: 12px;
+
+  box-sizing: border-box;
+}
+
+.code {
+  height: 16px;
+  border-radius: 4px;
+
+  background: linear-gradient(
+    90deg,
+    var(--ms-shimmer-base) 0%,
+    var(--ms-shimmer-mid) 50%,
+    var(--ms-shimmer-base) 100%
+  );
+
+  background-size: 1000px 100%;
+
+  animation: shimmer 2s linear infinite;
+}
+
+/* =========================
+   Scrollbar
+   ========================= */
+
+.scrollbar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  width: 14px;
+
+  background: var(--ms-scrollbar);
+  border-left: 1px solid var(--ms-border);
+}
+
+.scrollThumb {
+  position: absolute;
+  top: 16px;
+  right: 2px;
+
+  width: 8px;
+  height: 64px;
+
+  background: var(--ms-scroll-thumb);
+
+  opacity: 0.7;
+}
+
+/* =========================
+   Animation
+   ========================= */
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+/* =========================
+   Accessibility
+   ========================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .code {
+    animation: none;
+  }
+}
