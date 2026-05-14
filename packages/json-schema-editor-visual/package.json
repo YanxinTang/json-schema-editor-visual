@@ -5,7 +5,10 @@
   "type": "module",
   "license": "MIT",
   "author": "tyx1703",
-  "repository": "github:YanxinTang/json-schema-editor-visual",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YanxinTang/json-schema-editor-visual.git"
+  },
   "keywords": [
     "json-schema",
     "editor",
