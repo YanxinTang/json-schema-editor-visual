@@ -36,8 +36,3 @@ jobs:
       - name: Publish to npm
         working-directory: packages/json-schema-editor-visual
         run: npm publish --access public --no-git-checks
-
-      - name: Create GitHub Release
-        run: gh release create ${{ github.ref_name }} --generate-notes
-        env:
-          GH_TOKEN: ${{ github.token }}
