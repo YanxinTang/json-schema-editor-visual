@@ -207,7 +207,7 @@ const SchemaArray: React.FC<CommonProps> = React.memo(
                 )}
               </Col>
               <Col span={22}>
-                <Space.Compact>
+                <Space.Compact className="w-full">
                   <Input disabled value="Items" />
                   <Button type="text" disabled icon={<Checkbox disabled />} />
                 </Space.Compact>
@@ -238,7 +238,7 @@ const SchemaArray: React.FC<CommonProps> = React.memo(
             </Col>
           )}
           <Col span={isMock ? 4 : 5} className="col-item col-item-mock">
-            <Space.Compact>
+            <Space.Compact className="w-full">
               <Input
                 placeholder={LocaleProvider('title')}
                 value={items.title}
@@ -251,7 +251,7 @@ const SchemaArray: React.FC<CommonProps> = React.memo(
             </Space.Compact>
           </Col>
           <Col span={isMock ? 4 : 5} className="col-item col-item-desc">
-            <Space.Compact>
+            <Space.Compact className="w-full">
               <Input
                 placeholder={LocaleProvider('description')}
                 value={items.description}
@@ -406,7 +406,7 @@ const SchemaItem: React.FC<SchemaItemProps> = React.memo(
                 )}
               </Col>
               <Col span={22}>
-                <Space.Compact>
+                <div className="combine-input">
                   <FieldInput
                     onChange={handleChangeName}
                     value={name}
@@ -424,7 +424,7 @@ const SchemaItem: React.FC<SchemaItemProps> = React.memo(
                       />
                     </Button>
                   </Tooltip>
-                </Space.Compact>
+                </div>
               </Col>
             </Row>
           </Col>
@@ -455,7 +455,7 @@ const SchemaItem: React.FC<SchemaItemProps> = React.memo(
           )}
 
           <Col span={mock ? 4 : 5} className="col-item col-item-mock">
-            <Space.Compact>
+            <Space.Compact className="w-full">
               <Input
                 placeholder={LocaleProvider('title')}
                 value={value.title}
@@ -470,7 +470,7 @@ const SchemaItem: React.FC<SchemaItemProps> = React.memo(
           </Col>
 
           <Col span={mock ? 4 : 5} className="col-item col-item-desc">
-            <Space.Compact>
+            <Space.Compact className="w-full">
               <Input
                 placeholder={LocaleProvider('description')}
                 value={value.description}

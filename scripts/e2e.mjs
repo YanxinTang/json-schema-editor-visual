@@ -18,6 +18,7 @@ run('pnpm --filter @tyx1703/json-schema-editor-visual build:test');
 console.log('\n==> Installing fixture dependencies ...');
 for (const fixture of fixtures) {
   console.log(`  -> ${fixture}`);
+  run('pnpm clean --ignore-workspace', resolve(rootDir, 'fixtures', fixture));
   run('pnpm install --ignore-workspace', resolve(rootDir, 'fixtures', fixture));
 }
 

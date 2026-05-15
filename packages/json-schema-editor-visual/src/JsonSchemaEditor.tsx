@@ -387,7 +387,7 @@ export default function JsonSchemaEditorCore(props: JsonSchemaEditorCoreProps) {
                   ) : null}
                 </Col>
                 <Col span={22}>
-                  <Space.Compact>
+                  <div className="combine-input">
                     <Input disabled value="root" />
                     <Tooltip placement="top" title={'checked_all'}>
                       <Button type="text" disabled>
@@ -398,7 +398,7 @@ export default function JsonSchemaEditorCore(props: JsonSchemaEditorCoreProps) {
                         />
                       </Button>
                     </Tooltip>
-                  </Space.Compact>
+                  </div>
                 </Col>
               </Row>
             </Col>
@@ -428,7 +428,7 @@ export default function JsonSchemaEditorCore(props: JsonSchemaEditorCoreProps) {
               </Col>
             )}
             <Col span={mock ? 4 : 5} className="col-item col-item-mock">
-              <Space.Compact>
+              <Space.Compact className="w-full">
                 <Input
                   placeholder={LocalProvider('title')}
                   value={schema.title}
@@ -441,7 +441,7 @@ export default function JsonSchemaEditorCore(props: JsonSchemaEditorCoreProps) {
               </Space.Compact>
             </Col>
             <Col span={mock ? 4 : 5} className="col-item col-item-desc">
-              <Space.Compact>
+              <Space.Compact className="w-full">
                 <Input
                   placeholder={LocalProvider('description')}
                   value={schema.description}

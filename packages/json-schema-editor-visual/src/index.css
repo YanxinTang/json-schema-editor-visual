@@ -55,3 +55,16 @@
   .ant-select-search__field__wrap {
   display: unset;
 }
+
+.json-schema-react-editor .w-full {
+  width: 100%;
+}
+
+.json-schema-react-editor .combine-input {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+.json-schema-react-editor .combine-input > input {
+  flex: 1;
+}
