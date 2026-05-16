@@ -1,16 +1,18 @@
 # @tyx1703/json-schema-editor-visual
 
-A React component for visually editing JSON Schema.
+[中文](./README.md) | [English](./README.en.md)
 
-## Install
+一个用于可视化编辑 JSON Schema 的 React 组件。
+
+## 安装
 
 ```bash
 pnpm add @tyx1703/json-schema-editor-visual
 ```
 
-## Usage
+## 用法
 
-### Basic
+### 基础用法
 
 ```jsx
 import JsonSchemaEditorVisual from '@tyx1703/json-schema-editor-visual';
@@ -20,9 +22,9 @@ export default () => {
 };
 ```
 
-### Mock Data
+### Mock 数据
 
-Pass a `mock` array to display a mock data column in the editor.
+传入 `mock` 数组可在编辑器中显示 Mock 数据列。
 
 ```jsx
 import JsonSchemaEditorVisual from '@tyx1703/json-schema-editor-visual';
@@ -40,9 +42,9 @@ export default () => {
 };
 ```
 
-### Controlled Component
+### 事件
 
-Use `data` to initialize and `onChange` to receive schema updates.
+使用 `data` 初始化，通过 `onChange` 接收 Schema 变更。
 
 ```jsx
 import JsonSchemaEditorVisual from '@tyx1703/json-schema-editor-visual';
@@ -59,9 +61,9 @@ export default () => {
 };
 ```
 
-### i18n
+### 国际化
 
-The component reads the locale from antd's `ConfigProvider`. Wrap with `ConfigProvider` and pass a locale to switch language.
+组件从 antd 的 `ConfigProvider` 读取语言环境。使用 `ConfigProvider` 包裹并传入 locale 即可切换语言。
 
 ```jsx
 import { ConfigProvider } from 'antd';
@@ -77,50 +79,50 @@ export default () => {
 };
 ```
 
-The component defaults to Chinese (`zh_CN`) when the antd locale starts with `zh`, and English (`en_US`) otherwise.
+当 antd locale 以 `zh` 开头时，组件默认显示中文（`zh_CN`），否则显示英文（`en_US`）。
 
 ## API
 
-| Prop         | Type                       | Default | Description                                                                                 |
-| ------------ | -------------------------- | ------- | ------------------------------------------------------------------------------------------- |
-| `data`       | `string`                   | —       | JSON Schema string to initialize the editor                                                 |
-| `onChange`   | `(schema: string) => void` | —       | Callback fired when the schema changes                                                      |
-| `showEditor` | `boolean`                  | `true`  | Show/hide the left-side JSON source editor panel                                            |
-| `format`     | `Format`                   | `[]`    | Custom format options (`{ name: string; title?: string }[]`)                                |
-| `mock`       | `MockSource`               | —       | Mock data source; when provided, a mock column appears (`{ name: string; mock: string }[]`) |
+| 属性         | 类型                       | 默认值 | 说明                                                                  |
+| ------------ | -------------------------- | ------ | --------------------------------------------------------------------- |
+| `data`       | `string`                   | —      | 用于初始化编辑器的 JSON Schema 字符串                                 |
+| `onChange`   | `(schema: string) => void` | —      | Schema 变更时的回调                                                   |
+| `showEditor` | `boolean`                  | `true` | 是否显示左侧 JSON 源码编辑面板                                        |
+| `format`     | `Format`                   | `[]`   | 自定义 format 选项（`{ name: string; title?: string }[]`）            |
+| `mock`       | `MockSource`               | —      | Mock 数据源；传入后显示 Mock 列（`{ name: string; mock: string }[]`） |
 
-## Migrating from json-schema-editor-visual
+## 从 json-schema-editor-visual 迁移
 
-This is a fork of [Open-Federation/json-schema-editor-visual](https://github.com/Open-Federation/json-schema-editor-visual) with a redesigned API.
+本项目是 [Open-Federation/json-schema-editor-visual](https://github.com/Open-Federation/json-schema-editor-visual) 的 fork，API 已重新设计。
 
-### Install
+### 安装
 
 ```bash
-# old
+# 旧版
 npm install json-schema-editor-visual
 
-# new
+# 新版
 pnpm add @tyx1703/json-schema-editor-visual
 ```
 
-### Factory function → Component
+### 工厂函数 → 组件
 
 ```jsx
-// old
+// 旧版
 const schemaEditor = require('json-schema-editor-visual/dist/main.js');
 const SchemaEditor = schemaEditor({ lang: 'zh_CN' });
 
-// new
+// 新版
 import JsonSchemaEditorVisual from '@tyx1703/json-schema-editor-visual';
 ```
 
-### Locale via ConfigProvider
+### 通过 ConfigProvider 设置语言
 
 ```jsx
-// old
+// 旧版
 const SchemaEditor = schemaEditor({ lang: 'zh_CN' });
 
-// new
+// 新版
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
 
@@ -132,45 +134,46 @@ import zhCN from 'antd/locale/zh_CN';
 ### Mock & Format → Props
 
 ```jsx
-// old
+// 旧版
 const SchemaEditor = schemaEditor({ mock: MOCK, format: FORMAT });
 
-// new
+// 新版
 <JsonSchemaEditorVisual mock={MOCK} format={FORMAT} />;
 ```
 
-### CSS — no longer needed
+### CSS — 不再需要
 
 ```jsx
-// old — required
+// 旧版 — 需要手动引入
 import 'antd/dist/antd.css';
 require('json-schema-editor-visual/dist/main.css');
 
-// new — nothing to import
+// 新版 — 无需引入
 ```
 
-### Breaking changes summary
+### 破坏性变更总结
 
-| Change        | Old                            | New                                  |
-| ------------- | ------------------------------ | ------------------------------------ |
-| Package name  | `json-schema-editor-visual`    | `@tyx1703/json-schema-editor-visual` |
-| Export        | Factory `schemaEditor(config)` | Direct component                     |
-| Locale        | `{ lang: 'zh_CN' }`            | antd `ConfigProvider`                |
-| Mock / Format | Factory options                | Component props                      |
-| CSS import    | Manual `main.css`              | Not needed                           |
-| React         | >=16.9.0                       | ^18 or ^19                           |
-| antd          | 4                              | ^5 or ^6                             |
-| Editor        | Ace                            | Monaco                               |
-| Model API     | `Model.schema`                 | Removed                              |
+| 变更        | 旧版                            | 新版                                 |
+| ----------- | ------------------------------- | ------------------------------------ |
+| 包名        | `json-schema-editor-visual`     | `@tyx1703/json-schema-editor-visual` |
+| 导出方式    | 工厂函数 `schemaEditor(config)` | 直接导出组件                         |
+| 语言设置    | `{ lang: 'zh_CN' }`             | antd `ConfigProvider`                |
+| Mock/Format | 工厂函数选项                    | 组件 Props                           |
+| CSS 引入    | 手动引入 `main.css`             | 不需要                               |
+| React       | >=16.9.0                        | ^18 或 ^19                           |
+| antd        | 4                               | ^5 或 ^6                             |
+| 编辑器      | Ace                             | Monaco                               |
+| Model API   | `Model.schema`                  | 已移除                               |
 
-## Development
+## 开发
 
-This project is a pnpm monorepo.
+本项目使用 pnpm monorepo。
 
 ```bash
-pnpm install          # Install dependencies
-pnpm run build        # Build the library
-pnpm run dev          # Watch mode
-pnpm run test         # Unit tests (Rstest)
-pnpm e2e              # Build + e2e tests (Playwright)
+pnpm install                           # 安装依赖
+pnpm -F @tyx1703/json-schema-editor-visual build   # 构建
+pnpm -F @tyx1703/json-schema-editor-visual dev     # 监听模式
+pnpm -F @tyx1703/json-schema-editor-visual test    # 单元测试（Rstest）
+pnpm e2e                               # 构建 + E2E 测试（Playwright）
+pnpm -F docs doc                       # 启动文档开发服务器
 ```
