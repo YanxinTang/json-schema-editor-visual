@@ -255,7 +255,7 @@ export default function JsonSchemaEditorCore(props: JsonSchemaEditorCoreProps) {
       </Button>
       <Modal
         width={780}
-        maskClosable={false}
+        mask={{ closable: false }}
         open={visible}
         title={LocalProvider('import_json')}
         onOk={handleOk}
@@ -318,7 +318,7 @@ export default function JsonSchemaEditorCore(props: JsonSchemaEditorCoreProps) {
             )}
           </div>
         }
-        maskClosable={false}
+        mask={{ closable: false }}
         open={editVisible}
         onOk={() => handleEditOk(editorModalName)}
         onCancel={handleEditCancel}
@@ -336,7 +336,7 @@ export default function JsonSchemaEditorCore(props: JsonSchemaEditorCoreProps) {
       {advVisible && (
         <Modal
           title={LocalProvider('adv_setting')}
-          maskClosable={false}
+          mask={{ closable: false }}
           open={advVisible}
           onOk={handleAdvOk}
           onCancel={handleAdvCancel}

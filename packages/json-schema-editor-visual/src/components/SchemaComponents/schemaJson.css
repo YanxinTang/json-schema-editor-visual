@@ -127,12 +127,6 @@
   min-height: 350px;
 }
 
-.json-schema-react-editor-adv-modal-select .format-items-title {
-  color: #999;
-  position: absolute;
-  right: 16px;
-}
-
 .ant-modal-close-x {
   display: flex;
   justify-content: center;

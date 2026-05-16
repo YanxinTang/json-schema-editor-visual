@@ -4,9 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "rsbuild build",
     "dev": "rsbuild --open",
-    "dev:e2e": "rsbuild dev --port 3002",
+    "build": "rsbuild build",
     "preview": "rsbuild preview"
   },
   "dependencies": {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Input,
   InputNumber,
@@ -8,6 +8,7 @@ import {
   Checkbox,
   Tooltip,
   Switch,
+  SelectProps,
 } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 const { TextArea } = Input;
@@ -55,6 +56,16 @@ const SchemaString: React.FC<SchemaStringProps> = ({
   useEffect(() => {
     setChecked(isNil(data.enum) ? false : true);
   }, [data.enum]);
+
+  const formatOptions: SelectProps['options'] = useMemo(
+    () =>
+      format.map((item) => ({
+        key: item.name,
+        label: item.name,
+        value: item.name,
+      })),
+    format,
+  );
 
   const handleChangeOtherValue = (value: unknown, name: string) => {
     (data as unknown as Record<string, unknown>)[name] = value;
@@ -198,31 +209,22 @@ const SchemaString: React.FC<SchemaStringProps> = ({
         </Col>
         <Col span={20}>
           <Select
-            showSearch
+            showSearch={{
+              filterOption: (input, option) => {
+                const linput = input.toLowerCase();
+                const lvalue = (option!.value as string).toLowerCase();
+                return lvalue.includes(linput);
+              },
+            }}
             style={{ width: 150 }}
             value={data.format}
-            dropdownClassName="json-schema-react-editor-adv-modal-select"
-            placeholder="Select a format"
-            optionFilterProp="children"
-            optionLabelProp="value"
-            onChange={(e) => handleChangeOtherValue(e, 'format')}
-            filterOption={(input, option) => {
-              return (
-                (option?.value as string)
-                  ?.toLowerCase()
-                  .indexOf(input.toLowerCase()) >= 0
-              );
+            classNames={{
+              popup: { root: 'json-schema-react-editor-adv-modal-select' },
             }}
-          >
-            {format.map((item) => {
-              return (
-                <Option value={item.name} key={item.name}>
-                  {item.name}{' '}
-                  <span className="format-items-title">{item.title}</span>
-                </Option>
-              );
-            })}
-          </Select>
+            placeholder="Select a format"
+            onChange={(e) => handleChangeOtherValue(e, 'format')}
+            options={formatOptions}
+          ></Select>
         </Col>
       </Row>
     </div>
