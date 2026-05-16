@@ -258,7 +258,7 @@ importers:
         version: 19.2.14
       '@tyx1703/json-schema-editor-visual':
         specifier: workspace:*
-        version: link:../json-schema-editor-visual
+        version: link:../react
       antd:
         specifier: ^6.3.7
         version: 6.3.7(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -275,7 +275,7 @@ importers:
         specifier: ^6.0.3
         version: 6.0.3
 
-  packages/json-schema-editor-visual:
+  packages/react:
     dependencies:
       '@monaco-editor/react':
         specifier: ^4.7.0

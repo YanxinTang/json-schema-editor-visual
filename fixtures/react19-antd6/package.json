@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^6.2.2",
-    "@tyx1703/json-schema-editor-visual": "file:../../packages/json-schema-editor-visual",
+    "@tyx1703/json-schema-editor-visual": "file:../../packages/react",
     "antd": "^6.3.7",
     "react": "^19.2.5",
     "react-dom": "^19.2.5"
