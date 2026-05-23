@@ -21,7 +21,7 @@ test.describe('JsonSchemaReactEditor', () => {
     ).toBeVisible();
 
     // title 输入框
-    await expect(page.locator('input[value="title"]')).toBeVisible();
+    await expect(page.getByRole('textbox', { name: 'Title' })).toBeVisible();
 
     // description 输入框
     await expect(page.getByPlaceholder('description')).toBeVisible();
@@ -67,7 +67,7 @@ test.describe('JsonSchemaReactEditor', () => {
   test('标题编辑按钮可被点击，点击后打开标题模态框', async ({ page }) => {
     await gotoEditor(page);
 
-    const titleInput = page.locator('input[value="title"]');
+    const titleInput = page.getByRole('textbox', { name: 'Title' });
     const wrapper = titleInput.locator(
       'xpath=ancestor::*[contains(@class, "ant-space-compact")]',
     );
