@@ -176,4 +176,5 @@ pnpm -F @tyx1703/json-schema-editor-visual dev     # 监听模式
 pnpm -F @tyx1703/json-schema-editor-visual test    # 单元测试（Rstest）
 pnpm e2e                               # 构建 + E2E 测试（Playwright）
 pnpm -F docs doc                       # 启动文档开发服务器
+pnpm dlx taze -I    # 升级依赖
 ```

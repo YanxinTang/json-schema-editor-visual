@@ -176,4 +176,5 @@ pnpm -F @tyx1703/json-schema-editor-visual dev     # Watch mode
 pnpm -F @tyx1703/json-schema-editor-visual test    # Unit tests (Rstest)
 pnpm e2e                               # Build + E2E tests (Playwright)
 pnpm -F docs doc                       # Start docs dev server
+pnpm dlx taze -I    # upgrade dependencies
 ```
