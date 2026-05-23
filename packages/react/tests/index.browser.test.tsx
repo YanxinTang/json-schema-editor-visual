@@ -26,7 +26,9 @@ describe('JsonSchemaReactEditor', () => {
     await expect.element(page.locator('input[value="title"]')).toBeVisible();
 
     // description 输入框
-    await expect.element(page.getByPlaceholder('description')).toBeVisible();
+    await expect
+      .element(page.getByRole('textbox', { name: 'Description' }))
+      .toBeVisible();
 
     // 根节点展开图标
     await expect
