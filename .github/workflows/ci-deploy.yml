@@ -27,7 +27,7 @@ jobs:
         run: pnpm install
 
       - name: Install Playwright browsers
-        run: pnpm exec playwright install --with-deps chromium
+        run: pnpm exec playwright install chromium --with-deps --only-shell
 
       - name: Unit tests
         run: pnpm --filter @tyx1703/json-schema-editor-visual test
