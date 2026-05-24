@@ -10,6 +10,7 @@ self.MonacoEnvironment = {
           'monaco-editor/esm/vs/language/json/json.worker',
           import.meta.url,
         ),
+        { type: 'module' },
       );
     }
     if (label === 'html' || label === 'handlebars' || label === 'razor') {
@@ -18,6 +19,7 @@ self.MonacoEnvironment = {
           'monaco-editor/esm/vs/language/html/html.worker',
           import.meta.url,
         ),
+        { type: 'module' },
       );
     }
     if (label === 'typescript' || label === 'javascript') {
@@ -26,10 +28,12 @@ self.MonacoEnvironment = {
           'monaco-editor/esm/vs/language/typescript/ts.worker',
           import.meta.url,
         ),
+        { type: 'module' },
       );
     }
     return new Worker(
       new URL('monaco-editor/esm/vs/editor/editor.worker', import.meta.url),
+      { type: 'module' },
     );
   },
 };
