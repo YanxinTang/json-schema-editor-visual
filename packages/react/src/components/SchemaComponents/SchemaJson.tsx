@@ -41,7 +41,6 @@ import {
   enableRequireAction,
 } from '../../store/schemaSlice';
 
-import './schemaJson.css';
 import { JsonSchema, MockSource } from '../../types.js';
 
 const { Option } = Select;
@@ -280,7 +279,7 @@ const SchemaArray: React.FC<CommonProps> = React.memo(
             )}
           </Col>
         </Row>
-        <div className="option-formStyle">
+        <div className="option-form-style">
           {mapping(prefixArray, items, showEdit, showAdv, mock)}
         </div>
       </div>
@@ -509,7 +508,7 @@ const SchemaItem: React.FC<SchemaItemProps> = React.memo(
             )}
           </Col>
         </Row>
-        <div className="option-formStyle">
+        <div className="option-form-style">
           {mapping(prefixArray, value, showEdit, showAdv, mock)}
         </div>
       </div>

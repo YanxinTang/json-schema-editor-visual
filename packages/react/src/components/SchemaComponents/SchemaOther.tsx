@@ -12,7 +12,6 @@ import {
 } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 const { TextArea } = Input;
-import './schemaJson.css';
 import { isNil } from '../../utils';
 const Option = Select.Option;
 import AceEditor from '../MonacoEditor';
