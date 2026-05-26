@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import React from 'react';
 import {
   Dropdown,
   Row,
@@ -125,12 +125,11 @@ const SchemaArray: React.FC<CommonProps> = React.memo(
     const open = useAppSelector((state) => state.schema.open);
     const LocaleProvider = useLocalProvider();
 
-    const tagPaddingLeftStyle = useMemo(() => {
-      const length = prefix.filter((name) => name !== 'properties').length;
-      return { paddingLeft: `${20 * (length + 1)}px` };
-    }, [prefix]);
+    const tagPaddingLeftStyle = {
+      paddingLeft: `${20 * (prefix.filter((name) => name !== 'properties').length + 1)}px`,
+    };
 
-    const getPrefix = useCallback(() => [...prefix, 'items'], [prefix]);
+    const getPrefix = () => [...prefix, 'items'];
 
     const handleChangeType = (value: string) => {
       const key = [...getPrefix(), 'type'];
@@ -299,12 +298,11 @@ const SchemaItem: React.FC<SchemaItemProps> = React.memo(
     const open = useAppSelector((state) => state.schema.open);
     const LocaleProvider = useLocalProvider();
 
-    const tagPaddingLeftStyle = useMemo(() => {
-      const length = prefix.filter((n) => n !== 'properties').length;
-      return { paddingLeft: `${20 * (length + 1)}px` };
-    }, [prefix]);
+    const tagPaddingLeftStyle = {
+      paddingLeft: `${20 * (prefix.filter((n) => n !== 'properties').length + 1)}px`,
+    };
 
-    const getPrefix = useCallback(() => [...prefix, name], [prefix, name]);
+    const getPrefix = () => [...prefix, name];
 
     const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
@@ -530,9 +528,6 @@ const SchemaObjectComponent: React.FC<CommonProps> = ({
   showAdv,
   mock,
 }) => {
-  // 仅作为依赖注入，触发组件在Redux state open发生变化时重新渲染
-  const _open = useAppSelector((state) => state.schema.open);
-
   return (
     <div className="object-style">
       {Object.keys(data.properties || {}).map((name) => (
@@ -556,7 +551,10 @@ const SchemaObject = React.memo(
   (prevProps, nextProps) => {
     return (
       isEqual(prevProps.data, nextProps.data) &&
-      isEqual(prevProps.prefix, nextProps.prefix)
+      isEqual(prevProps.prefix, nextProps.prefix) &&
+      prevProps.showEdit === nextProps.showEdit &&
+      prevProps.showAdv === nextProps.showAdv &&
+      prevProps.mock === nextProps.mock
     );
   },
 );

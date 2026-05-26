@@ -104,10 +104,7 @@ export function deleteData(
 }
 
 export function getParentKeys<T>(keys: T[]): T[] {
-  if (keys.length <= 1) return [];
-  const arr = [...keys];
-  arr.splice(keys.length - 1, 1);
-  return arr;
+  return keys.slice(0, -1);
 }
 
 export function clearSomeFields<T extends Record<string, unknown>>(
@@ -215,21 +212,5 @@ export function isEqual(a: unknown, b: unknown): boolean {
 }
 
 export function cloneObject<T>(obj: T): T {
-  if (typeof obj === 'object' && obj !== null) {
-    if (Array.isArray(obj)) {
-      const newArr: unknown[] = [];
-      obj.forEach((item, index) => {
-        newArr[index] = cloneObject(item);
-      });
-      return newArr as unknown as T;
-    } else {
-      const newObj = {} as Record<string, unknown>;
-      for (const key in obj) {
-        newObj[key] = cloneObject((obj as Record<string, unknown>)[key]);
-      }
-      return newObj as T;
-    }
-  } else {
-    return obj;
-  }
+  return structuredClone(obj);
 }

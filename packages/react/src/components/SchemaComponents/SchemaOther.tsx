@@ -35,8 +35,7 @@ const changeOtherValue = <T extends JsonSchema>(
   data: T,
   change: (d: T) => void,
 ) => {
-  (data as unknown as Record<string, unknown>)[name] = value;
-  change(data);
+  change({ ...data, [name]: value });
 };
 
 interface SchemaStringProps {
@@ -64,35 +63,32 @@ const SchemaString: React.FC<SchemaStringProps> = ({
         label: item.name,
         value: item.name,
       })),
-    format,
+    [format],
   );
 
   const handleChangeOtherValue = (value: unknown, name: string) => {
-    (data as unknown as Record<string, unknown>)[name] = value;
-    changeCustomValue(data);
+    changeCustomValue({ ...data, [name]: value });
   };
 
   const changeEnumOtherValue = (value: string) => {
     const arr = value.split('\n');
     if (arr.length === 0 || (arr.length === 1 && !arr[0])) {
-      delete data.enum;
-      changeCustomValue(data);
+      const { enum: _enum, ...rest } = data;
+      changeCustomValue(rest as JsonSchemaString);
     } else {
-      data.enum = arr;
-      changeCustomValue(data);
+      changeCustomValue({ ...data, enum: arr });
     }
   };
 
   const changeEnumDescOtherValue = (value: string) => {
-    data.enumDesc = value;
-    changeCustomValue(data);
+    changeCustomValue({ ...data, enumDesc: value });
   };
 
   const onChangeCheckBox = (checked: boolean) => {
     setChecked(checked);
     if (!checked) {
-      delete data.enum;
-      changeCustomValue(data);
+      const { enum: _enum, ...rest } = data;
+      changeCustomValue(rest as JsonSchemaString);
     }
   };
 
@@ -254,9 +250,9 @@ const SchemaNumber: React.FC<SchemaNumberProps> = ({
   const onChangeCheckBox = (checked: boolean) => {
     setChecked(checked);
     if (!checked) {
-      delete data.enum;
+      const { enum: _enum, ...rest } = data;
       setEnumValue('');
-      changeCustomValue(data);
+      changeCustomValue(rest as JsonSchemaNumber);
     }
   };
 
@@ -264,17 +260,15 @@ const SchemaNumber: React.FC<SchemaNumberProps> = ({
     setEnumValue(value);
     const arr = value.split('\n');
     if (arr.length === 0 || (arr.length === 1 && !arr[0])) {
-      delete data.enum;
-      changeCustomValue(data);
+      const { enum: _enum, ...rest } = data;
+      changeCustomValue(rest as JsonSchemaNumber);
     } else {
-      data.enum = arr.map((item) => +item);
-      changeCustomValue(data);
+      changeCustomValue({ ...data, enum: arr.map((item) => +item) });
     }
   };
 
   const changeEnumDescOtherValue = (value: string) => {
-    data.enumDesc = value;
-    changeCustomValue(data);
+    changeCustomValue({ ...data, enumDesc: value });
   };
 
   return (

@@ -71,7 +71,12 @@ export default function JsonSchemaEditorCore(props: JsonSchemaEditorCoreProps) {
   const jsonSchemaDataRef = useRef<Record<string, unknown> | null>(null);
   const importJsonTypeRef = useRef<string | null>(null);
   const prevDataRef = useRef(data);
+  const onChangeRef = useRef(onChange);
   const alterMsgRef = useRef(debounce(() => {}, 2000));
+
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
 
   // Local state
   const [visible, setVisible] = useState(false);
@@ -104,8 +109,8 @@ export default function JsonSchemaEditorCore(props: JsonSchemaEditorCoreProps) {
 
   // Notify parent of schema changes
   useEffect(() => {
-    if (typeof onChange === 'function') {
-      onChange(JSON.stringify(schema || ''));
+    if (typeof onChangeRef.current === 'function') {
+      onChangeRef.current(JSON.stringify(schema || ''));
     }
   }, [schema]);
 
@@ -145,9 +150,9 @@ export default function JsonSchemaEditorCore(props: JsonSchemaEditorCoreProps) {
 
   const handleParams = useCallback(
     (e: MockEditorData) => {
-      if (!e.text) return;
+      if (!e.text || !e.jsonData) return;
       if (e.format !== true) return alterMsgRef.current();
-      dispatch(changeEditorSchemaAction({ value: e.jsonData! }));
+      dispatch(changeEditorSchemaAction({ value: e.jsonData }));
     },
     [dispatch],
   );
