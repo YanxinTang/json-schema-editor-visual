@@ -1,0 +1,36 @@
+name: Test
+
+on:
+  push:
+    branches: [debug]
+  pull_request:
+    branches: [debug]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [24]
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v6
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install chromium --with-deps --only-shell
+
+      - name: Unit tests
+        run: pnpm --filter @tyx1703/json-schema-editor-visual test
+
+      - name: E2E tests
+        run: pnpm e2e
