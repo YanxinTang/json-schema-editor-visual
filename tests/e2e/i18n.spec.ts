@@ -33,7 +33,7 @@ test.describe('国际化 (i18n)', () => {
   test('zh_CN 语言下高级设置模态框显示中文', async ({ page }) => {
     await gotoEditor(page, { locale: 'zh_CN' });
     const addedRow = await addTypedNode(page, 'string');
-    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+    await addedRow.getByRole('button', { name: '高级设置' }).click();
     const advModal = page.getByRole('dialog', { name: '高级设置' });
     await expect(advModal).toBeVisible();
     await expect(advModal.getByText('基础设置')).toBeVisible();

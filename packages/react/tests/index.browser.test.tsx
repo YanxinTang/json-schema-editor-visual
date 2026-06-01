@@ -162,9 +162,9 @@ describe('JsonSchemaReactEditor', () => {
     );
 
     // string 类型节点高级设置
-    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+    await addedRow.getByRole('button', { name: 'Advanced settings' }).click();
 
-    const advModal = page.getByTestId('JSONSchemaEditorAdvModal');
+    const advModal = page.getByRole('dialog', { name: 'Advanced settings' });
     expect.element(advModal).toBeVisible();
     await advModal
       .getByRole('textbox', { name: 'Default' })
@@ -182,9 +182,9 @@ describe('JsonSchemaReactEditor', () => {
     const addedRow = await addTypedNode(page, 'string');
 
     // string 类型节点高级设置
-    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+    await addedRow.getByRole('button', { name: 'Advanced settings' }).click();
 
-    const advModal = page.getByTestId('JSONSchemaEditorAdvModal');
+    const advModal = page.getByRole('dialog', { name: 'Advanced settings' });
     expect.element(advModal).toBeVisible();
     await advModal
       .getByRole('textbox', { name: 'Default' })
@@ -247,9 +247,9 @@ describe('JsonSchemaReactEditor', () => {
     const addedRow = await addTypedNode(page, 'number');
 
     // 节点高级设置
-    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+    await addedRow.getByRole('button', { name: 'Advanced settings' }).click();
 
-    const advModal = page.getByTestId('JSONSchemaEditorAdvModal');
+    const advModal = page.getByRole('dialog', { name: 'Advanced settings' });
     expect.element(advModal).toBeVisible();
     await advModal
       .getByTestId('advSettingModal_default')
@@ -304,9 +304,9 @@ describe('JsonSchemaReactEditor', () => {
     const addedRow = await addTypedNode(page, 'array');
 
     // 节点高级设置
-    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+    await addedRow.getByRole('button', { name: 'Advanced settings' }).click();
 
-    const advModal = page.getByTestId('JSONSchemaEditorAdvModal');
+    const advModal = page.getByRole('dialog', { name: 'Advanced settings' });
     expect.element(advModal).toBeVisible();
 
     await advModal.getByTestId('advSettingModal_uniqueItemsSwitch').click();
@@ -361,9 +361,9 @@ describe('JsonSchemaReactEditor', () => {
     const addedRow = await addTypedNode(page, 'object');
 
     // 节点高级设置
-    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+    await addedRow.getByRole('button', { name: 'Advanced settings' }).click();
 
-    const advModal = page.getByTestId('JSONSchemaEditorAdvModal');
+    const advModal = page.getByRole('dialog', { name: 'Advanced settings' });
     expect.element(advModal).toBeVisible();
 
     await advModal.getByRole('button', { name: 'OK' }).click();
@@ -408,9 +408,9 @@ describe('JsonSchemaReactEditor', () => {
 
     const addedRow = await addTypedNode(page, 'boolean');
 
-    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+    await addedRow.getByRole('button', { name: 'Advanced settings' }).click();
 
-    const advModal = page.getByTestId('JSONSchemaEditorAdvModal');
+    const advModal = page.getByRole('dialog', { name: 'Advanced settings' });
     expect.element(advModal).toBeVisible();
 
     await advModal.getByTestId('advSettingModal_defaultSelect').click();
@@ -461,9 +461,9 @@ describe('JsonSchemaReactEditor', () => {
 
     const addedRow = await addTypedNode(page, 'integer');
 
-    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+    await addedRow.getByRole('button', { name: 'Advanced settings' }).click();
 
-    const advModal = page.getByTestId('JSONSchemaEditorAdvModal');
+    const advModal = page.getByRole('dialog', { name: 'Advanced settings' });
     expect.element(advModal).toBeVisible();
     await advModal
       .getByTestId('advSettingModal_default')
@@ -491,9 +491,9 @@ describe('JsonSchemaReactEditor', () => {
 
     const addedRow = await addTypedNode(page, 'string');
 
-    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+    await addedRow.getByRole('button', { name: 'Advanced settings' }).click();
 
-    const advModal = page.getByTestId('JSONSchemaEditorAdvModal');
+    const advModal = page.getByRole('dialog', { name: 'Advanced settings' });
     expect.element(advModal).toBeVisible();
 
     // 打开 format 下拉框，验证自定义 format 选项出现
@@ -720,7 +720,7 @@ describe('国际化 (i18n)', () => {
       </ConfigProvider>,
     );
     const addedRow = await addTypedNode(page, 'string');
-    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+    await addedRow.getByRole('button', { name: '高级设置' }).click();
     const advModal = page.getByRole('dialog', { name: '高级设置' });
     await expect.element(advModal).toBeVisible();
     await expect.element(advModal.getByText('基础设置')).toBeVisible();

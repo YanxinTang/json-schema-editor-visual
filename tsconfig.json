@@ -1,7 +1,4 @@
 {
   "files": [],
-  "references": [
-    { "path": "./packages/json-schema-editor-visual" },
-    { "path": "./packages/docs" }
-  ]
+  "references": [{ "path": "./packages/react" }, { "path": "./packages/docs" }]
 }

@@ -147,7 +147,7 @@ test.describe('JsonSchemaReactEditor', () => {
     );
 
     // string 类型节点高级设置
-    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+    await addedRow.getByRole('button', { name: 'Advanced settings' }).click();
 
     const advModal = page.getByRole('dialog', { name: 'Advanced Settings' });
     await expect(advModal).toBeVisible();
@@ -166,7 +166,7 @@ test.describe('JsonSchemaReactEditor', () => {
     const addedRow = await addTypedNode(page, 'string');
 
     // string 类型节点高级设置
-    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+    await addedRow.getByRole('button', { name: 'Advanced settings' }).click();
 
     const advModal = page.getByRole('dialog', { name: 'Advanced Settings' });
     await expect(advModal).toBeVisible();
@@ -229,7 +229,7 @@ test.describe('JsonSchemaReactEditor', () => {
     const addedRow = await addTypedNode(page, 'number');
 
     // 节点高级设置
-    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+    await addedRow.getByRole('button', { name: 'Advanced settings' }).click();
 
     const advModal = page.getByRole('dialog', { name: 'Advanced Settings' });
     await expect(advModal).toBeVisible();
@@ -284,7 +284,7 @@ test.describe('JsonSchemaReactEditor', () => {
     const addedRow = await addTypedNode(page, 'array');
 
     // 节点高级设置
-    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+    await addedRow.getByRole('button', { name: 'Advanced settings' }).click();
 
     const advModal = page.getByRole('dialog', { name: 'Advanced Settings' });
     await expect(advModal).toBeVisible();
@@ -339,7 +339,7 @@ test.describe('JsonSchemaReactEditor', () => {
     const addedRow = await addTypedNode(page, 'object');
 
     // 节点高级设置
-    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+    await addedRow.getByRole('button', { name: 'Advanced settings' }).click();
 
     const advModal = page.getByRole('dialog', { name: 'Advanced Settings' });
     await expect(advModal).toBeVisible();
@@ -384,7 +384,7 @@ test.describe('JsonSchemaReactEditor', () => {
 
     const addedRow = await addTypedNode(page, 'boolean');
 
-    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+    await addedRow.getByRole('button', { name: 'Advanced settings' }).click();
 
     const advModal = page.getByRole('dialog', { name: 'Advanced Settings' });
     await expect(advModal).toBeVisible();
@@ -435,7 +435,7 @@ test.describe('JsonSchemaReactEditor', () => {
 
     const addedRow = await addTypedNode(page, 'integer');
 
-    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+    await addedRow.getByRole('button', { name: 'Advanced settings' }).click();
 
     const advModal = page.getByRole('dialog', { name: 'Advanced Settings' });
     await expect(advModal).toBeVisible();
@@ -460,7 +460,7 @@ test.describe('JsonSchemaReactEditor', () => {
 
     const addedRow = await addTypedNode(page, 'string');
 
-    await addedRow.getByTestId('SchemaItem_FieldInput_advSet').click();
+    await addedRow.getByRole('button', { name: 'Advanced settings' }).click();
 
     const advModal = page.getByRole('dialog', { name: 'Advanced Settings' });
     await expect(advModal).toBeVisible();

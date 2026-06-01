@@ -349,7 +349,6 @@ export default function JsonSchemaEditorCore(props: JsonSchemaEditorCoreProps) {
           width={780}
           cancelText={LocalProvider('cancel')}
           className="json-schema-react-editor-adv-modal"
-          data-testid={TEST ? 'JSONSchemaEditorAdvModal' : null}
         >
           <CustomItem
             data={JSON.stringify(curItemCustomValue, null, 2)}
@@ -461,13 +460,22 @@ export default function JsonSchemaEditorCore(props: JsonSchemaEditorCoreProps) {
               </Space.Compact>
             </Col>
             <Col span={2} className="col-item col-item-setting">
-              <span className="adv-set" onClick={() => showAdv([], schema)}>
+              <span
+                className="adv-set"
+                role="button"
+                aria-label={LocalProvider('adv_setting')}
+                onClick={() => showAdv([], schema)}
+              >
                 <Tooltip placement="top" title={LocalProvider('adv_setting')}>
                   <SettingOutlined type="setting" />
                 </Tooltip>
               </span>
               {schema.type === 'object' ? (
-                <span onClick={() => addChildField('properties')}>
+                <span
+                  role="button"
+                  aria-label={LocalProvider('add_child_node')}
+                  onClick={() => addChildField('properties')}
+                >
                   <Tooltip
                     placement="top"
                     title={LocalProvider('add_child_node')}
