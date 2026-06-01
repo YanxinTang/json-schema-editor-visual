@@ -39,11 +39,13 @@ describe('JsonSchemaReactEditor', () => {
 
     // 设置按钮
     await expect
-      .element(page.getByRole('img', { name: 'setting' }))
+      .element(page.getByRole('button', { name: 'Advanced Settings' }))
       .toBeVisible();
 
     // 新增按钮
-    await expect.element(page.getByRole('img', { name: 'plus' })).toBeVisible();
+    await expect
+      .element(page.getByRole('button', { name: 'Add child node' }))
+      .toBeVisible();
   });
 
   test('初始值渲染', async () => {
