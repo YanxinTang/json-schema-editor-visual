@@ -485,19 +485,31 @@ const SchemaItem: React.FC<SchemaItemProps> = React.memo(
             <span
               className="adv-set"
               onClick={handleShowAdv}
-              data-testid={TEST ? 'SchemaItem_FieldInput_advSet' : null}
+              role="button"
+              aria-label={LocaleProvider('adv_setting')}
             >
               <Tooltip placement="top" title={LocaleProvider('adv_setting')}>
                 <SettingOutlined />
               </Tooltip>
             </span>
-            <span className="delete-item" onClick={handleDeleteItem}>
-              <CloseOutlined className="close" />
+            <span
+              className="delete-item"
+              onClick={handleDeleteItem}
+              role="button"
+              aria-label={LocaleProvider('remove_node')}
+            >
+              <Tooltip placement="top" title={LocaleProvider('remove_node')}>
+                <CloseOutlined className="close" />
+              </Tooltip>
             </span>
             {value.type === 'object' ? (
               <DropPlus prefix={prefix} name={name} />
             ) : (
-              <span onClick={handleAddField}>
+              <span
+                onClick={handleAddField}
+                role="button"
+                aria-label={LocaleProvider('add_sibling_node')}
+              >
                 <Tooltip
                   placement="top"
                   title={LocaleProvider('add_sibling_node')}
