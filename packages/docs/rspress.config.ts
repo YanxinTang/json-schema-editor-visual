@@ -19,10 +19,13 @@ export default defineConfig({
   plugins: [
     pluginApiDocgen({
       entries: {
-        JsonSchemaEditorVisual: '../json-schema-editor-visual/src/index.tsx',
+        JsonSchemaEditorVisual: '../react/src/index.tsx',
       },
       apiParseTool: 'react-docgen-typescript',
     }),
     pluginPreview(),
   ],
+  mediumZoom: {
+    selector: '.rspress-doc img:not(.nointeractive)',
+  },
 });

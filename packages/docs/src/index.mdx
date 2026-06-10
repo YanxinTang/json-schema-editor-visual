@@ -1,114 +1,22 @@
 ---
-title: '@tyx1703/JsonSchemaEditorVisual'
+title: '@tyx1703/json-schema-editor-visual'
 sidebar: false
 ---
 
-## Example
-
-### 基本用法
-
-```jsx preview
-import React from 'react';
-import JsonSchemaEditorVisual from '@tyx1703/json-schema-editor-visual';
-
-export default () => {
-  return <JsonSchemaEditorVisual />;
-};
-```
-
-### Mock
-
-```jsx preview
-import React from 'react';
-import zhCN from 'antd/locale/zh_CN';
-import { ConfigProvider } from 'antd';
-import JsonSchemaEditorVisual from '@tyx1703/json-schema-editor-visual';
-
-const MOCK_SOURCE = [
-  { name: '字符串', mock: '@string' },
-  { name: '自然数', mock: '@natural' },
-  { name: '浮点数', mock: '@float' },
-  { name: '字符', mock: '@character' },
-  { name: '布尔', mock: '@boolean' },
-  { name: 'url', mock: '@url' },
-  { name: '域名', mock: '@domain' },
-  { name: 'ip地址', mock: '@ip' },
-  { name: 'id', mock: '@id' },
-  { name: 'guid', mock: '@guid' },
-  { name: '当前时间', mock: '@now' },
-  { name: '时间戳', mock: '@timestamp' },
-  { name: '日期', mock: '@date' },
-  { name: '时间', mock: '@time' },
-  { name: '日期时间', mock: '@datetime' },
-  { name: '图片连接', mock: '@image' },
-  { name: '图片data', mock: '@imageData' },
-  { name: '颜色', mock: '@color' },
-  { name: '颜色hex', mock: '@hex' },
-  { name: '颜色rgba', mock: '@rgba' },
-  { name: '颜色rgb', mock: '@rgb' },
-  { name: '颜色hsl', mock: '@hsl' },
-  { name: '整数', mock: '@integer' },
-  { name: 'email', mock: '@email' },
-  { name: '大段文本', mock: '@paragraph' },
-  { name: '句子', mock: '@sentence' },
-  { name: '单词', mock: '@word' },
-  { name: '大段中文文本', mock: '@cparagraph' },
-  { name: '中文标题', mock: '@ctitle' },
-  { name: '标题', mock: '@title' },
-  { name: '姓名', mock: '@name' },
-  { name: '中文姓名', mock: '@cname' },
-  { name: '中文姓', mock: '@cfirst' },
-  { name: '中文名', mock: '@clast' },
-  { name: '英文姓', mock: '@first' },
-  { name: '英文名', mock: '@last' },
-  { name: '中文句子', mock: '@csentence' },
-  { name: '中文词组', mock: '@cword' },
-  { name: '地址', mock: '@region' },
-  { name: '省份', mock: '@province' },
-  { name: '城市', mock: '@city' },
-  { name: '地区', mock: '@county' },
-  { name: '转换为大写', mock: '@upper' },
-  { name: '转换为小写', mock: '@lower' },
-  { name: '挑选（枚举）', mock: '@pick' },
-  { name: '打乱数组', mock: '@shuffle' },
-  { name: '协议', mock: '@protocol' },
-];
-
-export default () => {
-  return (
-    <ConfigProvider locale={zhCN}>
-      <JsonSchemaEditorVisual mock={MOCK_SOURCE} />
-    </ConfigProvider>
-  );
-};
-```
-
-### 事件
-
-```jsx preview
-import React from 'react';
-import JsonSchemaEditorVisual from '@tyx1703/json-schema-editor-visual';
-
-const data = `{"type":"object","title":"title","properties":{"field_1":{"type":"string","title":"field_1_title","description":"field_1_description"}},"required":["field_1"]}`;
-
-const onChange = (value) => {
-  console.log('value: ', value);
-};
-
-export default () => {
-  return <JsonSchemaEditorVisual data={data} onChange={onChange} />;
-};
-```
-
-## API
-
-<API moduleName="JsonSchemaEditorVisual" zh />
-
-## 从 json-schema-editor-visual 迁移
+<a
+  href="https://www.npmjs.com/package/@tyx1703/json-schema-editor-visual"
+  target="_blank"
+>
+  <img
+    class="nointeractive"
+    src="https://img.shields.io/npm/v/%40tyx1703%2Fjson-schema-editor-visual"
+    alt="npm"
+  />
+</a>
 
 本项目 fork 自 [Open-Federation/json-schema-editor-visual](https://github.com/Open-Federation/json-schema-editor-visual)，对 API 做了重新设计。
 
-### 安装
+## 一、安装
 
 ```bash
 # 旧版
@@ -117,6 +25,29 @@ npm install json-schema-editor-visual
 # 新版
 npm add @tyx1703/json-schema-editor-visual
 ```
+
+## 二、示例
+
+```jsx preview
+import React from 'react';
+import zhCN from 'antd/locale/zh_CN';
+import { ConfigProvider } from 'antd';
+import JsonSchemaEditorVisual from '@tyx1703/json-schema-editor-visual';
+
+export default () => {
+  return (
+    <ConfigProvider locale={zhCN}>
+      <JsonSchemaEditorVisual />
+    </ConfigProvider>
+  );
+};
+```
+
+## 三、API
+
+<API moduleName="JsonSchemaEditorVisual" zh />
+
+## 四、从 json-schema-editor-visual 迁移
 
 ### 工厂函数 → 组件
 
@@ -144,7 +75,7 @@ import zhCN from 'antd/locale/zh_CN';
 </ConfigProvider>;
 ```
 
-### Mock & Format → Props
+### 属性
 
 ```jsx
 // 旧版
@@ -154,7 +85,7 @@ const SchemaEditor = schemaEditor({ mock: MOCK, format: FORMAT });
 <JsonSchemaEditorVisual mock={MOCK} format={FORMAT} />;
 ```
 
-### CSS — 不再需要手动导入
+### 样式
 
 ```jsx
 // 旧版
@@ -163,18 +94,3 @@ require('json-schema-editor-visual/dist/main.css');
 
 // 新版 — 无需导入
 ```
-
-### 破坏性变更总结
-
-| 变更        | 旧版                            | 新版                                 |
-| ----------- | ------------------------------- | ------------------------------------ |
-| 包名        | `json-schema-editor-visual`     | `@tyx1703/json-schema-editor-visual` |
-| 导出方式    | 工厂函数 `schemaEditor(config)` | 直接导出组件                         |
-| 语言配置    | `{ lang: 'zh_CN' }`             | antd `ConfigProvider`                |
-| Mock 数据   | 工厂函数选项                    | 组件 prop                            |
-| Format 选项 | 工厂函数选项                    | 组件 prop                            |
-| CSS 导入    | 需要手动导入 `main.css`         | 不需要                               |
-| React 版本  | >=16.9.0                        | ^18 或 ^19                           |
-| antd 版本   | 4                               | ^5 或 ^6                             |
-| 编辑器      | Ace Editor                      | Monaco Editor                        |
-| Model API   | `Model.schema` 可操作           | 已移除                               |
