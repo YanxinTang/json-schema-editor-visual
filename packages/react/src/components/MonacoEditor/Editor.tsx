@@ -1,6 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import * as monaco from 'monaco-editor';
 import Editor, { loader } from '@monaco-editor/react';
+import { THEME, THEME_TYPE } from '../../constant';
 
 self.MonacoEnvironment = {
   getWorker: function (moduleId, label) {
@@ -71,14 +72,12 @@ export interface MocanoEditorProps {
   onChange?: (data: MockEditorData) => void;
   className?: string;
   mode?: ModeKey;
+  theme: THEME_TYPE;
 }
 
-export function MonacoEditor({
-  data,
-  onChange,
-  className,
-  mode = 'json',
-}: MocanoEditorProps) {
+export function MonacoEditor(props: MocanoEditorProps) {
+  const { data, onChange, mode = 'json', theme, className } = props;
+
   const handleChange = useCallback(
     (value: string | undefined) => {
       const text = value ?? '';
@@ -92,7 +91,12 @@ export function MonacoEditor({
       className={className ?? 'monaco-editor-container'}
       style={
         !className
-          ? { width: '100%', height: '400px', border: '1px solid #e5e7eb' }
+          ? {
+              width: '100%',
+              height: '400px',
+              border: '1px solid #e5e7eb',
+              borderColor: theme === THEME.DARK ? '#5454547a' : '#e5e7eb',
+            }
           : undefined
       }
     >
@@ -109,6 +113,7 @@ export function MonacoEditor({
           tabSize: 2,
           wordWrap: 'on',
         }}
+        theme={theme === THEME.DARK ? 'vs-dark' : 'light'}
       />
     </div>
   );

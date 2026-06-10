@@ -1,10 +1,11 @@
+import { THEME_TYPE } from '../../constant';
 import styles from './MonacoSkeleton.module.css';
 
 export interface MonacoSkeletonProps {
   lines?: number;
   minHeight?: number | string;
   className?: string;
-  theme?: 'light' | 'dark' | 'auto';
+  theme: THEME_TYPE;
 }
 
 const linePattern = [
@@ -22,14 +23,9 @@ const linePattern = [
   { width: '33%', indent: 1 },
 ];
 
-export function MonacoSkeleton({
-  lines = 12,
-  minHeight = 400,
-  className = '',
-  theme = 'auto',
-}: MonacoSkeletonProps) {
-  const themeClass =
-    theme === 'dark' ? styles.dark : theme === 'auto' ? styles.auto : '';
+export function MonacoSkeleton(props: MonacoSkeletonProps) {
+  const { lines = 12, minHeight = 400, className = '', theme } = props;
+  const themeClass = theme === 'dark' ? styles.dark : '';
 
   return (
     <div
