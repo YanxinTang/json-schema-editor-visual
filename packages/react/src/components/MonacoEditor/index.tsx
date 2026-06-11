@@ -8,7 +8,7 @@ const Editor = lazy(() => import('./Editor'));
 
 export default function (props: Omit<MocanoEditorProps, 'theme'>) {
   const { theme: userTheme } = useContext(ConfigProvider.ConfigContext);
-  const isDark = userTheme.algorithm === antdTheme.darkAlgorithm;
+  const isDark = userTheme?.algorithm === antdTheme.darkAlgorithm;
   const theme = isDark ? THEME.DARK : THEME.LIGHT;
 
   return (

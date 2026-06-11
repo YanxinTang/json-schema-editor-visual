@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "strict": true,
     "rootDir": "./src",
     "lib": ["DOM", "ES2022"],
     "jsx": "react-jsx",
